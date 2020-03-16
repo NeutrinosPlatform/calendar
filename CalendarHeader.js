@@ -1,0 +1,255 @@
+'use strict';
+let AdvancedComponent = require("@jatahworx/bhive-toolkits").AdvancedComponent;
+let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
+
+module.exports = class CalendarHeader extends AdvancedComponent {
+  constructor() {
+    const name = 'calendar-header';
+    const designerTemplate = `<calendar-header slot="cards" block-copy  component-label="Header"  class="display-block">
+        <div class="three-label">
+        <div class="first-container-view">
+            <div class="">
+              <div class="container-view">
+              <span class="modal-text title-align" id="previous-pick-content">Previous</span>
+              <span class="modal-text title-align" id="today-pick-content">Today</span>
+              <span class="modal-text title-align" id="next-pick-content">Next</span>
+              </div>             
+            </div>    
+            <div class="Add-event-container">
+            <span class="Add-event-view">Add Event</span>
+            </div>
+            </div>
+            <div>
+            <span class="january"> January 20</span>
+            </div>
+            <div class="third-container-view">
+            <div class="month-event-container">
+            <span class="day-event-view">Month</span>
+            </div>
+            <div class="month-event-container">
+            <span class="day-event-view">Week</span>
+            </div>
+            <div class="month-event-container">
+            <span class="day-event-view">Day</span>
+            </div>
+        
+            </div>
+          
+        </div>
+        
+      </calendar-header>`;
+    const paletteTemplate = 'Card Sub-title';
+    const componentLabel = 'Card Sub-title';
+
+    const templateUrl = 'articles/#!components-guide-for-release-6/card';
+
+    super({
+      name,
+      template: ``,
+      designerTemplate,
+      componentLabel,
+      paletteTemplate,
+      isAdvancedChild: true,
+      templateUrl
+    });
+    super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
+
+    super.addAttribute(
+      new Attribute({
+        key: 'Header',
+        value: 'Calendar Header',
+        type: 'a',
+        useAsLabel: true,
+        isVisibleForParent: true
+      })
+    );
+    super.addAttribute(new Attribute({
+      key: 'view',
+      value: '',
+      type: 'kv',
+    }));
+    super.addAttribute(new Attribute({
+      key: 'viewDate',
+      value: '',
+      type: 'kv',
+    }));
+    super.addAttribute(new Attribute({
+      key: 'viewChange',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'viewDateChange',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showPreviousDayBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showTodayBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showNextDayBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showMonthBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showWeekBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showDayBtn',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'daysInAWeek',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'excludeDaysInAWeek',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showAddEvent',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'onAddEventClick',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showCaptureEventDialog',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'showEventDetailsDialog',
+      value: 'true',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'customCaptureEventDialog',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'customEventDialog',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'onEditEventClick',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'onDeleteEventClick',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.composeTemplate({
+      styles: `:host {
+              padding: 1.3em;
+              position: relative;
+              border: 1px solid lightgrey;
+              margin: 6px 25px !important;
+              border-radius: 5px !important;
+              }`
+    });
+  }
+
+  get template() {
+    let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
+    let view = componentAttribute.view['_value'];
+    let viewDate = componentAttribute.viewDate['_value'];
+    let viewChange = componentAttribute.viewChange['_value'];
+    let viewDateChange = componentAttribute.viewDateChange['_value'];
+    let showPreviousDayBtn = componentAttribute.showPreviousDayBtn['_value'];
+    let showTodayBtn = componentAttribute.showTodayBtn['_value'];
+    let showNextDayBtn = componentAttribute.showNextDayBtn['_value'];
+    let showMonthBtn = componentAttribute.showMonthBtn['_value'];
+    let showWeekBtn = componentAttribute.showWeekBtn['_value'];
+    let showDayBtn = componentAttribute.showDayBtn['_value'];
+    let excludeDays = componentAttribute.excludeDaysInAWeek['_value'];
+    let daysInAWeek = componentAttribute.daysInAWeek['_value'] !=='' ? componentAttribute.daysInAWeek['_value'].toString() : '';
+    let showAddEvent = componentAttribute.showAddEvent['_value'];
+    let onAddEventClick = componentAttribute.onAddEventClick['_value'];
+    let showCaptureEventDialog = componentAttribute.showCaptureEventDialog['_value'];
+    let showEventDetailsDialog = componentAttribute.showEventDetailsDialog['_value'];
+
+
+
+
+    let template = `<mwl-calendar-header 
+    [view]= "'${view}'"
+    [(viewDate)]= "${viewDate}" 
+    [showPreviousDayBtn] = "${showPreviousDayBtn}"
+    [showTodayBtn] = "${showTodayBtn}"
+    [showNextDayBtn] =  "${showNextDayBtn}"
+    [showMonthBtn] = "${showMonthBtn}"
+    [showWeekBtn] = "${showWeekBtn}"
+    [showDayBtn] = "${showDayBtn}"
+    [excludeDays]=  "${excludeDays}"
+    [daysInWeek] = "${daysInAWeek}"
+    [showCaptureEventDialog] = "${showCaptureEventDialog}"
+    [showEventDetailsDialog] = "${showEventDetailsDialog}"
+    `;
+
+    if(viewChange !== ""){
+      template = template + `(viewChange) = "${viewChange}"`
+    }
+    if(viewDateChange !== ""){
+      template = template + `(viewDateChange) = "${viewDateChange}"`
+    }
+    // if(setView !== ""){
+    //   template = template + `(onSetViewChange) = "${onSetViewChange}"  `
+    // }
+    if(onAddEventClick !== ""){
+      template = template + `(onAddEventClick) = "${onAddEventClick}"`
+    }
+    if(showAddEvent !== ""){
+      template = template + `(showAddEvent) = "${showAddEvent}"`
+    }
+
+    template = template + `
+    ></mwl-calendar-header>
+    `;
+    return template;
+  }
+  set template(templateString) { }
+};
+
