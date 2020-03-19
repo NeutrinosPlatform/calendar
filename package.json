@@ -8,6 +8,15 @@
   },
   "author": "",
   "license": "ISC",
+  "nModule": {
+    "name": "neo-calendar",
+    "version": "0.0.1",
+    "packageType": "angular-package",
+    "importStatement": "import { CalendarModule, DateAdapter } from 'neo-calendar';import { adapterFactory } from 'neo-calendar/date-adapters/date-fns';",
+    "imports": [
+      "CalendarModule.forRoot({})"
+    ]
+  },
   "dependencies": {
     "@jatahworx/bhive-toolkits": "^6.2.1"
   }

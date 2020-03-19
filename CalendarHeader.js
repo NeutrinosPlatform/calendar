@@ -5,43 +5,41 @@ let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
 module.exports = class CalendarHeader extends AdvancedComponent {
   constructor() {
     const name = 'calendar-header';
-    const designerTemplate = `<calendar-header slot="cards" block-copy  component-label="Header"  class="display-block">
-        <div class="three-label">
-        <div class="first-container-view">
+    const designerTemplate = `
+    <calendar-header slot="cards" block-copy  component-label="Header"  class="display-block">
+      <div class="three-label">
+          <div class="first-container-view">
             <div class="">
-              <div class="container-view">
-              <span class="modal-text title-align" id="previous-pick-content">Previous</span>
-              <span class="modal-text title-align" id="today-pick-content">Today</span>
-              <span class="modal-text title-align" id="next-pick-content">Next</span>
-              </div>             
-            </div>    
+                <div class="container-view">
+                  <span class="modal-text title-align" id="previous-pick-content">Previous</span>
+                  <span class="modal-text title-align" id="today-pick-content">Today</span>
+                  <span class="modal-text title-align" id="next-pick-content">Next</span>
+                </div>
+            </div>
             <div class="Add-event-container">
-            <span class="Add-event-view">Add Event</span>
+                <span class="Add-event-view">Add Event</span>
             </div>
-            </div>
-            <div>
+          </div>
+          <div>
             <span class="january"> January 20</span>
-            </div>
-            <div class="third-container-view">
+          </div>
+          <div class="third-container-view">
             <div class="month-event-container">
-            <span class="day-event-view">Month</span>
-            </div>
-            <div class="month-event-container">
-            <span class="day-event-view">Week</span>
+                <span class="day-event-view">Month</span>
             </div>
             <div class="month-event-container">
-            <span class="day-event-view">Day</span>
+                <span class="day-event-view">Week</span>
             </div>
-        
+            <div class="month-event-container">
+                <span class="day-event-view">Day</span>
             </div>
-          
-        </div>
-        
-      </calendar-header>`;
-    const paletteTemplate = 'Card Sub-title';
-    const componentLabel = 'Card Sub-title';
+          </div>
+      </div>
+    </calendar-header>`;
+    const paletteTemplate = '';
+    const componentLabel = '';
 
-    const templateUrl = 'articles/#!components-guide-for-release-6/card';
+    const templateUrl = 'https://mattlewis92.github.io/angular-calendar/';
 
     super({
       name,
@@ -54,23 +52,14 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     });
     super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
 
-    super.addAttribute(
-      new Attribute({
-        key: 'Header',
-        value: 'Calendar Header',
-        type: 'a',
-        useAsLabel: true,
-        isVisibleForParent: true
-      })
-    );
     super.addAttribute(new Attribute({
       key: 'view',
-      value: '',
+      value: 'month',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'viewDate',
-      value: '',
+      value: 'viewDate',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
@@ -181,6 +170,19 @@ module.exports = class CalendarHeader extends AdvancedComponent {
       type: 'kv',
       complexity: "advanced"
     }));
+    super.addAttribute(new Attribute({
+      key: 'setView',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+    super.addAttribute(new Attribute({
+      key: 'onAddEventSaveClick',
+      value: '',
+      type: 'kv',
+      complexity: "advanced"
+    }));
+
     super.composeTemplate({
       styles: `:host {
               padding: 1.3em;
@@ -205,16 +207,16 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let showWeekBtn = componentAttribute.showWeekBtn['_value'];
     let showDayBtn = componentAttribute.showDayBtn['_value'];
     let excludeDays = componentAttribute.excludeDaysInAWeek['_value'];
-    let daysInAWeek = componentAttribute.daysInAWeek['_value'] !=='' ? componentAttribute.daysInAWeek['_value'].toString() : '';
+    let daysInAWeek = componentAttribute.daysInAWeek['_value'] !== '' ? componentAttribute.daysInAWeek['_value'].toString() : '';
     let showAddEvent = componentAttribute.showAddEvent['_value'];
     let onAddEventClick = componentAttribute.onAddEventClick['_value'];
     let showCaptureEventDialog = componentAttribute.showCaptureEventDialog['_value'];
     let showEventDetailsDialog = componentAttribute.showEventDetailsDialog['_value'];
+    let setView = componentAttribute.setView['_value'];
+    let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
 
 
-
-
-    let template = `<mwl-calendar-header 
+    let template = `<div %style% %class%> <mwl-calendar-header 
     [view]= "'${view}'"
     [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"
@@ -227,29 +229,27 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     [daysInWeek] = "${daysInAWeek}"
     [showCaptureEventDialog] = "${showCaptureEventDialog}"
     [showEventDetailsDialog] = "${showEventDetailsDialog}"
+    [showAddEvent] = "${showAddEvent}"
     `;
 
-    if(viewChange !== ""){
+    if (viewChange !== "") {
       template = template + `(viewChange) = "${viewChange}"`
     }
-    if(viewDateChange !== ""){
+    if (viewDateChange !== "") {
       template = template + `(viewDateChange) = "${viewDateChange}"`
     }
-    // if(setView !== ""){
-    //   template = template + `(onSetViewChange) = "${onSetViewChange}"  `
-    // }
-    if(onAddEventClick !== ""){
+    if (setView !== "") {
+      template = template + `(setView) = "${setView}"  `
+    }
+    if (onAddEventClick !== "") {
       template = template + `(onAddEventClick) = "${onAddEventClick}"`
     }
-    if(showAddEvent !== ""){
-      template = template + `(showAddEvent) = "${showAddEvent}"`
+    if(onAddEventSaveClick !== ""){
+      template = template + `(onAddEventSaveClick) = "${onAddEventSaveClick}"`
     }
 
-    template = template + `
-    ></mwl-calendar-header>
-    `;
+    template = template + `></mwl-calendar-header> </div>`;
     return template;
   }
-  set template(templateString) { }
+  set template(templateString) {}
 };
-

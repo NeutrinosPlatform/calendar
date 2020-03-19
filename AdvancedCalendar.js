@@ -8,26 +8,20 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
   constructor() {
     const name = "advanced-calendar-neosme";
     const designerTemplate = `
-    <advanced-calendar-neosme onclick="click(event)" component-label="Calendar" 
-    class="ad-element flex-shrink-0 flex-grow-1">
-
-    <div  slot="add"  class="ad-card-buttons" style="width:100% !important">
-        <div class="calendar-image">
-    <img />
-  </div>   
-  <div style="display:flex">
-              <button id="calendar-header" class="add-child-button flex-column" no-select>Header</button>
-              <button id="month-component" class="add-child-button flex-column" no-select>Month</button>
-              <button id="week-component" class="add-child-button flex-column" no-select>Week</button>
-              <button id="day-component" class="add-child-button flex-column" no-select>Day</button>
-    </div>
-              </div>   
-   
+    <advanced-calendar-neosme onclick="click(event)" component-label="Calendar" class="ad-element flex-shrink-0 flex-grow-1">
+      <div slot="add"  class="ad-card-buttons" style="width:100% !important;padding:0px">
+        <div class="calendar-image"> </div>  
+        <div style="display:flex;padding-left:15px">
+          <button id="calendar-header" class="add-child-button flex-column" no-select>Header</button>
+          <button id="month-component" class="add-child-button flex-column" no-select>Month</button>
+          <button id="week-component" class="add-child-button flex-column" no-select>Week</button>
+          <button id="day-component" class="add-child-button flex-column" no-select>Day</button>
+        </div>
+      </div>   
     </advanced-calendar-neosme>`;
     const paletteTemplate = "Calendar";
     const componentLabel = 'Calendar';
     const templateUrl = "https://mattlewis92.github.io/angular-calendar/";
-    let randomTemp = []
 
     super(
       {
@@ -75,8 +69,6 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
       `,
       onInit: function () {
         this.addChild("calendar-header");
-        this.addChild("month-component");
-        this.addChild("week-component");
        },
       onDestroy: function () { },
       customMethods: {

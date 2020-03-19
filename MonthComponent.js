@@ -11,7 +11,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
     const paletteTemplate = 'Month';
     const componentLabel = 'Month';
 
-    const templateUrl = 'articles/#!components-guide-for-release-6/card';
+    const templateUrl = 'https://mattlewis92.github.io/angular-calendar/';
 
     super({
       name,
@@ -35,17 +35,17 @@ module.exports = class MonthComponent extends AdvancedComponent {
     );
     super.addAttribute(new Attribute({
       key: 'viewDate',
-      value: '',
+      value: 'viewDate',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'events',
-      value: '',
+      value: 'events',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'activeDayIsOpen',
-      value: 'true',
+      value: 'activeDayIsOpen',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
@@ -162,7 +162,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
     }));
     super.addAttribute(new Attribute({
       key: 'eventClicked',
-      value: '',
+      value: "",
       type: 'kv',
       complexity: "advanced"
     }));
@@ -171,22 +171,29 @@ module.exports = class MonthComponent extends AdvancedComponent {
       value: '',
       type: 'kv',
     }));
+    super.addAttribute(new Attribute({
+      key: 'customCaptureEventDialog',
+      value: '',
+      type: 'kv',
+    })); super.addAttribute(new Attribute({
+      key: 'customEventDialog',
+      value: '',
+      type: 'kv',
+    })); super.addAttribute(new Attribute({
+      key: 'onAddEventSaveClick',
+      value: '',
+      type: 'kv',
+    })); super.addAttribute(new Attribute({
+      key: 'onEditEventClick',
+      value: '',
+      type: 'kv',
+    })); super.addAttribute(new Attribute({
+      key: 'onDeleteEventClick',
+      value: '',
+      type: 'kv',
+    }));
 
-  //   this.template = `
-  //   <div *ngIf = "view === 'month'">
-  //   <mwl-calendar-month-view
-  //   [viewDate]="viewDate"
-  //   [excludeDays] = [0,1]
-  //   [events]="events"
-  //   [refresh]="refresh"
-  //   [activeDayIsOpen]="activeDayIsOpen"
-  //   (dayClicked)="dayClicked($event.day)"
-  //   (eventClicked)="handleEvent('Clicked', $event.event)"
-  //   (eventTimesChanged)="eventTimesChanged($event)"
-  // >
-  // </mwl-calendar-month-view>
-  // </div>
-  //   `;
+
     super.composeTemplate({
       styles: `:host {
               padding: 1.3em;
@@ -200,38 +207,82 @@ module.exports = class MonthComponent extends AdvancedComponent {
   get template() {
 
     let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
+
+
     let viewDate = componentAttribute.viewDate['_value'];
     let events = componentAttribute.events['_value'];
     let refresh = componentAttribute.refresh['_value'];
     let activeDayIsOpen = componentAttribute.activeDayIsOpen['_value'];
+    let activeDay = componentAttribute.activeDay['_value'];
+    let locale = componentAttribute.locale['_value'];
+    let excludeDays = componentAttribute.excludeDays['_value'];
+    let weekendDays = componentAttribute.weekendDays['_value'];
+    let weekStartsOn = componentAttribute.weekStartsOn['_value'];
     let dayClicked = componentAttribute.dayClicked['_value'];
     let eventClicked = componentAttribute.eventClicked['_value'];
     let eventTimesChanged = componentAttribute.eventTimesChanged['_value'];
     let tooltipPlacement = componentAttribute.tooltipPlacement['_value'];
-    let tooltipAppendToBody = componentAttribute.tooltipAppendToBody['_value'] === 'true' ? true : false;
+    let cellTemplate = componentAttribute.cellTemplate['_value'];
+    let tooltipAppendToBody = componentAttribute.tooltipAppendToBody['_value'];
     let tooltipTemplate = componentAttribute.tooltipTemplate['_value'];
     let tooltipDelay = componentAttribute.tooltipDelay['_value'];
+    let customCaptureEventDialog = componentAttribute.customCaptureEventDialog['_value'];
+    let customEventDialog = componentAttribute.customEventDialog['_value'];
+    let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
+    let onEditEventClick = componentAttribute.onEditEventClick['_value'];
+    let onDeleteEventClick = componentAttribute.onDeleteEventClick['_value'];
+    let columnHeaderClicked = componentAttribute.columnHeaderclicked['_value'];
     let beforeViewRender = componentAttribute.beforeViewRender['_value'];
 
     let template = '';
-    template = `<mwl-calendar-month-view
+    template = ` <div>%style% %class% <mwl-calendar-month-view
     *ngIf="view=='month'"
-    [viewDate]="viewDate"
-    [events]="events"
-    [refresh]="refresh"
-    [activeDayIsOpen]="activeDayIsOpen"
-    [activeDay] = "activeDay"
-    [locale]="fr"
-    [tooltipAppendToBody] = "false"
-    [tooltipPlacement] = "left-bottom"
-    weekendDays = [3,4]
-    [cellTemplate]="customCellTemplate"
-    (dayClicked)="dayClicked($event.day)"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)"
-  >
-  </mwl-calendar-month-view>
+    [(viewDate)]= "${viewDate}"
+    [events]="${events}"
+    [refresh]="${refresh}"
+    [activeDayIsOpen]="${activeDayIsOpen}"
+    [activeDay] = "${activeDay}"
+    [locale]="${locale}"
+    [tooltipDelay] = "${tooltipDelay}"
+    [tooltipAppendToBody] = "${tooltipAppendToBody}"
+    [tooltipPlacement] = "${tooltipPlacement}"
+    [weekendDays] = "${weekendDays}"
+    [excludeDays] = "${excludeDays}"
+    [weekStartsOn] = "${weekStartsOn}"
+    [cellTemplate]="${cellTemplate}"
+    [customCaptureEventDialog] = "${customCaptureEventDialog}"
+    [customEventDialog] = "${customEventDialog}"
+    [tooltipTemplate] = "${tooltipTemplate}"
     `;
+
+    if (dayClicked !== "")
+      template = template + `(dayClicked)="${dayClicked}"`;
+
+    if (eventClicked !== "")
+      template = template + `(eventClicked)="${eventClicked}"`;
+
+    if (eventTimesChanged !== "")
+      template = template + `(eventTimesChanged)="${eventTimesChanged}"`;
+
+    if (onAddEventSaveClick !== "")
+      template = template + `(onAddEventSaveClick)="${onAddEventSaveClick}"`;
+
+    if (onEditEventClick !== "")
+      template = template + `(onEditEventClick)="${onEditEventClick}"`;
+
+    if (onDeleteEventClick !== "")
+      template = template + `(onDeleteEventClick)="${onDeleteEventClick}"`;
+
+    if (columnHeaderClicked !== "") {
+      template = template + `(columnHeaderClicked) = "${columnHeaderClicked}"`
+    }
+    if(beforeViewRender!==""){
+      template = template + `(beforeViewRender) = "${beforeViewRender}"`
+    }
+ 
+
+    template = template + `> </mwl-calendar-month-view> </div>`;
+
     return template;
   }
   set template(templateString) { }

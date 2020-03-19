@@ -11,7 +11,7 @@ module.exports = class DayComponent extends AdvancedComponent {
     const paletteTemplate = 'Week';
     const componentLabel = 'Week';
 
-    const templateUrl = 'articles/#!components-guide-for-release-6/card';
+    const templateUrl = 'https://mattlewis92.github.io/angular-calendar/';
 
     super({
       name,
@@ -227,18 +227,6 @@ module.exports = class DayComponent extends AdvancedComponent {
       type: 'kv',
       complexity:"advanced"
     }));
-    this.template = `
-    <mwl-calendar-week-view
-    *ngIf="view=='week'"
-    [viewDate]="viewDate"
-    [events]="events"
-    [excludeDays]="excludeDays"
-    [daysInWeek] = "5"
-    [refresh]="refresh"
-    (eventClicked)="handleEvent('Clicked', $event.event)"
-    (eventTimesChanged)="eventTimesChanged($event)"
-  ></mwl-calendar-week-view>
-        `;
     super.composeTemplate({
       styles: `:host {
               padding: 1.3em;
@@ -249,4 +237,96 @@ module.exports = class DayComponent extends AdvancedComponent {
               }`
     });
   }
+  get template() {
+
+    let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
+
+    let viewDate = componentAttribute.viewDate['_value'];
+    let events = componentAttribute.events['_value'];
+    let refresh = componentAttribute.refresh['_value'];
+    let dayEndHour = componentAttribute.dayEndHour['_value'];
+    let dayEndMinute = componentAttribute.dayEndMinute['_value'];
+    let dayStartHour = componentAttribute.dayStartHour['_value'];
+    let dayStartMinute = componentAttribute.dayStartMinute['_value'];
+    let eventSnapSize = componentAttribute.eventSnapSize['_value'];
+    let hourSegmentHeight = componentAttribute.hourSegmentHeight['_value'];
+    let hourSegments = componentAttribute.hourSegments['_value'];
+    let tooltipAppendToBody = componentAttribute.tooltipAppendToBody['_value'];
+    let tooltipDelay = componentAttribute.tooltipDelay['_value'];
+    let tooltipPlacement = componentAttribute.tooltipPlacement['_value'];
+    let excludeDays = componentAttribute.excludeDays['_value'];
+    let eventTimesChanged = componentAttribute.eventTimesChanged['_value'];
+    let eventClicked = componentAttribute.eventClicked['_value'];
+    let beforeViewRender = componentAttribute.beforeViewRender['_value'];
+    let hourSegmentClicked = componentAttribute.hourSegmentClicked['_value'];
+    let dayHeaderClicked = componentAttribute.dayHeaderClicked['_value'];
+    let allDayEventsLabelTemplate = componentAttribute.allDayEventsLabelTemplate['_value'];
+    let currentTimeMarkerTemplate = componentAttribute.currentTimeMarkerTemplate['_value'];
+    let daysInWeek = componentAttribute.daysInWeek['_value'];
+    let eventActionsTemplate = componentAttribute.eventActionsTemplate['_value'];
+    let eventTemplate = componentAttribute.eventTemplate['_value'];
+    let eventTitleTemplate = componentAttribute.eventTitleTemplate['_value'];
+    let headerTemplate = componentAttribute.headerTemplate['_value'];
+    let hourSegmentTemplate = componentAttribute.hourSegmentTemplate['_value'];
+    let locale = componentAttribute.locale['_value'];
+    let precision = componentAttribute.precision['_value'];
+    let snapDraggedEvents = componentAttribute.snapDraggedEvents['_value'];
+    let tooltipTemplate = componentAttribute.tooltipTemplate['_value'];
+    let weekendDays = componentAttribute.weekendDays['_value'];
+    let weekStartsOn = componentAttribute.weekStartsOn['_value'];
+
+    let template = '';
+    template = `<div> %style% %class% <mwl-calendar-week-view
+    *ngIf="view=='week'"
+    [viewDate]= "${viewDate}"
+    [events]="${events}"
+    [refresh]="${refresh}"
+    [allDayEventsLabelTemplate]="${allDayEventsLabelTemplate}"
+    [currentTimeMarkerTemplate]="${currentTimeMarkerTemplate}"
+    [dayEndHour] = "${dayEndHour}"
+    [dayEndMinute] = "${dayEndMinute}"
+    [daysInWeek]="${daysInWeek}"
+    [dayStartHour] = "${dayStartHour}"
+    [dayStartMinute] = "${dayStartMinute}"
+    [eventActionsTemplate] = "${eventActionsTemplate}"
+    [eventSnapSize] = "${eventSnapSize}"
+    [eventTemplate]="${eventTemplate}"
+    [eventTitleTemplate]="${eventTitleTemplate}"
+    [excludeDays] = "${excludeDays}"
+    [headerTemplate]="${headerTemplate}"
+    [hourSegmentHeight] = "${hourSegmentHeight}"
+    [hourSegments] = "${hourSegments}"
+    [hourSegmentTemplate]="${hourSegmentTemplate}"
+    [locale]="${locale}"
+    [precision]="${precision}"
+    [snapDraggedEvents]="${snapDraggedEvents}"
+    [tooltipAppendToBody] = "${tooltipAppendToBody}"
+    [tooltipDelay] = "${tooltipDelay}"
+    [tooltipPlacement] = "${tooltipPlacement}"
+    [tooltipTemplate]="${tooltipTemplate}"
+    [weekendDays]="${weekendDays}"
+    [weekStartsOn]="${weekStartsOn}"
+    `;
+
+    if (eventClicked !== "")
+      template = template + `(eventClicked)="${eventClicked}"`;
+
+    if (eventTimesChanged !== "")
+      template = template + `(eventTimesChanged)="${eventTimesChanged}"`;
+
+    if (beforeViewRender !== "")
+      template = template + `(beforeViewRender)="${beforeViewRender}"`;
+
+    if (hourSegmentClicked !== "")
+      template = template + `(hourSegmentClicked)="${hourSegmentClicked}"`;
+
+    if (dayHeaderClicked !== "")
+      template = template + `(hourSegmentClicked)="${dayHeaderClicked}"`;
+    
+
+    template = template + `> </mwl-calendar-week-view> </div>`;
+
+    return template;
+  }
+  set template(templateString) { }
 };

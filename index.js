@@ -16,7 +16,6 @@ let showAddEventConfig = require('advanced-calendar-component-neosme/attributeTy
 let snapDraggedEventsConfig = require('advanced-calendar-component-neosme/attributeTypes/snapDraggedEvents');
 let tooltipAppendToBodyConfig = require('advanced-calendar-component-neosme/attributeTypes/tooltipAppendToBody');
 let activeDayIsOpenConfig = require('advanced-calendar-component-neosme/attributeTypes/activeDayIsOpen');
-// let tooltipAppendToBodyMonthConfig = require('advanced-calendar-component-neosme/attributeTypes/tooltipAppendToBodyMonth');
 let showCaptureEventDialogConfig =  require('advanced-calendar-component-neosme/attributeTypes/showCaptureEventDialog');
 let showEventDetailsDialogConfig = require('advanced-calendar-component-neosme/attributeTypes/showEventDetailsDialog');
 
@@ -38,7 +37,7 @@ module.exports = {
         'showAddEvent' :  new showAddEventConfig(),
         'snapDraggedEvents' : new snapDraggedEventsConfig(),
         'tooltipAppendToBody' : new tooltipAppendToBodyConfig(),
-        'activeDayIsOpen' : new activeDayIsOpenConfig(),
+        // 'activeDayIsOpen' : new activeDayIsOpenConfig(),
         'showCaptureEventDialog' : new showCaptureEventDialogConfig(),
         'showEventDetailsDialog': new showEventDetailsDialogConfig()
 
