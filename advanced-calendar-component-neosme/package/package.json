@@ -1,0 +1,24 @@
+{
+  "name": "advanced-calendar-component-neosme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "nModule": {
+    "name": "neo-calendar",
+    "version": "0.0.1",
+    "packageType": "angular-package",
+    "importStatement": "import { CalendarModule, DateAdapter } from 'neo-calendar';import { adapterFactory } from 'neo-calendar/date-adapters/date-fns';",
+    "imports": [
+      "CalendarModule.forRoot({})"
+    ]
+  },
+  "dependencies": {
+    "@jatahworx/bhive-toolkits": "^6.2.1"
+  },
+  "studioVersion" : "7.0.2"
+}

@@ -1,0 +1,14 @@
+{
+    "packages": [
+        {
+            "name": "advanced-calendar-component-neosme",
+            "version": "1.0.0",
+            "packageType": "studio-package"
+        },
+        {
+            "name": "neo-calendar",
+            "version": "0.0.1",
+            "packageType": "angular-package"
+        }        
+    ]
+}
