@@ -1,5 +1,3 @@
-import { ModuleWithProviders, Provider } from '@angular/core';
-import { CalendarModuleConfig } from './common/calendar-common.module';
 export * from './common/calendar-common.module';
 export * from './month/calendar-month.module';
 export * from './week/calendar-week.module';
@@ -21,5 +19,4 @@ export * from './header/calendar-header.module';
  *
  */
 export declare class CalendarModule {
-    static forRoot(dateAdapter: Provider, config?: CalendarModuleConfig): ModuleWithProviders;
 }

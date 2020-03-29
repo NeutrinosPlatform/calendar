@@ -2,6 +2,7 @@
  * Generated bundle index. Do not edit.
  */
 export * from './index';
+export { adapterFactory as ɵw } from './date-adapters/date-fns';
 export { CalendarModalComponent as ɵv } from './modules/calendar-modal/calendar-modal.component';
 export { CalendarCommonModalModule as ɵu } from './modules/calendar-modal/calendar-modal.module';
 export { CalendarA11yPipe as ɵl } from './modules/common/calendar-a11y.pipe';

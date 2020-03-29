@@ -1,5 +1,5 @@
 import { __decorate, __spread, __param, __extends, __assign, __rest } from 'tslib';
-import { EventEmitter, Output, Input, Component, ElementRef, Injector, Renderer2, ComponentFactoryResolver, ViewContainerRef, Inject, HostListener, Directive, Injectable, LOCALE_ID, Pipe, InjectionToken, NgModule, ChangeDetectorRef, NgZone } from '@angular/core';
+import { EventEmitter, Output, Input, Component, ElementRef, Injector, Renderer2, ComponentFactoryResolver, ViewContainerRef, Inject, HostListener, Directive, Injectable, ɵɵdefineInjectable, ɵɵinject, LOCALE_ID, Pipe, InjectionToken, NgModule, ChangeDetectorRef, NgZone } from '@angular/core';
 import { DOCUMENT, formatDate, I18nPluralPipe, CommonModule } from '@angular/common';
 import { positionElements } from 'positioning';
 import { Subject, of, timer, Observable, BehaviorSubject, interval } from 'rxjs';
@@ -16,6 +16,8 @@ import { MatIconModule as MatIconModule$1, MatFormFieldModule, MatInputModule, M
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { adapterFactory as adapterFactory$1 } from 'calendar-utils/date-adapters/date-fns';
+import { addWeeks, addMonths, subDays, subWeeks, subMonths, getISOWeek, setDate, setMonth, setYear, getDate, getYear } from 'date-fns';
 
 var EventEmitterService = /** @class */ (function () {
     function EventEmitterService() {
@@ -660,8 +662,11 @@ var CalendarDateFormatter = /** @class */ (function (_super) {
     function CalendarDateFormatter() {
         return _super !== null && _super.apply(this, arguments) || this;
     }
+    CalendarDateFormatter.ngInjectableDef = ɵɵdefineInjectable({ factory: function CalendarDateFormatter_Factory() { return new CalendarDateFormatter(ɵɵinject(DateAdapter)); }, token: CalendarDateFormatter, providedIn: "root" });
     CalendarDateFormatter = __decorate([
-        Injectable()
+        Injectable({
+            providedIn: 'root'
+        })
     ], CalendarDateFormatter);
     return CalendarDateFormatter;
 }(CalendarAngularDateFormatter));
@@ -769,6 +774,12 @@ var CalendarEventTitleFormatter = /** @class */ (function () {
     CalendarEventTitleFormatter.prototype.dayTooltip = function (event, title) {
         return event.title;
     };
+    CalendarEventTitleFormatter.ngInjectableDef = ɵɵdefineInjectable({ factory: function CalendarEventTitleFormatter_Factory() { return new CalendarEventTitleFormatter(); }, token: CalendarEventTitleFormatter, providedIn: "root" });
+    CalendarEventTitleFormatter = __decorate([
+        Injectable({
+            providedIn: 'root'
+        })
+    ], CalendarEventTitleFormatter);
     return CalendarEventTitleFormatter;
 }());
 
@@ -1034,8 +1045,11 @@ var CalendarA11y = /** @class */ (function () {
     CalendarA11y.ctorParameters = function () { return [
         { type: I18nPluralPipe }
     ]; };
+    CalendarA11y.ngInjectableDef = ɵɵdefineInjectable({ factory: function CalendarA11y_Factory() { return new CalendarA11y(ɵɵinject(I18nPluralPipe)); }, token: CalendarA11y, providedIn: "root" });
     CalendarA11y = __decorate([
-        Injectable()
+        Injectable({
+            providedIn: 'root'
+        })
     ], CalendarA11y);
     return CalendarA11y;
 }());
@@ -1367,7 +1381,7 @@ var CalendarCommonModule = /** @class */ (function () {
                 ClickDirective,
                 KeydownEnterDirective
             ],
-            providers: [I18nPluralPipe],
+            providers: [I18nPluralPipe, CalendarEventTitleFormatter, CalendarDateFormatter, CalendarUtils, CalendarA11y],
             entryComponents: [CalendarTooltipWindowComponent]
         })
     ], CalendarCommonModule);
@@ -3290,6 +3304,21 @@ var CalendarCommonHeaderModule = /** @class */ (function () {
     return CalendarCommonHeaderModule;
 }());
 
+function adapterFactory() {
+    return __assign({}, adapterFactory$1(), { addWeeks: addWeeks,
+        addMonths: addMonths,
+        subDays: subDays,
+        subWeeks: subWeeks,
+        subMonths: subMonths,
+        getISOWeek: getISOWeek,
+        setDate: setDate,
+        setMonth: setMonth,
+        setYear: setYear,
+        getDate: getDate,
+        getYear: getYear });
+}
+
+var ɵ0 = adapterFactory;
 /**
  * The main module of this library. Example usage:
  *
@@ -3308,22 +3337,7 @@ var CalendarCommonHeaderModule = /** @class */ (function () {
 var CalendarModule = /** @class */ (function () {
     function CalendarModule() {
     }
-    CalendarModule_1 = CalendarModule;
-    CalendarModule.forRoot = function (dateAdapter, config) {
-        if (config === void 0) { config = {}; }
-        return {
-            ngModule: CalendarModule_1,
-            providers: [
-                dateAdapter,
-                config.eventTitleFormatter || CalendarEventTitleFormatter,
-                config.dateFormatter || CalendarDateFormatter,
-                config.utils || CalendarUtils,
-                config.a11y || CalendarA11y
-            ]
-        };
-    };
-    var CalendarModule_1;
-    CalendarModule = CalendarModule_1 = __decorate([
+    CalendarModule = __decorate([
         NgModule({
             imports: [
                 CalendarCommonModule,
@@ -3332,7 +3346,11 @@ var CalendarModule = /** @class */ (function () {
                 CalendarDayModule,
                 CalendarCommonHeaderModule,
                 CalendarCommonModalModule,
-                MatIconModule
+                MatIconModule,
+                CalendarCommonModule.forRoot({
+                    provide: DateAdapter,
+                    useFactory: ɵ0
+                })
             ],
             exports: [
                 CalendarCommonModule,
@@ -3340,8 +3358,9 @@ var CalendarModule = /** @class */ (function () {
                 CalendarWeekModule,
                 CalendarDayModule,
                 CalendarCommonHeaderModule,
-                CalendarCommonModalModule
-            ]
+                CalendarCommonModalModule,
+            ],
+            providers: [CalendarEventTitleFormatter, CalendarDateFormatter, CalendarA11y, CalendarUtils],
         })
     ], CalendarModule);
     return CalendarModule;
@@ -3355,5 +3374,5 @@ var CalendarModule = /** @class */ (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { CalendarA11y, CalendarAngularDateFormatter, CalendarCommonHeaderComponent, CalendarCommonHeaderModule, CalendarCommonModule, CalendarDateFormatter, CalendarDayModule, CalendarDayViewComponent, CalendarEventTimesChangedEventType, CalendarEventTitleFormatter, CalendarModule, CalendarMomentDateFormatter, CalendarMonthModule, CalendarMonthViewComponent, CalendarNativeDateFormatter, CalendarUtils, CalendarView, CalendarWeekModule, CalendarWeekViewComponent, DateAdapter, MOMENT, collapseAnimation, getWeekViewPeriod, CalendarOpenDayEventsComponent as ɵa, CalendarEventActionsComponent as ɵb, EventEmitterService as ɵc, CalendarEventTitleComponent as ɵd, CalendarTooltipWindowComponent as ɵe, CalendarTooltipDirective as ɵf, CalendarPreviousViewDirective as ɵg, CalendarNextViewDirective as ɵh, CalendarTodayDirective as ɵi, CalendarDatePipe as ɵj, CalendarEventTitlePipe as ɵk, CalendarA11yPipe as ɵl, ClickDirective as ɵm, KeydownEnterDirective as ɵn, CalendarMonthCellComponent as ɵo, CalendarMonthViewHeaderComponent as ɵp, CalendarWeekViewHeaderComponent as ɵq, CalendarWeekViewEventComponent as ɵr, CalendarWeekViewHourSegmentComponent as ɵs, CalendarWeekViewCurrentTimeMarkerComponent as ɵt, CalendarCommonModalModule as ɵu, CalendarModalComponent as ɵv };
+export { CalendarA11y, CalendarAngularDateFormatter, CalendarCommonHeaderComponent, CalendarCommonHeaderModule, CalendarCommonModule, CalendarDateFormatter, CalendarDayModule, CalendarDayViewComponent, CalendarEventTimesChangedEventType, CalendarEventTitleFormatter, CalendarModule, CalendarMomentDateFormatter, CalendarMonthModule, CalendarMonthViewComponent, CalendarNativeDateFormatter, CalendarUtils, CalendarView, CalendarWeekModule, CalendarWeekViewComponent, DateAdapter, MOMENT, collapseAnimation, getWeekViewPeriod, ɵ0, CalendarOpenDayEventsComponent as ɵa, CalendarEventActionsComponent as ɵb, EventEmitterService as ɵc, CalendarEventTitleComponent as ɵd, CalendarTooltipWindowComponent as ɵe, CalendarTooltipDirective as ɵf, CalendarPreviousViewDirective as ɵg, CalendarNextViewDirective as ɵh, CalendarTodayDirective as ɵi, CalendarDatePipe as ɵj, CalendarEventTitlePipe as ɵk, CalendarA11yPipe as ɵl, ClickDirective as ɵm, KeydownEnterDirective as ɵn, CalendarMonthCellComponent as ɵo, CalendarMonthViewHeaderComponent as ɵp, CalendarWeekViewHeaderComponent as ɵq, CalendarWeekViewEventComponent as ɵr, CalendarWeekViewHourSegmentComponent as ɵs, CalendarWeekViewCurrentTimeMarkerComponent as ɵt, CalendarCommonModalModule as ɵu, CalendarModalComponent as ɵv, adapterFactory as ɵw };
 //# sourceMappingURL=neo-calendar.js.map

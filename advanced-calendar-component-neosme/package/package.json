@@ -12,13 +12,12 @@
     "name": "neo-calendar",
     "version": "0.0.1",
     "packageType": "angular-package",
-    "importStatement": "import { CalendarModule, DateAdapter } from 'neo-calendar';import { adapterFactory } from 'neo-calendar/date-adapters/date-fns';",
+    "importStatement": "import { CalendarModule } from 'neo-calendar';",
     "imports": [
-      "CalendarModule.forRoot({})"
+      "CalendarModule"
     ]
   },
   "dependencies": {
     "@jatahworx/bhive-toolkits": "^6.2.1"
-  },
-  "studioVersion" : "7.0.2"
+  }
 }

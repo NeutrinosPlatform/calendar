@@ -229,3 +229,12 @@ table.cal-table tr td {
   #Add-location-input{
     width: 95% !important;
   }
+  @media(max-width:1169px){
+    .three-label{
+        position: relative !important;
+        right: 12px !important;
+    }
+    .ad-element{
+        width: 93% !important;
+    }
+  }

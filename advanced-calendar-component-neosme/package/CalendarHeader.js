@@ -214,6 +214,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let showEventDetailsDialog = componentAttribute.showEventDetailsDialog['_value'];
     let setView = componentAttribute.setView['_value'];
     let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
+    let onDeleteEventClick = componentAttribute.onDeleteEventClick['_value'];
 
 
     let template = `<div %style% %class%> <mwl-calendar-header 
@@ -247,7 +248,9 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     if(onAddEventSaveClick !== ""){
       template = template + `(onAddEventSaveClick) = "${onAddEventSaveClick}"`
     }
-
+    if(onDeleteEventClick !==""){
+      template = template + `(onDeleteEventClick) = "${onDeleteEventClick}"`
+    }
     template = template + `></mwl-calendar-header> </div>`;
     return template;
   }

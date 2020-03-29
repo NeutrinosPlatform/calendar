@@ -19,6 +19,5 @@
   "fesm2015": "fesm2015/neo-calendar.js",
   "typings": "neo-calendar.d.ts",
   "metadata": "neo-calendar.metadata.json",
-  "sideEffects": false,
-  "studioVersion" : "7.0.2"
+  "sideEffects": false
 }

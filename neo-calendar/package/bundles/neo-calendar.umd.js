@@ -1,8 +1,8 @@
 (function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('positioning'), require('rxjs'), require('rxjs/operators'), require('calendar-utils'), require('angular-draggable-droppable'), require('@angular/animations'), require('@angular/material/icon'), require('angular-resizable-element'), require('@angular/material/dialog'), require('@angular/forms'), require('@angular/material'), require('@angular/material/select'), require('@angular/platform-browser'), require('@angular/platform-browser/animations')) :
-    typeof define === 'function' && define.amd ? define('neo-calendar', ['exports', '@angular/core', '@angular/common', 'positioning', 'rxjs', 'rxjs/operators', 'calendar-utils', 'angular-draggable-droppable', '@angular/animations', '@angular/material/icon', 'angular-resizable-element', '@angular/material/dialog', '@angular/forms', '@angular/material', '@angular/material/select', '@angular/platform-browser', '@angular/platform-browser/animations'], factory) :
-    (global = global || self, factory(global['neo-calendar'] = {}, global.ng.core, global.ng.common, global.positioning, global.rxjs, global.rxjs.operators, global.calendarUtils, global.angularDraggableDroppable, global.ng.animations, global.ng.material.icon, global.angularResizableElement, global.ng.material.dialog, global.ng.forms, global.ng.material, global.ng.material.select, global.ng.platformBrowser, global.ng.platformBrowser.animations));
-}(this, (function (exports, core, common, positioning, rxjs, operators, calendarUtils, angularDraggableDroppable, animations, icon, angularResizableElement, dialog, forms, material, select, platformBrowser, animations$1) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('positioning'), require('rxjs'), require('rxjs/operators'), require('calendar-utils'), require('angular-draggable-droppable'), require('@angular/animations'), require('@angular/material/icon'), require('angular-resizable-element'), require('@angular/material/dialog'), require('@angular/forms'), require('@angular/material'), require('@angular/material/select'), require('@angular/platform-browser'), require('@angular/platform-browser/animations'), require('calendar-utils/date-adapters/date-fns'), require('date-fns')) :
+    typeof define === 'function' && define.amd ? define('neo-calendar', ['exports', '@angular/core', '@angular/common', 'positioning', 'rxjs', 'rxjs/operators', 'calendar-utils', 'angular-draggable-droppable', '@angular/animations', '@angular/material/icon', 'angular-resizable-element', '@angular/material/dialog', '@angular/forms', '@angular/material', '@angular/material/select', '@angular/platform-browser', '@angular/platform-browser/animations', 'calendar-utils/date-adapters/date-fns', 'date-fns'], factory) :
+    (global = global || self, factory(global['neo-calendar'] = {}, global.ng.core, global.ng.common, global.positioning, global.rxjs, global.rxjs.operators, global.calendarUtils, global.angularDraggableDroppable, global.ng.animations, global.ng.material.icon, global.angularResizableElement, global.ng.material.dialog, global.ng.forms, global.ng.material, global.ng.material.select, global.ng.platformBrowser, global.ng.platformBrowser.animations, global.dateFns, global.dateFns$1));
+}(this, (function (exports, core, common, positioning, rxjs, operators, calendarUtils, angularDraggableDroppable, animations, icon, angularResizableElement, dialog, forms, material, select, platformBrowser, animations$1, dateFns, dateFns$1) { 'use strict';
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation. All rights reserved.
@@ -861,8 +861,11 @@
         function CalendarDateFormatter() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
+        CalendarDateFormatter.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function CalendarDateFormatter_Factory() { return new CalendarDateFormatter(core.ɵɵinject(DateAdapter)); }, token: CalendarDateFormatter, providedIn: "root" });
         CalendarDateFormatter = __decorate([
-            core.Injectable()
+            core.Injectable({
+                providedIn: 'root'
+            })
         ], CalendarDateFormatter);
         return CalendarDateFormatter;
     }(CalendarAngularDateFormatter));
@@ -970,6 +973,12 @@
         CalendarEventTitleFormatter.prototype.dayTooltip = function (event, title) {
             return event.title;
         };
+        CalendarEventTitleFormatter.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function CalendarEventTitleFormatter_Factory() { return new CalendarEventTitleFormatter(); }, token: CalendarEventTitleFormatter, providedIn: "root" });
+        CalendarEventTitleFormatter = __decorate([
+            core.Injectable({
+                providedIn: 'root'
+            })
+        ], CalendarEventTitleFormatter);
         return CalendarEventTitleFormatter;
     }());
 
@@ -1235,8 +1244,11 @@
         CalendarA11y.ctorParameters = function () { return [
             { type: common.I18nPluralPipe }
         ]; };
+        CalendarA11y.ngInjectableDef = core.ɵɵdefineInjectable({ factory: function CalendarA11y_Factory() { return new CalendarA11y(core.ɵɵinject(common.I18nPluralPipe)); }, token: CalendarA11y, providedIn: "root" });
         CalendarA11y = __decorate([
-            core.Injectable()
+            core.Injectable({
+                providedIn: 'root'
+            })
         ], CalendarA11y);
         return CalendarA11y;
     }());
@@ -1568,7 +1580,7 @@
                     ClickDirective,
                     KeydownEnterDirective
                 ],
-                providers: [common.I18nPluralPipe],
+                providers: [common.I18nPluralPipe, CalendarEventTitleFormatter, CalendarDateFormatter, CalendarUtils, CalendarA11y],
                 entryComponents: [CalendarTooltipWindowComponent]
             })
         ], CalendarCommonModule);
@@ -3491,6 +3503,21 @@
         return CalendarCommonHeaderModule;
     }());
 
+    function adapterFactory() {
+        return __assign({}, dateFns.adapterFactory(), { addWeeks: dateFns$1.addWeeks,
+            addMonths: dateFns$1.addMonths,
+            subDays: dateFns$1.subDays,
+            subWeeks: dateFns$1.subWeeks,
+            subMonths: dateFns$1.subMonths,
+            getISOWeek: dateFns$1.getISOWeek,
+            setDate: dateFns$1.setDate,
+            setMonth: dateFns$1.setMonth,
+            setYear: dateFns$1.setYear,
+            getDate: dateFns$1.getDate,
+            getYear: dateFns$1.getYear });
+    }
+
+    var ɵ0 = adapterFactory;
     /**
      * The main module of this library. Example usage:
      *
@@ -3509,22 +3536,7 @@
     var CalendarModule = /** @class */ (function () {
         function CalendarModule() {
         }
-        CalendarModule_1 = CalendarModule;
-        CalendarModule.forRoot = function (dateAdapter, config) {
-            if (config === void 0) { config = {}; }
-            return {
-                ngModule: CalendarModule_1,
-                providers: [
-                    dateAdapter,
-                    config.eventTitleFormatter || CalendarEventTitleFormatter,
-                    config.dateFormatter || CalendarDateFormatter,
-                    config.utils || CalendarUtils,
-                    config.a11y || CalendarA11y
-                ]
-            };
-        };
-        var CalendarModule_1;
-        CalendarModule = CalendarModule_1 = __decorate([
+        CalendarModule = __decorate([
             core.NgModule({
                 imports: [
                     CalendarCommonModule,
@@ -3533,7 +3545,11 @@
                     CalendarDayModule,
                     CalendarCommonHeaderModule,
                     CalendarCommonModalModule,
-                    icon.MatIconModule
+                    icon.MatIconModule,
+                    CalendarCommonModule.forRoot({
+                        provide: DateAdapter,
+                        useFactory: ɵ0
+                    })
                 ],
                 exports: [
                     CalendarCommonModule,
@@ -3541,8 +3557,9 @@
                     CalendarWeekModule,
                     CalendarDayModule,
                     CalendarCommonHeaderModule,
-                    CalendarCommonModalModule
-                ]
+                    CalendarCommonModalModule,
+                ],
+                providers: [CalendarEventTitleFormatter, CalendarDateFormatter, CalendarA11y, CalendarUtils],
             })
         ], CalendarModule);
         return CalendarModule;
@@ -3575,6 +3592,7 @@
     exports.MOMENT = MOMENT;
     exports.collapseAnimation = collapseAnimation;
     exports.getWeekViewPeriod = getWeekViewPeriod;
+    exports.ɵ0 = ɵ0;
     exports.ɵa = CalendarOpenDayEventsComponent;
     exports.ɵb = CalendarEventActionsComponent;
     exports.ɵc = EventEmitterService;
@@ -3597,6 +3615,7 @@
     exports.ɵt = CalendarWeekViewCurrentTimeMarkerComponent;
     exports.ɵu = CalendarCommonModalModule;
     exports.ɵv = CalendarModalComponent;
+    exports.ɵw = adapterFactory;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
