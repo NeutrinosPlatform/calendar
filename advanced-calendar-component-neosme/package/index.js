@@ -25,7 +25,7 @@ module.exports = {
         CalendarHeader,
         CalendarDay,
         CalendarWeek,
-        CalendarMonth
+        CalendarMonth,
     },
     attributeTypes: {
         'showPreviousDayBtn': new showPreviousDayBtnConfig(),
@@ -37,9 +37,8 @@ module.exports = {
         'showAddEvent' :  new showAddEventConfig(),
         'snapDraggedEvents' : new snapDraggedEventsConfig(),
         'tooltipAppendToBody' : new tooltipAppendToBodyConfig(),
-        // 'activeDayIsOpen' : new activeDayIsOpenConfig(),
         'showCaptureEventDialog' : new showCaptureEventDialogConfig(),
         'showEventDetailsDialog': new showEventDetailsDialogConfig()
-
+        // 'activeDayIsOpen' : new activeDayIsOpenConfig(),
     }
 };

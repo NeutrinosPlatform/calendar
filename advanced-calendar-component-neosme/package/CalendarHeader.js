@@ -6,7 +6,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
   constructor() {
     const name = 'calendar-header';
     const designerTemplate = `
-    <calendar-header slot="cards" block-copy  component-label="Header"  class="display-block">
+    <calendar-header slot="calendar-header-slot" block-copy  component-label="Header"  class="display-block">
       <div class="three-label">
           <div class="first-container-view">
             <div class="">

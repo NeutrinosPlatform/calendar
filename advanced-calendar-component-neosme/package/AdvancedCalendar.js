@@ -1,9 +1,7 @@
 // import attribute and advanced component
 "use strict";
 let AdvancedComponent = require("@jatahworx/bhive-toolkits").AdvancedComponent;
-let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
-let templateCal = require('./CalendarHeader');
-let CalendarHeader = require('./CalendarHeader').CalendarHeader;
+
 module.exports = class AdvancedCalendar extends AdvancedComponent {
   constructor() {
     const name = "advanced-calendar-neosme";
@@ -22,6 +20,7 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
     const paletteTemplate = "Calendar";
     const componentLabel = 'Calendar';
     const templateUrl = "https://mattlewis92.github.io/angular-calendar/"; 
+    // <calendar-header n-adv-child></calendar-header>
 
     super(
       {
@@ -46,12 +45,9 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
         align-self: start;
       }
       `,
-      slotsTemplate: `   
+      slotsTemplate: `  
       <div class="parent_card">
-        <slot name="cards"></slot>
-      </div>
-      <div class="parent_card">
-      <slot id="addSlot" name="footer"></slot>
+        <slot name="calendar-header-slot"></slot>
       </div>
       <div class="parent_card">
       <slot id="addSlot" name="month-component"></slot>
@@ -68,19 +64,13 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
      
       `,
       onInit: function () {
-        this.addChild("calendar-header");
-      },
-      onDestroy: function () {
-        let htmlElement = document.querySelector("calendar-header");
-        if(htmlElement !== null){
-          htmlElement.style.display = "none";
+        if($(this).find('calendar-header').length === 0) {
+            this.addChild('calendar-header');
         }
-       },
+      },
+      onDestroy: function () {},
       customMethods: {
         click: function (e) {
-          if (e.target.id === "footer") {
-            this.addChild("ng-card-footer");
-          }
           if (e.target.id === "month-component") {
             this.addChild("month-component");
           }
