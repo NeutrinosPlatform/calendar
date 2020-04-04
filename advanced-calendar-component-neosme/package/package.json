@@ -18,6 +18,7 @@
     ]
   },
   "dependencies": {
-    "@jatahworx/bhive-toolkits": "^6.2.1"
+    "@jatahworx/bhive-toolkits": "^6.2.1",
+    "neo-calendar": "0.0.1"
   }
 }
