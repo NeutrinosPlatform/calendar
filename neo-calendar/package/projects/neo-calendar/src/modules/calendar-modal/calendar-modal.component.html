@@ -1,0 +1,195 @@
+<!-- <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title" style="font-family: Poppins;" id="exampleModalLabel">Add Event</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <form class="example-form" [formGroup]="addEvents">
+
+                <mat-form-field class="example-full-width" id="Add-title-view"
+                    style="font-family: Poppins;width: 95% !important;">
+                    <input matInput placeholder="Add Title" style="font-family: Poppins;" formControlName="title"
+                        value="">
+                </mat-form-field>
+
+                <div class="timeinterval" id="start-end-time" style="display: flex !important;
+    justify-content: space-between !important;align-items: center;">
+                    <mat-icon aria-hidden="false">access_time</mat-icon>
+                    <mat-form-field class="example-full-width" style="width: 22%;font-family: Poppins;">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+
+                    <mat-form-field style="width: 16%;">
+                        <mat-label style="font-family: Poppins;">Start Time</mat-label>
+                        <mat-select style="font-family: Poppins;" name="countryString" [(value)]="selectedCountry">
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="volvo"
+                                selected>03:00 AM</mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="saab">04:00 AM
+                            </mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="mercedes">
+                                05:00 AM</mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="audi">06:00 AM
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+
+                    <mat-form-field style="width: 16%;">
+                        <mat-label style="font-family: Poppins;">End Time</mat-label>
+                        <mat-select style="font-family: Poppins;" name="countryString" [(value)]="selectedCountry">
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="volvo"
+                                selected>03:00 AM</mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="saab">04:00 AM
+                            </mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="mercedes">
+                                05:00 AM</mat-option>
+                            <mat-option style="font-family: Poppins;z-index: 99999999 !important" value="audi">06:00 AM
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" style="width: 22%;font-family: Poppins;">
+                        <mat-label>Choose a date</mat-label>
+                        <input matInput [matDatepicker]="datepicker">
+                        <mat-datepicker-toggle matSuffix [for]="datepicker">
+                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #datepicker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="header">
+                    <mat-icon aria-hidden="false">location_on</mat-icon>
+                    <mat-form-field class="form-field">
+                        <input matInput placeholder="Add Location" formControlName="location" value=""
+                            style=" width: 95% !important;" />
+                    </mat-form-field>
+                </div>
+
+                <div class="header">
+                    <mat-icon aria-hidden="false">menu</mat-icon>
+                    <mat-form-field class="form-field">
+                        <textarea matInput placeholder="Add description" formControlName="description" value=""
+                            style=" width: 95% !important;"></textarea>
+                    </mat-form-field>
+                </div>
+
+            </form>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="addEvent()" data-dismiss="modal">Save</button>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!-- <h1 mat-dialog-title>Hi</h1>
+<div mat-dialog-content>
+  <p>What's your favorite animal?</p>
+  <mat-form-field>
+    <input matInput>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button [mat-dialog-close]="'data'" cdkFocusInitial>Ok</button>
+</div> -->
+
+<div class="titleStyle">
+    <h1 mat-dialog-title style="font-family: Poppins;">{{titlePlaceholder}}</h1>
+    <mat-icon aria-hidden="false" style="cursor: pointer;" (click)="onNoClick()">close</mat-icon>
+</div>
+<div mat-dialog-content>
+
+    <form class="example-form" [formGroup]="addEvents">
+
+        <mat-form-field class="example-full-width" id="Add-title-view"
+            style="font-family: Poppins;width: 95% !important;margin-left: 5%;">
+            <input matInput placeholder="{{titlePlaceholder}}" style="font-family: Poppins;" formControlName="title">
+        </mat-form-field>
+
+        <div class="timeinterval" id="start-end-time" style="display: flex !important;align-items: center;">
+
+            <mat-icon aria-hidden="false">access_time</mat-icon>
+            <div style="display: flex !important;
+justify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;">
+                <mat-form-field class="example-full-width" style="width: 22%;font-family: Poppins;">
+                    <mat-label>Start date</mat-label>
+                    <input matInput formControlName="fromDate" [matDatepicker]="picker">
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+
+                <div class="md-form">
+                    <input type="time" id="input" formControlName="fromTime" class="form-control" mdbInput />
+                </div>
+
+
+                <div class="md-form">
+                    <input type="time" id="input" formControlName="toTime" class="form-control" mdbInput />
+                </div>
+
+                <mat-form-field class="example-full-width" style="width: 22%;font-family: Poppins;">
+                    <mat-label>End date</mat-label>
+                    <input [min]="addEvents.controls['fromDate'].value" matInput formControlName="toDate"
+                        [matDatepicker]="datepicker">
+                    <mat-datepicker-toggle matSuffix [for]="datepicker">
+                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #datepicker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="header">
+            <mat-icon aria-hidden="false">location_on</mat-icon>
+            <mat-form-field class="form-field" style="margin-left: 2%;">
+                <input matInput placeholder="{{locationPlaceholder}}" formControlName="location"
+                    style=" width: 95% !important;" />
+            </mat-form-field>
+        </div>
+
+        <div class="header">
+            <mat-icon aria-hidden="false">menu</mat-icon>
+            <mat-form-field class="form-field" id="formField" style="margin-left: 2%;">
+                <textarea matInput placeholder="{{descriptionPlaceholder}}" formControlName="description"
+                    style=" width: 95% !important;height: 21px;"></textarea>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions style="margin-left: 91%;" *ngIf="addEvents.controls['description'].value!==''
+&& addEvents.controls['description'].value!==null &&
+addEvents.controls['location'].value!==''&& 
+addEvents.controls['location'].value!==null &&
+addEvents.controls['title'].value!==''&& 
+addEvents.controls['title'].value!==null &&
+addEvents.controls['fromDate'].value!==''&&
+addEvents.controls['fromDate'].value!==null &&
+addEvents.controls['toDate'].value!==''
+&& addEvents.controls['toDate'].value!==null &&
+addEvents.controls['fromTime'].value!==''&& 
+addEvents.controls['fromTime'].value!==null &&
+addEvents.controls['toTime'].value!==''
+&&  addEvents.controls['toTime'].value!==null &&
+addEvents.controls['fromDate'].value <=
+addEvents.controls['toDate'].value &&
+addEvents.controls['fromTime'].value <
+addEvents.controls['toTime'].value
+
+">
+    <button type="button" class="btn btn-primary" [mat-dialog-close]="'data'" cdkFocusInitial
+        (click)="addOrUpdateEvent()">Save</button>
+</div>

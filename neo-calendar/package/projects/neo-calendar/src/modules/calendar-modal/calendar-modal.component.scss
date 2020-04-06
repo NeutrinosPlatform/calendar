@@ -1,0 +1,20 @@
+.cdk-overlay-container {
+    z-index:1127;
+}
+ .form-field{
+    font-family: Poppins;
+    width: 95% !important;
+ }
+ .header{
+    margin-top: 4%;
+    display:flex;
+    align-items: center;
+ }
+//  #formField{
+//    position: relative;
+//    top: 10px;
+//  }
+.titleStyle{
+   display: flex;
+   justify-content: space-between;
+ }
