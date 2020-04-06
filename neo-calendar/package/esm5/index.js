@@ -1,0 +1,5 @@
+/*
+ * Public API Surface of angular-calendar
+ */
+export * from './modules/calendar.module';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290Ijoibmc6Ly9uZW8tY2FsZW5kYXIvIiwic291cmNlcyI6WyJpbmRleC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7R0FFRztBQUVILGNBQWMsMkJBQTJCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIGFuZ3VsYXItY2FsZW5kYXJcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL21vZHVsZXMvY2FsZW5kYXIubW9kdWxlJztcbiJdfQ==

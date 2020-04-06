@@ -1,0 +1,17 @@
+import * as tslib_1 from "tslib";
+import { adapterFactory as baseAdapterFactory } from 'calendar-utils/date-adapters/date-fns';
+import { addWeeks, addMonths, subDays, subWeeks, subMonths, getISOWeek, setDate, setMonth, setYear, getDate, getYear } from 'date-fns';
+export function adapterFactory() {
+    return tslib_1.__assign({}, baseAdapterFactory(), { addWeeks: addWeeks,
+        addMonths: addMonths,
+        subDays: subDays,
+        subWeeks: subWeeks,
+        subMonths: subMonths,
+        getISOWeek: getISOWeek,
+        setDate: setDate,
+        setMonth: setMonth,
+        setYear: setYear,
+        getDate: getDate,
+        getYear: getYear });
+}
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290Ijoibmc6Ly9uZW8tY2FsZW5kYXIvIiwic291cmNlcyI6WyJkYXRlLWFkYXB0ZXJzL2RhdGUtZm5zL2luZGV4LnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7QUFBQSxPQUFPLEVBQUUsY0FBYyxJQUFJLGtCQUFrQixFQUFFLE1BQU0sdUNBQXVDLENBQUM7QUFDN0YsT0FBTyxFQUNMLFFBQVEsRUFDUixTQUFTLEVBQ1QsT0FBTyxFQUNQLFFBQVEsRUFDUixTQUFTLEVBQ1QsVUFBVSxFQUNWLE9BQU8sRUFDUCxRQUFRLEVBQ1IsT0FBTyxFQUNQLE9BQU8sRUFDUCxPQUFPLEVBQ1IsTUFBTSxVQUFVLENBQUM7QUFHbEIsTUFBTSxVQUFVLGNBQWM7SUFDNUIsNEJBQ0ssa0JBQWtCLEVBQUUsSUFDdkIsUUFBUSxVQUFBO1FBQ1IsU0FBUyxXQUFBO1FBQ1QsT0FBTyxTQUFBO1FBQ1AsUUFBUSxVQUFBO1FBQ1IsU0FBUyxXQUFBO1FBQ1QsVUFBVSxZQUFBO1FBQ1YsT0FBTyxTQUFBO1FBQ1AsUUFBUSxVQUFBO1FBQ1IsT0FBTyxTQUFBO1FBQ1AsT0FBTyxTQUFBO1FBQ1AsT0FBTyxTQUFBLElBQ1A7QUFDSixDQUFDIiwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgYWRhcHRlckZhY3RvcnkgYXMgYmFzZUFkYXB0ZXJGYWN0b3J5IH0gZnJvbSAnY2FsZW5kYXItdXRpbHMvZGF0ZS1hZGFwdGVycy9kYXRlLWZucyc7XG5pbXBvcnQge1xuICBhZGRXZWVrcyxcbiAgYWRkTW9udGhzLFxuICBzdWJEYXlzLFxuICBzdWJXZWVrcyxcbiAgc3ViTW9udGhzLFxuICBnZXRJU09XZWVrLFxuICBzZXREYXRlLFxuICBzZXRNb250aCxcbiAgc2V0WWVhcixcbiAgZ2V0RGF0ZSxcbiAgZ2V0WWVhclxufSBmcm9tICdkYXRlLWZucyc7XG5pbXBvcnQgeyBEYXRlQWRhcHRlciB9IGZyb20gJy4uL2RhdGUtYWRhcHRlcic7XG5cbmV4cG9ydCBmdW5jdGlvbiBhZGFwdGVyRmFjdG9yeSgpOiBEYXRlQWRhcHRlciB7XG4gIHJldHVybiB7XG4gICAgLi4uYmFzZUFkYXB0ZXJGYWN0b3J5KCksXG4gICAgYWRkV2Vla3MsXG4gICAgYWRkTW9udGhzLFxuICAgIHN1YkRheXMsXG4gICAgc3ViV2Vla3MsXG4gICAgc3ViTW9udGhzLFxuICAgIGdldElTT1dlZWssXG4gICAgc2V0RGF0ZSxcbiAgICBzZXRNb250aCxcbiAgICBzZXRZZWFyLFxuICAgIGdldERhdGUsXG4gICAgZ2V0WWVhclxuICB9O1xufVxuIl19
