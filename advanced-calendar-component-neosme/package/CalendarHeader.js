@@ -196,6 +196,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
 
   get template() {
     let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
+    let classValue = componentAttribute.class['_value'];
     let view = componentAttribute.view['_value'];
     let viewDate = componentAttribute.viewDate['_value'];
     let viewChange = componentAttribute.viewChange['_value'];
@@ -217,7 +218,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let onDeleteEventClick = componentAttribute.onDeleteEventClick['_value'];
 
 
-    let template = `<div %style% %class%> <mwl-calendar-header 
+    let template = `<div %style% > <mwl-calendar-header 
     [view]= "'${view}'"
     [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"
@@ -232,7 +233,11 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     [showEventDetailsDialog] = "${showEventDetailsDialog}"
     [showAddEvent] = "${showAddEvent}"
     `;
-
+    if(classValue!==null){
+      classValue = classValue.toString();
+      classValue = classValue.replace(",", " ");
+      template = template + `class = "${classValue}"`
+    }
     if (viewChange !== "") {
       template = template + `(viewChange) = "${viewChange}"`
     }

@@ -199,7 +199,7 @@ module.exports = class DayComponent extends AdvancedComponent {
   get template() {
 
     let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
-
+    let classValue = componentAttribute.class['_value'];
     let viewDate = componentAttribute.viewDate['_value'];
     let events = componentAttribute.events['_value'];
     let refresh = componentAttribute.refresh['_value'];
@@ -225,7 +225,7 @@ module.exports = class DayComponent extends AdvancedComponent {
     let eventTitleTemplate = componentAttribute.eventTitleTemplate['_value'];
 
     let template = '';
-    template = `<div %style% %class%> <mwl-calendar-day-view
+    template = `<div %style% > <mwl-calendar-day-view
     *ngIf="view=='day'"
     [(viewDate)]= "${viewDate}"
     [events]="${events}"
@@ -247,7 +247,11 @@ module.exports = class DayComponent extends AdvancedComponent {
     [locale] = "${locale}"
     [snapDraggedEvents] = "${snapDraggedEvents}"
     `;
-
+    if(classValue!==null){
+      classValue = classValue.toString();
+      classValue = classValue.replace(",", " ");
+      template = template + `class = "${classValue}"`
+    }
     if (eventClicked !== "")
       template = template + `(eventClicked)="${eventClicked}"`;
 

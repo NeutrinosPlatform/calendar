@@ -208,7 +208,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
 
     let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
 
-
+    let classValue = componentAttribute.class['_value'];
     let viewDate = componentAttribute.viewDate['_value'];
     let events = componentAttribute.events['_value'];
     let refresh = componentAttribute.refresh['_value'];
@@ -235,7 +235,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
     let beforeViewRender = componentAttribute.beforeViewRender['_value'];
 
     let template = '';
-    template = ` <div>%style% %class% <mwl-calendar-month-view
+    template = ` <div>%style% <mwl-calendar-month-view
     *ngIf="view=='month'"
     [(viewDate)]= "${viewDate}"
     [events]="${events}"
@@ -254,7 +254,11 @@ module.exports = class MonthComponent extends AdvancedComponent {
     [customEventDialog] = "${customEventDialog}"
     [tooltipTemplate] = "${tooltipTemplate}"
     `;
-
+    if(classValue!==null){
+      classValue = classValue.toString();
+      classValue = classValue.replace(",", " ");
+      template = template + `class = "${classValue}"`
+    }
     if (dayClicked !== "")
       template = template + `(dayClicked)="${dayClicked}"`;
 

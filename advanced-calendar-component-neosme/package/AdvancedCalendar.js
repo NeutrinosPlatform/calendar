@@ -19,7 +19,7 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
     </advanced-calendar-neosme>`;
     const paletteTemplate = "Calendar";
     const componentLabel = 'Calendar';
-    const templateUrl = "https://mattlewis92.github.io/angular-calendar/"; 
+    const templateUrl = "https://mattlewis92.github.io/angular-calendar/";
     // <calendar-header n-adv-child></calendar-header>
 
     super(
@@ -29,11 +29,11 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
         paletteTemplate,
         componentLabel,
         templateUrl,
-        isAdvancedChild : false
+        isAdvancedChild: false
       }
     );
     super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
-    
+
     super.composeTemplate({
       styles: `
       :host {
@@ -64,11 +64,11 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
      
       `,
       onInit: function () {
-        if($(this).find('calendar-header').length === 0) {
-            this.addChild('calendar-header');
+        if ($(this).find('calendar-header').length === 0) {
+          this.addChild('calendar-header');
         }
       },
-      onDestroy: function () {},
+      onDestroy: function () { },
       customMethods: {
         click: function (e) {
           if (e.target.id === "month-component") {
@@ -89,8 +89,17 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
   }
 
   get template() {
-    let template = `<div %bCustomProps% %style% %class%></div>`;
-    return template;
+    let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
+    let classValue = componentAttribute.class['_value'];
+    if (classValue !== null || classValue !== '') {
+      classValue = classValue.toString();
+      classValue = classValue.replace(",", " ");
+      let template = `<div %bCustomProps% %style% class = "${classValue}"></div>`;
+      return template;
+    } else {
+      let template = `<div %bCustomProps% %style% %class%></div>`;
+      return template;
+    }
   }
   set template(templateString) { }
 };
