@@ -23,62 +23,72 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
 
 @Component({
   selector: 'mwl-calendar-header',
-  template: `
-  
-  <div class="row text-center">
-          <div class="col-md-4">
-                <div class="btn-group">
-                    <div *ngIf="showPreviousDayBtn" class="btn btn-primary"
-                      mwlCalendarPreviousView
-                      [(viewDate)]="viewDate"
-                      [view]="view"
-                      (viewDateChange)="onViewDateChange('Previous')"
-                      (viewChange)="onViewChange()"
-                      [daysInWeek]="daysInWeek"
-                      [excludeDays]="excludeDays"
-                      >
-                          Previous
-                    </div>
-                      <div *ngIf="showTodayBtn" class="btn btn-outline-secondary"
-                        mwlCalendarToday
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="viewDateChange.next(viewDate)">
-                          Today
-                      </div>
-                      <div *ngIf="showNextDayBtn" class="btn btn-primary"        
-                        mwlCalendarNextView
-                        [view]="view"
-                        [(viewDate)]="viewDate"
-                        (viewDateChange)="onViewDateChange('Next')"
-                        (viewChange)="onViewChange()"
-                        [daysInWeek]="daysInWeek"
-                        [excludeDays]="excludeDays"
-                        >
-                          Next
-                      </div>
-                </div>
-                &nbsp;
-                <button *ngIf="showAddEvent" (click)="addEventClick()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">
-                  Add Event
-                </button> 
-           </div>
-          <div class="col-md-4">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
-          </div>
-          <div class="col-md-4">
-                  <div class="btn-group">
-                    <div *ngIf="showMonthBtn" class="btn btn-primary" (click)="onSetView('month')" [class.active]="view === 'month'">
-                      Month
-                    </div>
-                    <div *ngIf="showWeekBtn" class="btn btn-primary" (click)="onSetView('week')" [class.active]="view === 'week'">
-                      Week
-                    </div>
-                    <div *ngIf="showDayBtn" class="btn btn-primary" (click)="onSetView('day')" [class.active]="view === 'day'">
-                      Day
-                    </div>
-                  </div>
-            </div>
-  </div>
+  styleUrls: ['./calendar-header.component.scss'],
+  template: `   
+  <div class="header-container">
+    <div class="header-view">
+      <div>
+        <mat-button-toggle-group id="today-toggle-group" name="fontStyle" aria-label="Font Style"
+        #group="matButtonToggleGroup">
+        <mat-button-toggle class="previous-button" id="toggle-button" 
+          *ngIf="showPreviousDayBtn"
+          mwlCalendarPreviousView 
+          [(viewDate)]="viewDate" 
+          [view]="view" 
+          (viewDateChange)="onViewDateChange('Previous')" 
+          (viewChange)="onViewChange()" 
+          [daysInWeek]="daysInWeek" 
+          [excludeDays]="excludeDays">
+          Previous
+        </mat-button-toggle>
+        <mat-button-toggle id="toggle-button" 
+        *ngIf="showTodayBtn"
+                mwlCalendarToday 
+                [(viewDate)]="viewDate" 
+                (viewDateChange)="viewDateChange.next(viewDate)">
+        Today
+        </mat-button-toggle>
+        <mat-button-toggle id="toggle-button" 
+        *ngIf="showNextDayBtn"
+                mwlCalendarNextView 
+                [view]="view" 
+                [(viewDate)]="viewDate" 
+                (viewDateChange)="onViewDateChange('Next')" 
+                (viewChange)="onViewChange()" 
+                [daysInWeek]="daysInWeek" 
+                [excludeDays]="excludeDays">
+        Next
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+      
+      <button class="event-button" *ngIf="showAddEvent" (click)="addEventClick()" mat-raised-button><mat-icon class="add-icon-view">add</mat-icon> Add Event</button>
+    </div>
+    <div class="date-view-container">
+      <mat-icon mwlCalendarPreviousView 
+      [(viewDate)]="viewDate" 
+      [view]="view" 
+      (viewDateChange)="onViewDateChange('Previous')" 
+      (viewChange)="onViewChange()" 
+      [daysInWeek]="daysInWeek" 
+      [excludeDays]="excludeDays">arrow_left</mat-icon>
+      <h3 class="date-view">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+      <mat-icon mwlCalendarNextView 
+      [view]="view" 
+      [(viewDate)]="viewDate" 
+      (viewDateChange)="onViewDateChange('Next')" 
+      (viewChange)="onViewChange()" 
+      [daysInWeek]="daysInWeek" 
+      [excludeDays]="excludeDays">arrow_right</mat-icon>
+    </div>
+    <div>
+      <mat-button-toggle-group class="day-toggle-view" id="toggle-group" name="fontStyle" aria-label="Font Style" #group="matButtonToggleGroup">
+        <mat-button-toggle class="day-view" id="toggle-button" *ngIf="showDayBtn" (click)="onSetView('day')" [class.active]="view === 'day'">Day</mat-button-toggle>
+        <mat-button-toggle id="toggle-button" *ngIf="showWeekBtn" (click)="onSetView('week')" [class.active]="view === 'week'">Week</mat-button-toggle>
+        <mat-button-toggle id="toggle-button" *ngIf="showMonthBtn" (click)="onSetView('month')" [class.active]="view === 'month'">Month</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+</div>
   `
 })
 export class CalendarCommonHeaderComponent implements OnInit {
@@ -167,7 +177,7 @@ export class CalendarCommonHeaderComponent implements OnInit {
   }
 
   onViewDateChange(type) {
-    if(type === 'Previous'){
+    if (type === 'Previous') {
       const subFn: any = {
         day: this.dateAdapter.subDays,
         week: this.dateAdapter.subWeeks,
@@ -194,7 +204,7 @@ export class CalendarCommonHeaderComponent implements OnInit {
       } else {
         this.viewDateChange.emit(subFn(this.viewDate, 0));
       }
-    }else if(type === 'Next'){
+    } else if (type === 'Next') {
       const addFn: any = {
         day: this.dateAdapter.addDays,
         week: this.dateAdapter.addWeeks,
@@ -222,7 +232,7 @@ export class CalendarCommonHeaderComponent implements OnInit {
         this.viewDateChange.emit(addFn(this.viewDate, 0));
       }
     }
-  }  
+  }
 
   onSetView(view) {
     this.view = view;
@@ -262,11 +272,11 @@ export class CalendarCommonHeaderComponent implements OnInit {
         template = this.customCaptureEventDialog;
       }
     }
-    if(template !== null){
+    if (template !== null) {
       const dialogRef = this.dialog.open(template, {
         data: data
       });
-  
+
       dialogRef.afterClosed().subscribe(result => {
       });
     }

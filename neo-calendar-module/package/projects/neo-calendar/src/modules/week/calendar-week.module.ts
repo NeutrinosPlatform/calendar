@@ -9,7 +9,7 @@ import { CalendarCommonModule } from '../common/calendar-common.module';
 import { CalendarWeekViewHourSegmentComponent } from './calendar-week-view-hour-segment.component';
 import { CalendarWeekViewCurrentTimeMarkerComponent } from './calendar-week-view-current-time-marker.component';
 
-export {
+export {    
   CalendarWeekViewComponent,
   CalendarWeekViewBeforeRenderEvent
 } from './calendar-week-view.component';

@@ -27,6 +27,7 @@ import { CalendarUtils } from '../common/calendar-utils.provider';
 import { validateEvents } from '../common/util';
 import { DateAdapter } from '../../date-adapters/date-adapter';
 import { PlacementArray } from 'positioning';
+import "../../../src/common-calendar.css"
 
 export interface CalendarMonthViewBeforeRenderEvent {
   header: WeekDay[];
@@ -53,6 +54,9 @@ export interface CalendarMonthViewEventTimesChangedEvent<
  */
 @Component({
   selector: 'mwl-calendar-month-view',
+  styleUrls: [
+    './../../../src/common-calendar.css'
+  ],
   template: `
     <div class="cal-month-view" role="grid">
       <mwl-calendar-month-view-header
@@ -60,6 +64,7 @@ export interface CalendarMonthViewEventTimesChangedEvent<
         [locale]="locale"
         (columnHeaderClicked)="columnHeaderClicked.emit($event)"
         [customTemplate]="headerTemplate"
+        class="headerView"
       >
       </mwl-calendar-month-view-header>
       <div class="cal-days">
