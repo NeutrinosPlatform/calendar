@@ -9,3 +9,8 @@
 //   @include cal-week-view-theme($overrides);
 //   @include cal-tooltip-theme($overrides);
 // }
+
+.cal-month-view .cal-day-cell.cal-out-month .cal-day-number {
+    opacity: 0.1 !important;
+    cursor: default !important;
+  }

@@ -5,16 +5,23 @@
     font-family: Poppins;
     width: 95% !important;
  }
- .header{
-    margin-top: 4%;
-    display:flex;
-    align-items: center;
- }
-//  #formField{
-//    position: relative;
-//    top: 10px;
-//  }
+
+ .event-button{
+  background: #404041;
+  color: #fff;
+  width: 141px;
+  height: 42px;
+  border-radius: 4px;
+  border: 1px solid #404041;
+}
+
 .titleStyle{
    display: flex;
+   justify-content: space-between;
+ }
+
+ .header{
+   display: flex;
+   flex-direction: row;
    justify-content: space-between;
  }

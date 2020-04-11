@@ -3,14 +3,17 @@ import {
   Input,
   Output,
   EventEmitter,
-  TemplateRef
+  TemplateRef,
+  OnInit
 } from '@angular/core';
 import { MonthViewDay, CalendarEvent } from 'calendar-utils';
 import { isWithinThreshold, trackByEventId } from '../common/util';
 import { PlacementArray } from 'positioning';
+import { EventEmitterService } from '../common/calendar-event-emitter.service'
 
 @Component({
   selector: 'mwl-calendar-month-cell',
+  styleUrls: ['./calendar-month-view.scss'],  
   template: `
     <ng-template
       #defaultTemplate
@@ -29,6 +32,7 @@ import { PlacementArray } from 'positioning';
     >
       <div
         class="cal-cell-top"
+        id="date-cell"
         [attr.aria-label]="
           { day: day, locale: locale } | calendarA11y: 'monthCell'
         "
@@ -37,7 +41,7 @@ import { PlacementArray } from 'positioning';
           <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
             day.badgeTotal
           }}</span>
-          <span class="cal-day-number">{{
+          <span class="cal-day-number" id="day-number-view">{{
             day.date | calendarDate: 'monthViewDayNumber':locale
           }}</span>
         </span>
@@ -46,7 +50,7 @@ import { PlacementArray } from 'positioning';
         <div
           class="cal-event"
           *ngFor="let event of day.events; trackBy: trackByEventId"
-          [ngStyle]="{ backgroundColor: event.color?.primary }"
+          [ngStyle]="{'width': 100 + '%','height': 61 + 'px', 'border-radius': 0 + 'px','background-color': '#dcf8e9','display': 'flex', 'flex-direction': 'column','justify-content': 'center', 'border-left': '5px solid #58d395','margin-left': '0px','margin-right': '0px','margin-bottom': '0px' }"
           [ngClass]="event?.cssClass"
           (mouseenter)="highlightDay.emit({ event: event })"
           (mouseleave)="unhighlightDay.emit({ event: event })"
@@ -66,7 +70,11 @@ import { PlacementArray } from 'positioning';
           [validateDrag]="validateDrag"
           (mwlClick)="eventClicked.emit({ event: event, sourceEvent: $event })"
           [attr.aria-hidden]="{} | calendarA11y: 'hideMonthCellEvents'"
-        ></div>
+          (click) = "onEventClick(event)"
+        >
+        <p class="event-title">{{event.start | date:'shortTime'}}</p>
+        <p class="event-title">{{event.title}}</p>
+        </div>
       </div>
     </ng-template>
     <ng-template
@@ -131,4 +139,14 @@ export class CalendarMonthCellComponent {
   trackByEventId = trackByEventId;
 
   validateDrag = isWithinThreshold;
+
+  constructor(public eventEmitterService: EventEmitterService){
+
+  }
+
+  onEventClick(event){
+      this.eventEmitterService.emitNavChangeEvent('EDIT_EVENT_CLICKED', event);
+  }
+  
+
 }

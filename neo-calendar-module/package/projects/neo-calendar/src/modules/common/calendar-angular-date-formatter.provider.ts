@@ -19,7 +19,7 @@ export class CalendarAngularDateFormatter
    * The month view header week day labels
    */
   public monthViewColumnHeader({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'EEEE', locale);
+    return formatDate(date, 'EEE', locale);
   }
 
   /**

@@ -104,9 +104,14 @@
   <button mat-button [mat-dialog-close]="'data'" cdkFocusInitial>Ok</button>
 </div> -->
 
-<div class="titleStyle">
-    <h1 mat-dialog-title style="font-family: Poppins;">{{titlePlaceholder}}</h1>
-    <mat-icon aria-hidden="false" style="cursor: pointer;" (click)="onNoClick()">close</mat-icon>
+<div class="header">
+    <div class="titleStyle">
+        <h1 mat-dialog-title style="font-family: Poppins;">{{title}}</h1>
+    </div>
+    <div>
+        <mat-icon *ngIf="title === 'Event Details'" aria-hidden="false" style="cursor: pointer;" (click)="onDelete()">delete</mat-icon>
+        <mat-icon aria-hidden="false" style="cursor: pointer;" (click)="onNoClick()">close</mat-icon>
+    </div>
 </div>
 <div mat-dialog-content>
 
@@ -190,6 +195,6 @@ addEvents.controls['fromTime'].value <
 addEvents.controls['toTime'].value
 
 ">
-    <button type="button" class="btn btn-primary" [mat-dialog-close]="'data'" cdkFocusInitial
+    <button type="button" mat-button class="event-button" [mat-dialog-close]="'data'" cdkFocusInitial
         (click)="addOrUpdateEvent()">Save</button>
 </div>

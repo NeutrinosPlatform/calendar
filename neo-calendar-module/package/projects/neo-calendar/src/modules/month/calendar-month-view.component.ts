@@ -55,7 +55,8 @@ export interface CalendarMonthViewEventTimesChangedEvent<
 @Component({
   selector: 'mwl-calendar-month-view',
   styleUrls: [
-    './../../../src/common-calendar.css'
+    './../../../src/common-calendar.css',
+    './calendar-month-view.scss'
   ],
   template: `
     <div class="cal-month-view" role="grid">
@@ -69,10 +70,12 @@ export interface CalendarMonthViewEventTimesChangedEvent<
       </mwl-calendar-month-view-header>
       <div class="cal-days">
         <div
+        id="cal-cell-day"
           *ngFor="let rowIndex of view.rowOffsets; trackBy: trackByRowOffset"
         >
           <div class="cal-cell-row">
             <mwl-calendar-month-cell
+
               *ngFor="
                 let day of view.days
                   | slice: rowIndex:rowIndex + view.totalDaysVisibleInWeek;
@@ -114,31 +117,6 @@ export interface CalendarMonthViewEventTimesChangedEvent<
             >
             </mwl-calendar-month-cell>
           </div>
-          <mwl-calendar-open-day-events
-            [locale]="locale"
-            [isOpen]="openRowIndex === rowIndex"
-            [events]="openDay?.events"
-            [date]="openDay?.date"
-            [customTemplate]="openDayEventsTemplate"
-            [eventTitleTemplate]="eventTitleTemplate"
-            [eventActionsTemplate]="eventActionsTemplate"
-            (eventClicked)="
-              eventClicked.emit({
-                event: $event.event,
-                sourceEvent: $event.sourceEvent
-              })
-            "
-            mwlDroppable
-            dragOverClass="cal-drag-over"
-            (drop)="
-              eventDropped(
-                openDay,
-                $event.dropData.event,
-                $event.dropData.draggedFrom
-              )
-            "
-          >
-          </mwl-calendar-open-day-events>
         </div>
       </div>
     </div>

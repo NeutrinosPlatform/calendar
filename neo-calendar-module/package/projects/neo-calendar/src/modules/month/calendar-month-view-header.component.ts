@@ -9,7 +9,8 @@ import { WeekDay } from 'calendar-utils';
 import { trackByWeekDayHeaderDate } from '../common/util';
 
 @Component({
-  selector: 'mwl-calendar-month-view-header',      
+  selector: 'mwl-calendar-month-view-header', 
+  styleUrls: ['./calendar-month-view.scss'],     
   template: `
     <ng-template
       #defaultTemplate
@@ -20,6 +21,7 @@ import { trackByWeekDayHeaderDate } from '../common/util';
       <div class="cal-cell-row cal-header" role="row">
         <div
           class="cal-cell"
+          id="cal-header-cell"
           *ngFor="let day of days; trackBy: trackByWeekDayHeaderDate"
           [class.cal-past]="day.isPast"
           [class.cal-today]="day.isToday"

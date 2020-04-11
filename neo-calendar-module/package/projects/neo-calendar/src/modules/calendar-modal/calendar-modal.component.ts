@@ -18,6 +18,7 @@ export class CalendarModalComponent implements OnInit {
     
   }
   screenType = "add";
+  title = this.data ? "Event Details" : "Add Event";
   titlePlaceholder = this.data ? "Edit Title" : "Add Title";
   locationPlaceholder = this.data ? "Edit Location" : "Add Location";
   descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
@@ -70,6 +71,11 @@ export class CalendarModalComponent implements OnInit {
   }
 
   onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onDelete() {
+    this.eventEmitterService.emitNavChangeEvent('DELETE_EVENT_CLICKED', this.data);
     this.dialogRef.close();
   }
 
