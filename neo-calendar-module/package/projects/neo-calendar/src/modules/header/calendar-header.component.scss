@@ -1,0 +1,108 @@
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px !important;
+}
+.header-view{
+    display: flex;
+    align-items: center;
+}
+.header-view > div{
+    margin-right: 3%;
+}
+.event-button{
+    background: #404041;
+    color: #fff;
+    width: 136px;
+    height: 42px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+.add-icon-view{
+    font-size: 22px !important;
+}
+#today-toggle-group{
+    max-width: 210px;
+    width:auto;
+    height: 42px;
+    border-radius: 4px;
+    /* border: solid 1px #a7a7a7; */
+    background-color: #ffffff;
+}
+#toggle-group{
+    max-width: 188px !important;
+    width:auto;
+    height: 42px;
+    border-radius: 4px;
+    /* border: solid 1px #a7a7a7; */
+    background-color: #ffffff;
+}
+#toggle-button-button{
+    width: 92px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+#toggle-button-button > div{
+    width: 75px;
+    height: 25px;
+    /* font-family: Poppins; */
+    font-size: 18px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: 0.01px;
+    text-align: left;
+    color: #404041;
+}
+// .mat-button-toggle-group-appearance-standard .mat-button-toggle+.mat-button-toggle {
+//     border-left: solid 1px rgba(0,0,0,.12);
+//     margin:4px;
+//     display: flex;
+//     align-items: center;
+// }
+.previous-button{
+    display: flex !important;
+    align-items: center !important;
+}
+.date-view{
+    // width: 78px;
+    height: 20px;
+    // font-family: Poppins;
+    font-size: 14px !important;
+    font-weight: 500;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: left;
+    color: #4d585e;
+    margin: 0px !important;
+    display: flex;
+    justify-content: center;
+}
+.date-view-container{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.day-view{
+        display: flex;
+    align-items: center;
+}
+
+.mat-button-toggle-checked {
+    color: #fff;
+    background-color:#404041;
+    border-radius: 3px;
+ }
+ .mat-button-toggle{
+     display: flex !important;
+     align-items: center !important;
+ }
+ .cal-month-view .cal-cell-top{
+    border: 1px solid #dadbdd !important;
+ }
