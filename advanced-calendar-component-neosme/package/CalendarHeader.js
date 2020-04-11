@@ -219,7 +219,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
 
 
     let template = `<div %style% > <mwl-calendar-header 
-    [view]= "'${view}'"
+    [view]= "${view}"
     [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"
     [showTodayBtn] = "${showTodayBtn}"
