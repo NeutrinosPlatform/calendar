@@ -264,7 +264,7 @@
   letter-spacing: normal;
   text-align: left;
   color: #999da7;
-  font-family: sans-serif;
+  font-family: poppins;
 }
 
 .cal-week-view .cal-day-headers .cal-header:not(:last-child) {
@@ -480,6 +480,7 @@
 }
 
 .cal-week-view .cal-time {
+  font-family: poppins;
   font-weight: normal;
   padding-top: 5px;
   width: 70px;
@@ -725,7 +726,7 @@
   text-align: left;
   color: #4d585e;
   margin-right: 15px;
-  font-family: sans-serif;
+  font-family: poppins;
 }
 
 .cal-header {
@@ -772,7 +773,7 @@
 }
 
 .date-view {
-  font-family: sans-serif;
+  font-family: poppins;
 }
 
 .cal-month-view .cal-event {
@@ -786,7 +787,7 @@
   line-height: 1;
   margin-bottom: 0px !important;
   padding-left: 10px;
-  font-family: sans-serif;
+  font-family: poppins;
   font-size: 12px;
   margin-top: 5px !important;
   margin-bottom: 5px !important;
@@ -805,7 +806,7 @@
   padding-left: 10px;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-  font-family: sans-serif;
+  font-family: poppins;
   font-size: 12px;
 }
 .cal-day-view .cal-week-view .week-event-title {
@@ -817,7 +818,7 @@
   padding-left: 10px;
   margin-top: 10px !important;
   margin-bottom: 15px !important;
-  font-family: sans-serif;
+  font-family: poppins;
   font-size: 12px;
 }
 .cal-day-view .cal-week-view .cal-event,
@@ -859,7 +860,7 @@
   letter-spacing: normal;
   text-align: left;
   color: #4d585e;
-  font-family: sans-serif;
+  font-family: poppins;
 }
 .cal-event-container.cal-starts-within-day.cal-ends-within-day .cal-event,
 .cal-event-container.cal-starts-within-day .cal-event,

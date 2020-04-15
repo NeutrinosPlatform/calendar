@@ -44,7 +44,7 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
           [excludeDays]="excludeDays">
           Previous
         </mat-button-toggle>
-        <mat-button-toggle id="toggle-button" 
+        <mat-button-toggle class="today-button" id="toggle-button" 
         *ngIf="showTodayBtn"
                 mwlCalendarToday 
                 [(viewDate)]="viewDate" 
@@ -87,7 +87,7 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
     <div>
       <mat-button-toggle-group class="day-toggle-view" id="toggle-group" name="fontStyle" aria-label="Font Style" #group="matButtonToggleGroup">
         <mat-button-toggle class="day-view" id="toggle-button" *ngIf="showDayBtn" (click)="onSetView('day')" [checked]="view === 'day'">Day</mat-button-toggle>
-        <mat-button-toggle id="toggle-button" *ngIf="showWeekBtn" (click)="onSetView('week')" [checked]="view === 'week'">Week</mat-button-toggle>
+        <mat-button-toggle class="week-view"id="toggle-button" *ngIf="showWeekBtn" (click)="onSetView('week')" [checked]="view === 'week'">Week</mat-button-toggle>
         <mat-button-toggle id="toggle-button" *ngIf="showMonthBtn" (click)="onSetView('month')" [checked]="view === 'month'">Month</mat-button-toggle>
       </mat-button-toggle-group>
     </div>

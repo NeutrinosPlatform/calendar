@@ -36,6 +36,60 @@ max-width: 210px;
 #toggle-button {
     padding-top: 4px;
     padding-bottom: 4px;
+    border-left: none;
+    // position: relative;
+}
+.previous-button{
+    position: relative;
+}
+.today-button{
+    position: relative;
+}
+.day-view{
+    position: relative;
+}
+.day-view::after{
+    content: " ";
+    position: absolute;
+    border-right: 1px lightgray solid !important; 
+    top: 22%;
+    right: 0;
+    height: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.week-view{
+    position: relative;
+}
+.week-view::after{
+    content: " ";
+    position: absolute;
+    border-right: 1px lightgray solid !important; 
+    top: 22%;
+    right: 0;
+    height: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.today-button::after{
+    content: " ";
+    position: absolute;
+    border-right: 1px lightgray solid !important; 
+    top: 22%;
+    right: 0;
+    height: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.previous-button::after{
+    content: " ";
+    position: absolute;
+    border-right: 1px lightgray solid !important; 
+    top: 22%;
+    right: 0;
+    height: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 .calendar-header-text{
     font-size: 32px !important;
@@ -47,7 +101,7 @@ max-width: 210px;
     // text-align: center;
     padding-left: 16px;
     color: #404041;
-    font-family: sans-serif;
+    font-family: poppins;
 }
 #toggle-group{
     max-width: 188px !important;
