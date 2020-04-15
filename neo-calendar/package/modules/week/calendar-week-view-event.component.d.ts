@@ -1,7 +1,9 @@
-import { EventEmitter, TemplateRef } from '@angular/core';
+import { EventEmitter, TemplateRef, OnInit } from '@angular/core';
 import { WeekViewAllDayEvent, WeekViewTimeEvent, WeekViewHourColumn } from 'calendar-utils';
 import { PlacementArray } from 'positioning';
-export declare class CalendarWeekViewEventComponent {
+import { EventEmitterService } from '../common/calendar-event-emitter.service';
+export declare class CalendarWeekViewEventComponent implements OnInit {
+    eventEmitterService: EventEmitterService;
     locale: string;
     weekEvent: WeekViewAllDayEvent | WeekViewTimeEvent;
     tooltipPlacement: PlacementArray;
@@ -17,4 +19,7 @@ export declare class CalendarWeekViewEventComponent {
     eventClicked: EventEmitter<{
         sourceEvent: MouseEvent | KeyboardEvent;
     }>;
+    constructor(eventEmitterService: EventEmitterService);
+    ngOnInit(): void;
+    onEventClick(event: any): void;
 }

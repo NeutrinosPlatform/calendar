@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject, OnChanges } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl,Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventEmitterService } from '../common/calendar-event-emitter.service';
 // import {moment} from 'moment';
@@ -18,10 +18,20 @@ export class CalendarModalComponent implements OnInit {
     
   }
   screenType = "add";
-  title = this.data ? "Event Details" : "Add Event";
+  title = this.data ? "Edit Event" : "Add Event";
   titlePlaceholder = this.data ? "Edit Title" : "Add Title";
   locationPlaceholder = this.data ? "Edit Location" : "Add Location";
   descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
+
+  addEvents = new FormGroup({
+    title: new FormControl('', Validators.required),
+    location: new FormControl(),
+    description: new FormControl(),
+    fromDate: new FormControl('', Validators.required),
+    toDate: new FormControl('', Validators.required),
+    fromTime: new FormControl('', Validators.required),
+    toTime: new FormControl(),
+  });
 
   ngOnInit() {
     
@@ -40,17 +50,9 @@ export class CalendarModalComponent implements OnInit {
     this.addEvents.controls['toDate'].setValue(this.data.end);
     this.addEvents.controls['fromTime'].setValue(this.data.fromTime);
     this.addEvents.controls['toTime'].setValue(this.data.toTime);
-  }
 
-  addEvents = new FormGroup({
-    title: new FormControl(),
-    location: new FormControl(),
-    description: new FormControl(),
-    fromDate: new FormControl(),
-    toDate: new FormControl(),
-    fromTime: new FormControl(),
-    toTime: new FormControl(),
-  });
+    console.log("this.addEvents", this.addEvents)
+  }
 
   addOrUpdateEvent() {
     let tempObject = {
@@ -67,7 +69,7 @@ export class CalendarModalComponent implements OnInit {
     }else {
       this.eventEmitterService.emitNavChangeEvent('EDIT_SAVE_CLICKED', tempObject);
     }
-    
+    this.dialogRef.close();
   }
 
   onNoClick(): void {

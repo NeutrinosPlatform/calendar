@@ -130,6 +130,8 @@ export class CalendarMonthCellComponent {
 
   @Output() unhighlightDay: EventEmitter<any> = new EventEmitter();
 
+  @Input() eventActionsTemplate: TemplateRef<any>;
+
   @Output()
   eventClicked = new EventEmitter<{
     event: CalendarEvent;

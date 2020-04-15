@@ -23,16 +23,6 @@ module.exports = class DayComponent extends AdvancedComponent {
       templateUrl
     });
     super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
-
-    super.addAttribute(
-      new Attribute({
-        key: 'Week',
-        value: 'Week',
-        type: 'a',
-        useAsLabel: true,
-        isVisibleForParent: true
-      })
-    );
     super.addAttribute(new Attribute({
       key: 'viewDate',
       value: '',
@@ -57,175 +47,175 @@ module.exports = class DayComponent extends AdvancedComponent {
       key: 'allDayEventsLabelTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'currentTimeMarkerTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'dayEndHour',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'dayEndMinute',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'daysInWeek',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'dayStartHour',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'dayStartMinute',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'eventActionsTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'eventSnapSize',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'eventTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'eventTitleTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'excludeDays',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'headerTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'hourSegmentHeight',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'hourSegments',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'hourSegmentTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'locale',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'precision',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }))
     super.addAttribute(new Attribute({
       key: 'snapDraggedEvents',
       value: 'true',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'tooltipAppendToBody',
       value: 'true',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'tooltipDelay',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'tooltipPlacement',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'tooltipTemplate',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'weekendDays',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'weekStartsOn',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'beforeViewRender',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'dayHeaderClicked',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'eventClicked',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.addAttribute(new Attribute({
       key: 'hourSegmentClicked',
       value: '',
       type: 'kv',
-      complexity:"advanced"
+      complexity: "advanced"
     }));
     super.composeTemplate({
       styles: `:host {
@@ -276,42 +266,99 @@ module.exports = class DayComponent extends AdvancedComponent {
     let weekStartsOn = componentAttribute.weekStartsOn['_value'];
 
     let template = '';
-    template = `<div> %style% <mwl-calendar-week-view
+    template = `<div %style%>  <mwl-calendar-week-view
     *ngIf="view=='week'"
-    [viewDate]= "${viewDate}"
-    [events]="${events}"
-    [refresh]="${refresh}"
-    [allDayEventsLabelTemplate]="${allDayEventsLabelTemplate}"
-    [currentTimeMarkerTemplate]="${currentTimeMarkerTemplate}"
-    [dayEndHour] = "${dayEndHour}"
-    [dayEndMinute] = "${dayEndMinute}"
-    [daysInWeek]="${daysInWeek}"
-    [dayStartHour] = "${dayStartHour}"
-    [dayStartMinute] = "${dayStartMinute}"
-    [eventActionsTemplate] = "${eventActionsTemplate}"
-    [eventSnapSize] = "${eventSnapSize}"
-    [eventTemplate]="${eventTemplate}"
-    [eventTitleTemplate]="${eventTitleTemplate}"
-    [excludeDays] = "${excludeDays}"
-    [headerTemplate]="${headerTemplate}"
-    [hourSegmentHeight] = "${hourSegmentHeight}"
-    [hourSegments] = "${hourSegments}"
-    [hourSegmentTemplate]="${hourSegmentTemplate}"
-    [locale]="${locale}"
-    [precision]="${precision}"
-    [snapDraggedEvents]="${snapDraggedEvents}"
-    [tooltipAppendToBody] = "${tooltipAppendToBody}"
-    [tooltipDelay] = "${tooltipDelay}"
-    [tooltipPlacement] = "${tooltipPlacement}"
-    [tooltipTemplate]="${tooltipTemplate}"
-    [weekendDays]="${weekendDays}"
-    [weekStartsOn]="${weekStartsOn}"
     `;
-    if(classValue!==null){
+    if (classValue !== null && classValue !== "") {
       classValue = classValue.toString();
       classValue = classValue.replace(",", " ");
       template = template + `class = "${classValue}"`
     }
+
+    if (viewDate !== "")
+      template = template + `[viewDate]= "${viewDate}"`;
+
+    if (events !== "")
+      template = template + `[events]="${events}"`;
+
+    if (refresh !== "")
+      template = template + `[refresh]="${refresh}"`;
+
+    if (allDayEventsLabelTemplate !== "")
+      template = template + `[allDayEventsLabelTemplate]="${allDayEventsLabelTemplate}"`;
+
+    if (currentTimeMarkerTemplate !== "")
+      template = template + `[currentTimeMarkerTemplate]="${currentTimeMarkerTemplate}"`;
+
+    if (dayEndHour !== "")
+      template = template + `[dayEndHour] = "${dayEndHour}"`;
+
+    if (dayEndMinute !== "")
+      template = template + `[dayEndMinute] = "${dayEndMinute}"`;
+
+    if (daysInWeek !== "")
+      template = template + `[daysInWeek]="${daysInWeek}"`;
+
+    if (dayStartHour !== "")
+      template = template + `[dayStartHour] = "${dayStartHour}"`;
+
+    if (dayStartMinute !== "")
+      template = template + `[dayStartMinute] = "${dayStartMinute}"`;
+
+    if (eventActionsTemplate !== "")
+      template = template + `  [eventActionsTemplate] = "${eventActionsTemplate}"`;
+
+    if (eventSnapSize !== "")
+      template = template + `[eventSnapSize] = "${eventSnapSize}"`;
+
+    if (eventTemplate !== "")
+      template = template + `[eventTemplate]="${eventTemplate}"`;
+
+    if (eventTitleTemplate !== "")
+      template = template + `[eventTitleTemplate]="${eventTitleTemplate}"`;
+
+    if (excludeDays !== "")
+      template = template + `[excludeDays] = "${excludeDays}"`;
+
+    if (headerTemplate !== "")
+      template = template + `[headerTemplate]="${headerTemplate}"`;
+
+    if (hourSegmentHeight !== "")
+      template = template + `[hourSegmentHeight] = "${hourSegmentHeight}"`;
+
+    if (hourSegments !== "")
+      template = template + `[hourSegments] = "${hourSegments}"`;
+
+    if (hourSegmentTemplate !== "")
+      template = template + ` [hourSegmentTemplate]="${hourSegmentTemplate}"`;
+
+    if (locale !== "")
+      template = template + `[locale]="${locale}"`;
+
+    if (precision !== "")
+      template = template + `[precision]="${precision}"`;
+
+    if (snapDraggedEvents !== "")
+      template = template + `[snapDraggedEvents]="${snapDraggedEvents}"`;
+
+    if (tooltipAppendToBody !== "")
+      template = template + `[tooltipAppendToBody] = "${tooltipAppendToBody}"`;
+
+    if (tooltipDelay !== "")
+      template = template + `[tooltipDelay] = "${tooltipDelay}"`;
+
+    if (tooltipPlacement !== "")
+      template = template + `[tooltipPlacement] = "${tooltipPlacement}"`;
+
+    if (tooltipTemplate !== "")
+      template = template + `[tooltipTemplate]="${tooltipTemplate}"`;
+
+    if (weekendDays !== "")
+      template = template + `[weekendDays]="${weekendDays}"`;
+
+    if (weekStartsOn !== "")
+      template = template + `[weekStartsOn]="${weekStartsOn}"`;
+
     if (eventClicked !== "")
       template = template + `(eventClicked)="${eventClicked}"`;
 
@@ -326,11 +373,11 @@ module.exports = class DayComponent extends AdvancedComponent {
 
     if (dayHeaderClicked !== "")
       template = template + `(hourSegmentClicked)="${dayHeaderClicked}"`;
-    
+
 
     template = template + `> </mwl-calendar-week-view> </div>`;
 
     return template;
   }
-  set template(templateString) { }
+  set template(templateString) {}
 };

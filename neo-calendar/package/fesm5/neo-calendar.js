@@ -1,5 +1,5 @@
 import { __decorate, __spread, __param, __extends, __assign, __rest } from 'tslib';
-import { EventEmitter, Output, Input, Component, ElementRef, Injector, Renderer2, ComponentFactoryResolver, ViewContainerRef, Inject, HostListener, Directive, Injectable, ɵɵdefineInjectable, ɵɵinject, LOCALE_ID, Pipe, InjectionToken, NgModule, ChangeDetectorRef, NgZone } from '@angular/core';
+import { EventEmitter, Output, Input, Component, ElementRef, Injector, Renderer2, ComponentFactoryResolver, ViewContainerRef, Inject, HostListener, Directive, Injectable, ɵɵdefineInjectable, ɵɵinject, LOCALE_ID, Pipe, InjectionToken, NgModule, ChangeDetectorRef, NgZone, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { DOCUMENT, formatDate, I18nPluralPipe, CommonModule } from '@angular/common';
 import { positionElements } from 'positioning';
 import { Subject, of, timer, Observable, BehaviorSubject, interval } from 'rxjs';
@@ -11,11 +11,14 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { MatIconModule } from '@angular/material/icon';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule as MatIconModule$1, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatDatepickerModule, MatToolbarModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { adapterFactory as adapterFactory$1 } from 'calendar-utils/date-adapters/date-fns';
 import { addWeeks, addMonths, subDays, subWeeks, subMonths, getISOWeek, setDate, setMonth, setYear, getDate, getYear } from 'date-fns';
 
@@ -85,7 +88,7 @@ var CalendarEventTitleComponent = /** @class */ (function () {
     CalendarEventTitleComponent = __decorate([
         Component({
             selector: 'mwl-calendar-event-title',
-            template: "\n    <ng-template #defaultTemplate let-event=\"event\" let-view=\"view\">\n      <span\n        class=\"cal-event-title\"\n        [innerHTML]=\"event.title | calendarEventTitle: view:event\"\n        [attr.aria-hidden]=\"{} | calendarA11y: 'hideEventTitle'\"\n      >\n      </span>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        event: event,\n        view: view\n      }\"\n    >\n    </ng-template>\n  "
+            template: "\n    <ng-template #defaultTemplate let-event=\"event\" let-view=\"view\">\n      <span\n        class=\"event-title\"\n        [innerHTML]=\"event.title | calendarEventTitle: view:event\"\n        [attr.aria-hidden]=\"{} | calendarA11y: 'hideEventTitle'\"\n      >\n      </span>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        event: event,\n        view: view\n      }\"\n    >\n    </ng-template>\n  "
         })
     ], CalendarEventTitleComponent);
     return CalendarEventTitleComponent;
@@ -560,7 +563,7 @@ var CalendarAngularDateFormatter = /** @class */ (function () {
      */
     CalendarAngularDateFormatter.prototype.monthViewColumnHeader = function (_a) {
         var date = _a.date, locale = _a.locale;
-        return formatDate(date, 'EEEE', locale);
+        return formatDate(date, 'EEE', locale);
     };
     /**
      * The month view cell day number
@@ -581,7 +584,7 @@ var CalendarAngularDateFormatter = /** @class */ (function () {
      */
     CalendarAngularDateFormatter.prototype.weekViewColumnHeader = function (_a) {
         var date = _a.date, locale = _a.locale;
-        return formatDate(date, 'EEEE', locale);
+        return formatDate(date, 'EEE', locale);
     };
     /**
      * The week view sub header day and month labels
@@ -1682,7 +1685,8 @@ var CalendarMonthViewComponent = /** @class */ (function () {
     CalendarMonthViewComponent = __decorate([
         Component({
             selector: 'mwl-calendar-month-view',
-            template: "\n    <div class=\"cal-month-view\" role=\"grid\">\n      <mwl-calendar-month-view-header\n        [days]=\"columnHeaders\"\n        [locale]=\"locale\"\n        (columnHeaderClicked)=\"columnHeaderClicked.emit($event)\"\n        [customTemplate]=\"headerTemplate\"\n      >\n      </mwl-calendar-month-view-header>\n      <div class=\"cal-days\">\n        <div\n          *ngFor=\"let rowIndex of view.rowOffsets; trackBy: trackByRowOffset\"\n        >\n          <div class=\"cal-cell-row\">\n            <mwl-calendar-month-cell\n              *ngFor=\"\n                let day of view.days\n                  | slice: rowIndex:rowIndex + view.totalDaysVisibleInWeek;\n                trackBy: trackByDate\n              \"\n              [ngClass]=\"day?.cssClass\"\n              [day]=\"day\"\n              [openDay]=\"openDay\"\n              [locale]=\"locale\"\n              [tooltipPlacement]=\"tooltipPlacement\"\n              [tooltipAppendToBody]=\"tooltipAppendToBody\"\n              [tooltipTemplate]=\"tooltipTemplate\"\n              [tooltipDelay]=\"tooltipDelay\"\n              [customTemplate]=\"cellTemplate\"\n              [ngStyle]=\"{ backgroundColor: day.backgroundColor }\"\n              (mwlClick)=\"dayClicked.emit({ day: day, sourceEvent: $event })\"\n              [clickListenerDisabled]=\"dayClicked.observers.length === 0\"\n              (mwlKeydownEnter)=\"\n                dayClicked.emit({ day: day, sourceEvent: $event })\n              \"\n              (highlightDay)=\"toggleDayHighlight($event.event, true)\"\n              (unhighlightDay)=\"toggleDayHighlight($event.event, false)\"\n              mwlDroppable\n              dragOverClass=\"cal-drag-over\"\n              (drop)=\"\n                eventDropped(\n                  day,\n                  $event.dropData.event,\n                  $event.dropData.draggedFrom\n                )\n              \"\n              (eventClicked)=\"\n                eventClicked.emit({\n                  event: $event.event,\n                  sourceEvent: $event.sourceEvent\n                })\n              \"\n              [attr.tabindex]=\"{} | calendarA11y: 'monthCellTabIndex'\"\n            >\n            </mwl-calendar-month-cell>\n          </div>\n          <mwl-calendar-open-day-events\n            [locale]=\"locale\"\n            [isOpen]=\"openRowIndex === rowIndex\"\n            [events]=\"openDay?.events\"\n            [date]=\"openDay?.date\"\n            [customTemplate]=\"openDayEventsTemplate\"\n            [eventTitleTemplate]=\"eventTitleTemplate\"\n            [eventActionsTemplate]=\"eventActionsTemplate\"\n            (eventClicked)=\"\n              eventClicked.emit({\n                event: $event.event,\n                sourceEvent: $event.sourceEvent\n              })\n            \"\n            mwlDroppable\n            dragOverClass=\"cal-drag-over\"\n            (drop)=\"\n              eventDropped(\n                openDay,\n                $event.dropData.event,\n                $event.dropData.draggedFrom\n              )\n            \"\n          >\n          </mwl-calendar-open-day-events>\n        </div>\n      </div>\n    </div>\n  "
+            template: "\n    <div class=\"cal-month-view\" role=\"grid\">\n      <mwl-calendar-month-view-header\n        [days]=\"columnHeaders\"\n        [locale]=\"locale\"\n        (columnHeaderClicked)=\"columnHeaderClicked.emit($event)\"\n        [customTemplate]=\"headerTemplate\"\n        class=\"headerView\"\n      >\n      </mwl-calendar-month-view-header>\n      <div class=\"cal-days\">\n        <div\n        id=\"cal-cell-day\"\n          *ngFor=\"let rowIndex of view.rowOffsets; trackBy: trackByRowOffset\"\n        >\n          <div class=\"cal-cell-row\">\n            <mwl-calendar-month-cell\n\n              *ngFor=\"\n                let day of view.days\n                  | slice: rowIndex:rowIndex + view.totalDaysVisibleInWeek;\n                trackBy: trackByDate\n              \"\n              [ngClass]=\"day?.cssClass\"\n              [day]=\"day\"\n              [openDay]=\"openDay\"\n              [locale]=\"locale\"\n              [tooltipPlacement]=\"tooltipPlacement\"\n              [tooltipAppendToBody]=\"tooltipAppendToBody\"\n              [tooltipTemplate]=\"tooltipTemplate\"\n              [tooltipDelay]=\"tooltipDelay\"\n              [customTemplate]=\"cellTemplate\"\n              [ngStyle]=\"{ backgroundColor: day.backgroundColor }\"\n              (mwlClick)=\"dayClicked.emit({ day: day, sourceEvent: $event })\"\n              [clickListenerDisabled]=\"dayClicked.observers.length === 0\"\n              (mwlKeydownEnter)=\"\n                dayClicked.emit({ day: day, sourceEvent: $event })\n              \"\n              (highlightDay)=\"toggleDayHighlight($event.event, true)\"\n              (unhighlightDay)=\"toggleDayHighlight($event.event, false)\"\n              mwlDroppable\n              dragOverClass=\"cal-drag-over\"\n              (drop)=\"\n                eventDropped(\n                  day,\n                  $event.dropData.event,\n                  $event.dropData.draggedFrom\n                )\n              \"\n              (eventClicked)=\"\n                eventClicked.emit({\n                  event: $event.event,\n                  sourceEvent: $event.sourceEvent\n                })\n              \"\n              [attr.tabindex]=\"{} | calendarA11y: 'monthCellTabIndex'\"\n            >\n            </mwl-calendar-month-cell>\n          </div>\n          <mwl-calendar-open-day-events\n            [locale]=\"locale\"\n            [isOpen]=\"openRowIndex === rowIndex\"\n            [events]=\"openDay?.events\"\n            [date]=\"openDay?.date\"\n            [customTemplate]=\"openDayEventsTemplate\"\n            [eventTitleTemplate]=\"eventTitleTemplate\"\n            [eventActionsTemplate]=\"eventActionsTemplate\"\n            (eventClicked)=\"\n              eventClicked.emit({\n                event: $event.event,\n                sourceEvent: $event.sourceEvent\n              })\n            \"\n            mwlDroppable\n            dragOverClass=\"cal-drag-over\"\n            (drop)=\"\n              eventDropped(\n                openDay,\n                $event.dropData.event,\n                $event.dropData.draggedFrom\n              )\n            \"\n          >\n          </mwl-calendar-open-day-events>\n        </div>\n      </div>\n    </div>\n  ",
+            styles: [""]
         }),
         __param(2, Inject(LOCALE_ID))
     ], CalendarMonthViewComponent);
@@ -1709,20 +1713,28 @@ var CalendarMonthViewHeaderComponent = /** @class */ (function () {
     CalendarMonthViewHeaderComponent = __decorate([
         Component({
             selector: 'mwl-calendar-month-view-header',
-            template: "\n    <ng-template\n      #defaultTemplate\n      let-days=\"days\"\n      let-locale=\"locale\"\n      let-trackByWeekDayHeaderDate=\"trackByWeekDayHeaderDate\"\n    >\n      <div class=\"cal-cell-row cal-header\" role=\"row\">\n        <div\n          class=\"cal-cell\"\n          *ngFor=\"let day of days; trackBy: trackByWeekDayHeaderDate\"\n          [class.cal-past]=\"day.isPast\"\n          [class.cal-today]=\"day.isToday\"\n          [class.cal-future]=\"day.isFuture\"\n          [class.cal-weekend]=\"day.isWeekend\"\n          (click)=\"\n            columnHeaderClicked.emit({\n              isoDayNumber: day.day,\n              sourceEvent: $event\n            })\n          \"\n          [ngClass]=\"day.cssClass\"\n          tabindex=\"0\"\n          role=\"columnheader\"\n        >\n          {{ day.date | calendarDate: 'monthViewColumnHeader':locale }}\n        </div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        days: days,\n        locale: locale,\n        trackByWeekDayHeaderDate: trackByWeekDayHeaderDate\n      }\"\n    >\n    </ng-template>\n  "
+            template: "\n    <ng-template\n      #defaultTemplate\n      let-days=\"days\"\n      let-locale=\"locale\"\n      let-trackByWeekDayHeaderDate=\"trackByWeekDayHeaderDate\"\n    >\n      <div class=\"cal-cell-row cal-header\" role=\"row\">\n        <div\n          class=\"cal-cell\"\n          id=\"cal-header-cell\"\n          *ngFor=\"let day of days; trackBy: trackByWeekDayHeaderDate\"\n          [class.cal-past]=\"day.isPast\"\n          [class.cal-today]=\"day.isToday\"\n          [class.cal-future]=\"day.isFuture\"\n          [class.cal-weekend]=\"day.isWeekend\"\n          (click)=\"\n            columnHeaderClicked.emit({\n              isoDayNumber: day.day,\n              sourceEvent: $event\n            })\n          \"\n          [ngClass]=\"day.cssClass\"\n          tabindex=\"0\"\n          role=\"columnheader\"\n        >\n          {{ day.date | calendarDate: 'monthViewColumnHeader':locale }}\n        </div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        days: days,\n        locale: locale,\n        trackByWeekDayHeaderDate: trackByWeekDayHeaderDate\n      }\"\n    >\n    </ng-template>\n  ",
+            styles: [""]
         })
     ], CalendarMonthViewHeaderComponent);
     return CalendarMonthViewHeaderComponent;
 }());
 
 var CalendarMonthCellComponent = /** @class */ (function () {
-    function CalendarMonthCellComponent() {
+    function CalendarMonthCellComponent(eventEmitterService) {
+        this.eventEmitterService = eventEmitterService;
         this.highlightDay = new EventEmitter();
         this.unhighlightDay = new EventEmitter();
         this.eventClicked = new EventEmitter();
         this.trackByEventId = trackByEventId;
         this.validateDrag = isWithinThreshold;
     }
+    CalendarMonthCellComponent.prototype.onEventClick = function (event) {
+        this.eventEmitterService.emitNavChangeEvent('EDIT_EVENT_CLICKED', event);
+    };
+    CalendarMonthCellComponent.ctorParameters = function () { return [
+        { type: EventEmitterService }
+    ]; };
     __decorate([
         Input()
     ], CalendarMonthCellComponent.prototype, "day", void 0);
@@ -1754,12 +1766,15 @@ var CalendarMonthCellComponent = /** @class */ (function () {
         Output()
     ], CalendarMonthCellComponent.prototype, "unhighlightDay", void 0);
     __decorate([
+        Input()
+    ], CalendarMonthCellComponent.prototype, "eventActionsTemplate", void 0);
+    __decorate([
         Output()
     ], CalendarMonthCellComponent.prototype, "eventClicked", void 0);
     CalendarMonthCellComponent = __decorate([
         Component({
             selector: 'mwl-calendar-month-cell',
-            template: "\n    <ng-template\n      #defaultTemplate\n      let-day=\"day\"\n      let-openDay=\"openDay\"\n      let-locale=\"locale\"\n      let-tooltipPlacement=\"tooltipPlacement\"\n      let-highlightDay=\"highlightDay\"\n      let-unhighlightDay=\"unhighlightDay\"\n      let-eventClicked=\"eventClicked\"\n      let-tooltipTemplate=\"tooltipTemplate\"\n      let-tooltipAppendToBody=\"tooltipAppendToBody\"\n      let-tooltipDelay=\"tooltipDelay\"\n      let-trackByEventId=\"trackByEventId\"\n      let-validateDrag=\"validateDrag\"\n    >\n      <div\n        class=\"cal-cell-top\"\n        [attr.aria-label]=\"\n          { day: day, locale: locale } | calendarA11y: 'monthCell'\n        \"\n      >\n        <span aria-hidden=\"true\">\n          <span class=\"cal-day-badge\" *ngIf=\"day.badgeTotal > 0\">{{\n            day.badgeTotal\n          }}</span>\n          <span class=\"cal-day-number\">{{\n            day.date | calendarDate: 'monthViewDayNumber':locale\n          }}</span>\n        </span>\n      </div>\n      <div class=\"cal-events\" *ngIf=\"day.events.length > 0\">\n        <div\n          class=\"cal-event\"\n          *ngFor=\"let event of day.events; trackBy: trackByEventId\"\n          [ngStyle]=\"{ backgroundColor: event.color?.primary }\"\n          [ngClass]=\"event?.cssClass\"\n          (mouseenter)=\"highlightDay.emit({ event: event })\"\n          (mouseleave)=\"unhighlightDay.emit({ event: event })\"\n          [mwlCalendarTooltip]=\"\n            event.title | calendarEventTitle: 'monthTooltip':event\n          \"\n          [tooltipPlacement]=\"tooltipPlacement\"\n          [tooltipEvent]=\"event\"\n          [tooltipTemplate]=\"tooltipTemplate\"\n          [tooltipAppendToBody]=\"tooltipAppendToBody\"\n          [tooltipDelay]=\"tooltipDelay\"\n          mwlDraggable\n          [class.cal-draggable]=\"event.draggable\"\n          dragActiveClass=\"cal-drag-active\"\n          [dropData]=\"{ event: event, draggedFrom: day }\"\n          [dragAxis]=\"{ x: event.draggable, y: event.draggable }\"\n          [validateDrag]=\"validateDrag\"\n          (mwlClick)=\"eventClicked.emit({ event: event, sourceEvent: $event })\"\n          [attr.aria-hidden]=\"{} | calendarA11y: 'hideMonthCellEvents'\"\n        ></div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        day: day,\n        openDay: openDay,\n        locale: locale,\n        tooltipPlacement: tooltipPlacement,\n        highlightDay: highlightDay,\n        unhighlightDay: unhighlightDay,\n        eventClicked: eventClicked,\n        tooltipTemplate: tooltipTemplate,\n        tooltipAppendToBody: tooltipAppendToBody,\n        tooltipDelay: tooltipDelay,\n        trackByEventId: trackByEventId,\n        validateDrag: validateDrag\n      }\"\n    >\n    </ng-template>\n  ",
+            template: "\n    <ng-template\n      #defaultTemplate\n      let-day=\"day\"\n      let-openDay=\"openDay\"\n      let-locale=\"locale\"\n      let-tooltipPlacement=\"tooltipPlacement\"\n      let-highlightDay=\"highlightDay\"\n      let-unhighlightDay=\"unhighlightDay\"\n      let-eventClicked=\"eventClicked\"\n      let-tooltipTemplate=\"tooltipTemplate\"\n      let-tooltipAppendToBody=\"tooltipAppendToBody\"\n      let-tooltipDelay=\"tooltipDelay\"\n      let-trackByEventId=\"trackByEventId\"\n      let-validateDrag=\"validateDrag\"\n    >\n      <div\n        class=\"cal-cell-top\"\n        id=\"date-cell\"\n        [attr.aria-label]=\"\n          { day: day, locale: locale } | calendarA11y: 'monthCell'\n        \"\n      >\n        <span aria-hidden=\"true\">\n          <span class=\"cal-day-badge\" *ngIf=\"day.badgeTotal > 0\">{{\n            day.badgeTotal\n          }}</span>\n          <span class=\"cal-day-number\" id=\"day-number-view\">{{\n            day.date | calendarDate: 'monthViewDayNumber':locale\n          }}</span>\n        </span>\n      </div>\n      <div class=\"cal-events\" *ngIf=\"day.events.length > 0\">\n        <div\n          class=\"cal-event\"\n          *ngFor=\"let event of day.events; trackBy: trackByEventId\"\n          [ngStyle]=\"{'width': 100 + '%','height': 61 + 'px', 'border-radius': 0 + 'px','background-color': '#dcf8e9','display': 'flex', 'flex-direction': 'column','justify-content': 'center', 'border-left': '5px solid #58d395','margin-left': '0px','margin-right': '0px','margin-bottom': '0px' }\"\n          [ngClass]=\"event?.cssClass\"\n          (mouseenter)=\"highlightDay.emit({ event: event })\"\n          (mouseleave)=\"unhighlightDay.emit({ event: event })\"\n          [mwlCalendarTooltip]=\"\n            event.title | calendarEventTitle: 'monthTooltip':event\n          \"\n          [tooltipPlacement]=\"tooltipPlacement\"\n          [tooltipEvent]=\"event\"\n          [tooltipTemplate]=\"tooltipTemplate\"\n          [tooltipAppendToBody]=\"tooltipAppendToBody\"\n          [tooltipDelay]=\"tooltipDelay\"\n          mwlDraggable\n          [class.cal-draggable]=\"event.draggable\"\n          dragActiveClass=\"cal-drag-active\"\n          [dropData]=\"{ event: event, draggedFrom: day }\"\n          [dragAxis]=\"{ x: event.draggable, y: event.draggable }\"\n          [validateDrag]=\"validateDrag\"\n          (mwlClick)=\"eventClicked.emit({ event: event, sourceEvent: $event })\"\n          [attr.aria-hidden]=\"{} | calendarA11y: 'hideMonthCellEvents'\"\n          (click) = \"onEventClick(event)\"\n        >\n        <p class=\"event-title\">{{event.start | date:'shortTime'}}</p>\n        <p class=\"event-title\">{{event.title}}</p>\n        </div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        day: day,\n        openDay: openDay,\n        locale: locale,\n        tooltipPlacement: tooltipPlacement,\n        highlightDay: highlightDay,\n        unhighlightDay: unhighlightDay,\n        eventClicked: eventClicked,\n        tooltipTemplate: tooltipTemplate,\n        tooltipAppendToBody: tooltipAppendToBody,\n        tooltipDelay: tooltipDelay,\n        trackByEventId: trackByEventId,\n        validateDrag: validateDrag\n      }\"\n    >\n    </ng-template>\n  ",
             host: {
                 class: 'cal-cell cal-day-cell',
                 '[class.cal-past]': 'day.isPast',
@@ -1771,7 +1786,8 @@ var CalendarMonthCellComponent = /** @class */ (function () {
                 '[class.cal-has-events]': 'day.events.length > 0',
                 '[class.cal-open]': 'day === openDay',
                 '[class.cal-event-highlight]': '!!day.backgroundColor'
-            }
+            },
+            styles: [""]
         })
     ], CalendarMonthCellComponent);
     return CalendarMonthCellComponent;
@@ -1956,7 +1972,7 @@ var CalendarWeekViewComponent = /** @class */ (function () {
         /**
          * The height in pixels of each hour segment
          */
-        this.hourSegmentHeight = 30;
+        this.hourSegmentHeight = 60;
         /**
          * The day start hours in 24 hour time. Must be 0-23
          */
@@ -2064,6 +2080,7 @@ var CalendarWeekViewComponent = /** @class */ (function () {
                 _this.cdr.markForCheck();
             });
         }
+        console.log("eventActionsTemplate", this.eventActionsTemplate);
     };
     /**
      * @hidden
@@ -2576,6 +2593,7 @@ var CalendarWeekViewComponent = /** @class */ (function () {
     ], CalendarWeekViewComponent);
     return CalendarWeekViewComponent;
 }());
+// [eventActionsTemplate]="eventActionsTemplate"
 
 var CalendarWeekViewHeaderComponent = /** @class */ (function () {
     function CalendarWeekViewHeaderComponent() {
@@ -2605,16 +2623,25 @@ var CalendarWeekViewHeaderComponent = /** @class */ (function () {
     CalendarWeekViewHeaderComponent = __decorate([
         Component({
             selector: 'mwl-calendar-week-view-header',
-            template: "\n    <ng-template\n      #defaultTemplate\n      let-days=\"days\"\n      let-locale=\"locale\"\n      let-dayHeaderClicked=\"dayHeaderClicked\"\n      let-eventDropped=\"eventDropped\"\n      let-trackByWeekDayHeaderDate=\"trackByWeekDayHeaderDate\"\n      let-dragEnter=\"dragEnter\"\n    >\n      <div class=\"cal-day-headers\" role=\"row\">\n        <div\n          class=\"cal-header\"\n          *ngFor=\"let day of days; trackBy: trackByWeekDayHeaderDate\"\n          [class.cal-past]=\"day.isPast\"\n          [class.cal-today]=\"day.isToday\"\n          [class.cal-future]=\"day.isFuture\"\n          [class.cal-weekend]=\"day.isWeekend\"\n          [ngClass]=\"day.cssClass\"\n          (mwlClick)=\"dayHeaderClicked.emit({ day: day, sourceEvent: $event })\"\n          mwlDroppable\n          dragOverClass=\"cal-drag-over\"\n          (drop)=\"\n            eventDropped.emit({\n              event: $event.dropData.event,\n              newStart: day.date\n            })\n          \"\n          (dragEnter)=\"dragEnter.emit({ date: day.date })\"\n          tabindex=\"0\"\n          role=\"columnheader\"\n        >\n          <b>{{ day.date | calendarDate: 'weekViewColumnHeader':locale }}</b\n          ><br />\n          <span>{{\n            day.date | calendarDate: 'weekViewColumnSubHeader':locale\n          }}</span>\n        </div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        days: days,\n        locale: locale,\n        dayHeaderClicked: dayHeaderClicked,\n        eventDropped: eventDropped,\n        dragEnter: dragEnter,\n        trackByWeekDayHeaderDate: trackByWeekDayHeaderDate\n      }\"\n    >\n    </ng-template>\n  "
+            template: "\n    <ng-template\n      #defaultTemplate\n      let-days=\"days\"\n      let-locale=\"locale\"\n      let-dayHeaderClicked=\"dayHeaderClicked\"\n      let-eventDropped=\"eventDropped\"\n      let-trackByWeekDayHeaderDate=\"trackByWeekDayHeaderDate\"\n      let-dragEnter=\"dragEnter\"\n    >\n      <div class=\"cal-day-headers\" role=\"row\">\n        <div\n          class=\"cal-header\"\n          *ngFor=\"let day of days; trackBy: trackByWeekDayHeaderDate\"\n          [class.cal-past]=\"day.isPast\"\n          [class.cal-today]=\"day.isToday\"\n          [class.cal-future]=\"day.isFuture\"\n          [class.cal-weekend]=\"day.isWeekend\"\n          [ngClass]=\"day.cssClass\"\n          (mwlClick)=\"dayHeaderClicked.emit({ day: day, sourceEvent: $event })\"\n          mwlDroppable\n          dragOverClass=\"cal-drag-over\"\n          (drop)=\"\n            eventDropped.emit({\n              event: $event.dropData.event,\n              newStart: day.date\n            })\n          \"\n          (dragEnter)=\"dragEnter.emit({ date: day.date })\"\n          tabindex=\"0\"\n          role=\"columnheader\"\n        >\n          <div class=\"week-header-day\">\n            {{ day.date | calendarDate: 'weekViewColumnHeader':locale }}\n          </div>\n          <div class=\"week-header-date\">\n            {{day.date | calendarDate: 'weekViewColumnSubHeader':locale}}\n          </div>\n        </div>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        days: days,\n        locale: locale,\n        dayHeaderClicked: dayHeaderClicked,\n        eventDropped: eventDropped,\n        dragEnter: dragEnter,\n        trackByWeekDayHeaderDate: trackByWeekDayHeaderDate\n      }\"\n    >\n    </ng-template>\n  "
         })
     ], CalendarWeekViewHeaderComponent);
     return CalendarWeekViewHeaderComponent;
 }());
 
 var CalendarWeekViewEventComponent = /** @class */ (function () {
-    function CalendarWeekViewEventComponent() {
+    function CalendarWeekViewEventComponent(eventEmitterService) {
+        this.eventEmitterService = eventEmitterService;
         this.eventClicked = new EventEmitter();
     }
+    CalendarWeekViewEventComponent.prototype.ngOnInit = function () {
+    };
+    CalendarWeekViewEventComponent.prototype.onEventClick = function (event) {
+        this.eventEmitterService.emitNavChangeEvent('EDIT_EVENT_CLICKED', event);
+    };
+    CalendarWeekViewEventComponent.ctorParameters = function () { return [
+        { type: EventEmitterService }
+    ]; };
     __decorate([
         Input()
     ], CalendarWeekViewEventComponent.prototype, "locale", void 0);
@@ -2657,11 +2684,15 @@ var CalendarWeekViewEventComponent = /** @class */ (function () {
     CalendarWeekViewEventComponent = __decorate([
         Component({
             selector: 'mwl-calendar-week-view-event',
-            template: "\n    <ng-template\n      #defaultTemplate\n      let-weekEvent=\"weekEvent\"\n      let-tooltipPlacement=\"tooltipPlacement\"\n      let-eventClicked=\"eventClicked\"\n      let-tooltipTemplate=\"tooltipTemplate\"\n      let-tooltipAppendToBody=\"tooltipAppendToBody\"\n      let-tooltipDisabled=\"tooltipDisabled\"\n      let-tooltipDelay=\"tooltipDelay\"\n      let-column=\"column\"\n      let-daysInWeek=\"daysInWeek\"\n    >\n      <div\n        class=\"cal-event\"\n        [ngStyle]=\"{\n          backgroundColor: weekEvent.event.color?.secondary,\n          borderColor: weekEvent.event.color?.primary\n        }\"\n        [mwlCalendarTooltip]=\"\n          !tooltipDisabled\n            ? (weekEvent.event.title\n              | calendarEventTitle\n                : (daysInWeek === 1 ? 'dayTooltip' : 'weekTooltip')\n                : weekEvent.event)\n            : ''\n        \"\n        [tooltipPlacement]=\"tooltipPlacement\"\n        [tooltipEvent]=\"weekEvent.event\"\n        [tooltipTemplate]=\"tooltipTemplate\"\n        [tooltipAppendToBody]=\"tooltipAppendToBody\"\n        [tooltipDelay]=\"tooltipDelay\"\n        (mwlClick)=\"eventClicked.emit({ sourceEvent: $event })\"\n        (mwlKeydownEnter)=\"eventClicked.emit({ sourceEvent: $event })\"\n        tabindex=\"0\"\n        role=\"application\"\n        [attr.aria-label]=\"\n          { event: weekEvent.event, locale: locale }\n            | calendarA11y: 'eventDescription'\n        \"\n      >\n        <mwl-calendar-event-actions\n          [event]=\"weekEvent.event\"\n          [customTemplate]=\"eventActionsTemplate\"\n        >\n        </mwl-calendar-event-actions>\n        &ngsp;\n        <mwl-calendar-event-title\n          [event]=\"weekEvent.event\"\n          [customTemplate]=\"eventTitleTemplate\"\n          [view]=\"daysInWeek === 1 ? 'day' : 'week'\"\n        >\n        </mwl-calendar-event-title>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        weekEvent: weekEvent,\n        tooltipPlacement: tooltipPlacement,\n        eventClicked: eventClicked,\n        tooltipTemplate: tooltipTemplate,\n        tooltipAppendToBody: tooltipAppendToBody,\n        tooltipDisabled: tooltipDisabled,\n        tooltipDelay: tooltipDelay,\n        column: column,\n        daysInWeek: daysInWeek\n      }\"\n    >\n    </ng-template>\n  "
+            template: "\n    <ng-template\n      #defaultTemplate\n      let-weekEvent=\"weekEvent\"\n      let-tooltipPlacement=\"tooltipPlacement\"\n      let-eventClicked=\"eventClicked\"\n      let-tooltipTemplate=\"tooltipTemplate\"\n      let-tooltipAppendToBody=\"tooltipAppendToBody\"\n      let-tooltipDisabled=\"tooltipDisabled\"\n      let-tooltipDelay=\"tooltipDelay\"\n      let-column=\"column\"\n      let-daysInWeek=\"daysInWeek\"\n    >\n      <div\n        class=\"cal-event\"\n        [ngStyle]=\"{\n          backgroundColor: weekEvent.event.color?.secondary,'border-left': '5px solid',\n          'borderColor': '#867ff2'\n        }\"\n        [mwlCalendarTooltip]=\"\n          !tooltipDisabled\n            ? (weekEvent.event.title\n              | calendarEventTitle\n                : (daysInWeek === 1 ? 'dayTooltip' : 'weekTooltip')\n                : weekEvent.event)\n            : ''\n        \"\n        [tooltipPlacement]=\"tooltipPlacement\"\n        [tooltipEvent]=\"weekEvent.event\"\n        [tooltipTemplate]=\"tooltipTemplate\"\n        [tooltipAppendToBody]=\"tooltipAppendToBody\"\n        [tooltipDelay]=\"tooltipDelay\"\n        (mwlClick)=\"eventClicked.emit({ sourceEvent: $event })\"\n        (mwlKeydownEnter)=\"eventClicked.emit({ sourceEvent: $event })\"\n        tabindex=\"0\"\n        role=\"application\"\n        (click) = \"onEventClick(weekEvent.event)\"\n      >\n      <p class=\"week-event-title\">{{weekEvent.event.start | date:'shortTime'}}</p>\n      <p class=\"week-event-title\">{{weekEvent.event.title}}</p>\n        <mwl-calendar-event-actions\n          [event]=\"weekEvent.event\"\n          [customTemplate]=\"eventActionsTemplate\"\n        >\n        </mwl-calendar-event-actions>\n      </div>\n    </ng-template>\n    <ng-template\n      [ngTemplateOutlet]=\"customTemplate || defaultTemplate\"\n      [ngTemplateOutletContext]=\"{\n        weekEvent: weekEvent,\n        tooltipPlacement: tooltipPlacement,\n        eventClicked: eventClicked,\n        tooltipTemplate: tooltipTemplate,\n        tooltipAppendToBody: tooltipAppendToBody,\n        tooltipDisabled: tooltipDisabled,\n        tooltipDelay: tooltipDelay,\n        column: column,\n        daysInWeek: daysInWeek\n      }\"\n    >\n    </ng-template>\n  "
         })
     ], CalendarWeekViewEventComponent);
     return CalendarWeekViewEventComponent;
 }());
+// [attr.aria-label]="
+// { event: weekEvent.event, locale: locale }
+//   | calendarA11y: 'eventDescription'
+// "
 
 var CalendarWeekViewHourSegmentComponent = /** @class */ (function () {
     function CalendarWeekViewHourSegmentComponent() {
@@ -2764,7 +2795,7 @@ var CalendarWeekModule = /** @class */ (function () {
                 CommonModule,
                 ResizableModule,
                 DragAndDropModule,
-                CalendarCommonModule
+                CalendarCommonModule,
             ],
             declarations: [
                 CalendarWeekViewComponent,
@@ -2781,7 +2812,11 @@ var CalendarWeekModule = /** @class */ (function () {
                 CalendarWeekViewEventComponent,
                 CalendarWeekViewHourSegmentComponent,
                 CalendarWeekViewCurrentTimeMarkerComponent
-            ]
+            ],
+            providers: [{
+                    provide: MatDialogRef,
+                }
+            ],
         })
     ], CalendarWeekModule);
     return CalendarWeekModule;
@@ -2970,16 +3005,17 @@ var CalendarModalComponent = /** @class */ (function () {
         this.eventEmitterService = eventEmitterService;
         this.data = data;
         this.screenType = "add";
+        this.title = this.data ? "Edit Event" : "Add Event";
         this.titlePlaceholder = this.data ? "Edit Title" : "Add Title";
         this.locationPlaceholder = this.data ? "Edit Location" : "Add Location";
         this.descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
         this.addEvents = new FormGroup({
-            title: new FormControl(),
+            title: new FormControl('', Validators.required),
             location: new FormControl(),
             description: new FormControl(),
-            fromDate: new FormControl(),
-            toDate: new FormControl(),
-            fromTime: new FormControl(),
+            fromDate: new FormControl('', Validators.required),
+            toDate: new FormControl('', Validators.required),
+            fromTime: new FormControl('', Validators.required),
             toTime: new FormControl(),
         });
     }
@@ -2997,6 +3033,7 @@ var CalendarModalComponent = /** @class */ (function () {
         this.addEvents.controls['toDate'].setValue(this.data.end);
         this.addEvents.controls['fromTime'].setValue(this.data.fromTime);
         this.addEvents.controls['toTime'].setValue(this.data.toTime);
+        console.log("this.addEvents", this.addEvents);
     };
     CalendarModalComponent.prototype.addOrUpdateEvent = function () {
         var tempObject = {
@@ -3014,8 +3051,13 @@ var CalendarModalComponent = /** @class */ (function () {
         else {
             this.eventEmitterService.emitNavChangeEvent('EDIT_SAVE_CLICKED', tempObject);
         }
+        this.dialogRef.close();
     };
     CalendarModalComponent.prototype.onNoClick = function () {
+        this.dialogRef.close();
+    };
+    CalendarModalComponent.prototype.onDelete = function () {
+        this.eventEmitterService.emitNavChangeEvent('DELETE_EVENT_CLICKED', this.data);
         this.dialogRef.close();
     };
     CalendarModalComponent.ctorParameters = function () { return [
@@ -3026,8 +3068,8 @@ var CalendarModalComponent = /** @class */ (function () {
     CalendarModalComponent = __decorate([
         Component({
             selector: 'app-calendar-modal',
-            template: "<!-- <div class=\"modal-dialog\" role=\"document\">\n    <div class=\"modal-content\">\n        <div class=\"modal-header\">\n            <h4 class=\"modal-title\" style=\"font-family: Poppins;\" id=\"exampleModalLabel\">Add Event</h4>\n            <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">\n                <span aria-hidden=\"true\">&times;</span>\n            </button>\n        </div>\n        <div class=\"modal-body\">\n\n            <form class=\"example-form\" [formGroup]=\"addEvents\">\n\n                <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n                    style=\"font-family: Poppins;width: 95% !important;\">\n                    <input matInput placeholder=\"Add Title\" style=\"font-family: Poppins;\" formControlName=\"title\"\n                        value=\"\">\n                </mat-form-field>\n\n                <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;\n    justify-content: space-between !important;align-items: center;\">\n                    <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n                    <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n                        <mat-label>Choose a date</mat-label>\n                        <input matInput [matDatepicker]=\"picker\">\n                        <mat-datepicker-toggle matSuffix [for]=\"picker\">\n                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n                        </mat-datepicker-toggle>\n                        <mat-datepicker #picker></mat-datepicker>\n                    </mat-form-field>\n\n                    <mat-form-field style=\"width: 16%;\">\n                        <mat-label style=\"font-family: Poppins;\">Start Time</mat-label>\n                        <mat-select style=\"font-family: Poppins;\" name=\"countryString\" [(value)]=\"selectedCountry\">\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"volvo\"\n                                selected>03:00 AM</mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"saab\">04:00 AM\n                            </mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"mercedes\">\n                                05:00 AM</mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"audi\">06:00 AM\n                            </mat-option>\n                        </mat-select>\n                    </mat-form-field>\n\n\n                    <mat-form-field style=\"width: 16%;\">\n                        <mat-label style=\"font-family: Poppins;\">End Time</mat-label>\n                        <mat-select style=\"font-family: Poppins;\" name=\"countryString\" [(value)]=\"selectedCountry\">\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"volvo\"\n                                selected>03:00 AM</mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"saab\">04:00 AM\n                            </mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"mercedes\">\n                                05:00 AM</mat-option>\n                            <mat-option style=\"font-family: Poppins;z-index: 99999999 !important\" value=\"audi\">06:00 AM\n                            </mat-option>\n                        </mat-select>\n                    </mat-form-field>\n\n                    <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n                        <mat-label>Choose a date</mat-label>\n                        <input matInput [matDatepicker]=\"datepicker\">\n                        <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n                            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n                        </mat-datepicker-toggle>\n                        <mat-datepicker #datepicker></mat-datepicker>\n                    </mat-form-field>\n                </div>\n\n                <div class=\"header\">\n                    <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n                    <mat-form-field class=\"form-field\">\n                        <input matInput placeholder=\"Add Location\" formControlName=\"location\" value=\"\"\n                            style=\" width: 95% !important;\" />\n                    </mat-form-field>\n                </div>\n\n                <div class=\"header\">\n                    <mat-icon aria-hidden=\"false\">menu</mat-icon>\n                    <mat-form-field class=\"form-field\">\n                        <textarea matInput placeholder=\"Add description\" formControlName=\"description\" value=\"\"\n                            style=\" width: 95% !important;\"></textarea>\n                    </mat-form-field>\n                </div>\n\n            </form>\n\n            <div class=\"modal-footer\">\n                <button type=\"button\" class=\"btn btn-primary\" (click)=\"addEvent()\" data-dismiss=\"modal\">Save</button>\n            </div>\n        </div>\n    </div>\n</div> -->\n\n<!-- <h1 mat-dialog-title>Hi</h1>\n<div mat-dialog-content>\n  <p>What's your favorite animal?</p>\n  <mat-form-field>\n    <input matInput>\n  </mat-form-field>\n</div>\n<div mat-dialog-actions>\n  <button mat-button (click)=\"onNoClick()\">No Thanks</button>\n  <button mat-button [mat-dialog-close]=\"'data'\" cdkFocusInitial>Ok</button>\n</div> -->\n\n<div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{titlePlaceholder}}</h1>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n</div>\n<div mat-dialog-content>\n\n    <form class=\"example-form\" [formGroup]=\"addEvents\">\n\n        <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n            style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n            <input matInput placeholder=\"{{titlePlaceholder}}\" style=\"font-family: Poppins;\" formControlName=\"title\">\n        </mat-form-field>\n\n        <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n            <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n            <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;\">\n                <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n                    <mat-label>Start date</mat-label>\n                    <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\">\n                    <mat-datepicker-toggle matSuffix [for]=\"picker\">\n                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n                    </mat-datepicker-toggle>\n                    <mat-datepicker #picker></mat-datepicker>\n                </mat-form-field>\n\n                <div class=\"md-form\">\n                    <input type=\"time\" id=\"input\" formControlName=\"fromTime\" class=\"form-control\" mdbInput />\n                </div>\n\n\n                <div class=\"md-form\">\n                    <input type=\"time\" id=\"input\" formControlName=\"toTime\" class=\"form-control\" mdbInput />\n                </div>\n\n                <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n                    <mat-label>End date</mat-label>\n                    <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n                        [matDatepicker]=\"datepicker\">\n                    <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n                        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n                    </mat-datepicker-toggle>\n                    <mat-datepicker #datepicker></mat-datepicker>\n                </mat-form-field>\n            </div>\n\n        </div>\n\n        <div class=\"header\">\n            <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n            <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n                <input matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n                    style=\" width: 95% !important;\" />\n            </mat-form-field>\n        </div>\n\n        <div class=\"header\">\n            <mat-icon aria-hidden=\"false\">menu</mat-icon>\n            <mat-form-field class=\"form-field\" id=\"formField\" style=\"margin-left: 2%;\">\n                <textarea matInput placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"\n                    style=\" width: 95% !important;height: 21px;\"></textarea>\n            </mat-form-field>\n        </div>\n    </form>\n</div>\n<div mat-dialog-actions style=\"margin-left: 91%;\" *ngIf=\"addEvents.controls['description'].value!==''\n&& addEvents.controls['description'].value!==null &&\naddEvents.controls['location'].value!==''&& \naddEvents.controls['location'].value!==null &&\naddEvents.controls['title'].value!==''&& \naddEvents.controls['title'].value!==null &&\naddEvents.controls['fromDate'].value!==''&&\naddEvents.controls['fromDate'].value!==null &&\naddEvents.controls['toDate'].value!==''\n&& addEvents.controls['toDate'].value!==null &&\naddEvents.controls['fromTime'].value!==''&& \naddEvents.controls['fromTime'].value!==null &&\naddEvents.controls['toTime'].value!==''\n&&  addEvents.controls['toTime'].value!==null &&\naddEvents.controls['fromDate'].value <=\naddEvents.controls['toDate'].value &&\naddEvents.controls['fromTime'].value <\naddEvents.controls['toTime'].value\n\n\">\n    <button type=\"button\" class=\"btn btn-primary\" [mat-dialog-close]=\"'data'\" cdkFocusInitial\n        (click)=\"addOrUpdateEvent()\">Save</button>\n</div>",
-            styles: [".cdk-overlay-container{z-index:1127}.form-field{font-family:Poppins;width:95%!important}.header{margin-top:4%;display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.titleStyle{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between}"]
+            template: "<div class=\"header\">\n  <div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{title}}</h1>\n  </div>\n  <div>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onDelete()\">delete\n    </mat-icon>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n  </div>\n</div>\n<div mat-dialog-content id=\"dialog-container\">\n\n  <form class=\"example-form\" [formGroup]=\"addEvents\" (ngSubmit)=\"addOrUpdateEvent()\">\n\n    <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n      style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n      <input class=\"add-title-input\" matInput placeholder=\"{{titlePlaceholder}}\" formControlName=\"title\">\n    </mat-form-field>\n\n    <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n      <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n      <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;\">\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;\">\n          <mat-label>Start date</mat-label>\n          <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"picker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field>\n          <input matInput [ngxTimepicker]=\"fromTime\" [format]=\"24\" formControlName=\"fromTime\"  readonly >\n          <ngx-material-timepicker #fromTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field>\n          <input matInput [ngxTimepicker]=\"toTime\" [format]=\"24\" formControlName=\"toTime\" readonly\n            [disabled]=\"addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value\">\n          <ngx-material-timepicker #toTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n          <mat-label>End date</mat-label>\n          <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n            [matDatepicker]=\"datepicker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #datepicker></mat-datepicker>\n        </mat-form-field>\n      </div>\n\n    </div>\n\n    <div class=\"header\">\n      <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n      <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n        <input matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n          style=\" width: 95% !important;\" />\n      </mat-form-field>\n    </div>\n\n    <div class=\"text-area-container\">\n      <mat-icon aria-hidden=\"false\" class=\"menu-icon-view\">menu</mat-icon>\n      <textarea class=\"text-area-view\" placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"></textarea>\n    </div>\n    <div class=\"save-button-view\">\n      <button type=\"submit\" mat-button class=\"event-button\" [disabled]=\"!addEvents.valid\" [ngStyle]=\"{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }\">Save</button>\n    </div>\n  </form>\n</div>\n\n",
+            styles: [".cdk-overlay-container{z-index:1127}.form-field{font-family:Poppins;width:95%!important}.event-button{background:#404041;color:#fff;width:141px;height:42px;border-radius:4px;border:1px solid #404041}.titleStyle{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between}.header{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center}.save-button-view{display:-webkit-box;display:flex;-webkit-box-pack:end;justify-content:flex-end;-webkit-box-align:center;align-items:center;margin-bottom:0!important}.save-button-view button{width:110px;height:47px;border-radius:6px;background-color:#404041}.text-area-view{width:100%!important;height:75px;resize:unset;overflow:auto;padding-top:5px;padding-left:5px;margin-left:2%;border-radius:5px}.text-area-container{display:-webkit-box;display:flex;-webkit-box-align:start;align-items:flex-start;padding-top:28px;padding-bottom:2%}.menu-icon-view{position:relative;bottom:3px}.titleStyle h1{margin-bottom:0!important;font-family:Poppins;font-size:28px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}.add-title-input{font-size:20px!important;font-weight:500!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.01px!important;text-align:left!important;color:#7b7f8b!important}input{font-size:20px;font-weight:500;font-stretch:normal;font-style:normal;letter-spacing:.01px;text-align:left;color:#7b7f8b}#dialog-container{max-height:70vh!important}"]
         }),
         __param(2, Inject(MAT_DIALOG_DATA))
     ], CalendarModalComponent);
@@ -3246,12 +3288,14 @@ var CalendarCommonHeaderComponent = /** @class */ (function () {
     CalendarCommonHeaderComponent = __decorate([
         Component({
             selector: 'mwl-calendar-header',
-            template: "\n  \n  <div class=\"row text-center\">\n          <div class=\"col-md-4\">\n                <div class=\"btn-group\">\n                    <div *ngIf=\"showPreviousDayBtn\" class=\"btn btn-primary\"\n                      mwlCalendarPreviousView\n                      [(viewDate)]=\"viewDate\"\n                      [view]=\"view\"\n                      (viewDateChange)=\"onViewDateChange('Previous')\"\n                      (viewChange)=\"onViewChange()\"\n                      [daysInWeek]=\"daysInWeek\"\n                      [excludeDays]=\"excludeDays\"\n                      >\n                          Previous\n                    </div>\n                      <div *ngIf=\"showTodayBtn\" class=\"btn btn-outline-secondary\"\n                        mwlCalendarToday\n                        [(viewDate)]=\"viewDate\"\n                        (viewDateChange)=\"viewDateChange.next(viewDate)\">\n                          Today\n                      </div>\n                      <div *ngIf=\"showNextDayBtn\" class=\"btn btn-primary\"        \n                        mwlCalendarNextView\n                        [view]=\"view\"\n                        [(viewDate)]=\"viewDate\"\n                        (viewDateChange)=\"onViewDateChange('Next')\"\n                        (viewChange)=\"onViewChange()\"\n                        [daysInWeek]=\"daysInWeek\"\n                        [excludeDays]=\"excludeDays\"\n                        >\n                          Next\n                      </div>\n                </div>\n                &nbsp;\n                <button *ngIf=\"showAddEvent\" (click)=\"addEventClick()\" type=\"button\" class=\"btn btn-primary\" data-toggle=\"modal\" data-target=\"#basicExampleModal\">\n                  Add Event\n                </button> \n           </div>\n          <div class=\"col-md-4\">\n            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>\n          </div>\n          <div class=\"col-md-4\">\n                  <div class=\"btn-group\">\n                    <div *ngIf=\"showMonthBtn\" class=\"btn btn-primary\" (click)=\"onSetView('month')\" [class.active]=\"view === 'month'\">\n                      Month\n                    </div>\n                    <div *ngIf=\"showWeekBtn\" class=\"btn btn-primary\" (click)=\"onSetView('week')\" [class.active]=\"view === 'week'\">\n                      Week\n                    </div>\n                    <div *ngIf=\"showDayBtn\" class=\"btn btn-primary\" (click)=\"onSetView('day')\" [class.active]=\"view === 'day'\">\n                      Day\n                    </div>\n                  </div>\n            </div>\n  </div>\n  "
+            template: "  \n  <div>\n  <h1 class=\"calendar-header-text\">Calendar </h1> \n  <div class=\"header-container\">\n     \n    <div class=\"header-view\">\n      <div>\n        <mat-button-toggle-group id=\"today-toggle-group\" name=\"fontStyle\" aria-label=\"Font Style\"\n        #group=\"matButtonToggleGroup\">\n        <mat-button-toggle class=\"previous-button\" id=\"toggle-button\" \n          *ngIf=\"showPreviousDayBtn\"\n          mwlCalendarPreviousView \n          [(viewDate)]=\"viewDate\" \n          [view]=\"view\" \n          (viewDateChange)=\"onViewDateChange('Previous')\" \n          (viewChange)=\"onViewChange()\" \n          [daysInWeek]=\"daysInWeek\" \n          [excludeDays]=\"excludeDays\">\n          Previous\n        </mat-button-toggle>\n        <mat-button-toggle id=\"toggle-button\" \n        *ngIf=\"showTodayBtn\"\n                mwlCalendarToday \n                [(viewDate)]=\"viewDate\" \n                (viewDateChange)=\"viewDateChange.next(viewDate)\">\n        Today\n        </mat-button-toggle>\n        <mat-button-toggle id=\"toggle-button\" \n        *ngIf=\"showNextDayBtn\"\n                mwlCalendarNextView \n                [view]=\"view\" \n                [(viewDate)]=\"viewDate\" \n                (viewDateChange)=\"onViewDateChange('Next')\" \n                (viewChange)=\"onViewChange()\" \n                [daysInWeek]=\"daysInWeek\" \n                [excludeDays]=\"excludeDays\">\n        Next\n        </mat-button-toggle>\n      </mat-button-toggle-group>\n    </div>\n      \n      <button class=\"event-button\" *ngIf=\"showAddEvent\" (click)=\"addEventClick()\" mat-raised-button><mat-icon class=\"add-icon-view\">add</mat-icon> Add Event</button>\n    </div>\n    <div class=\"date-view-container\">\n      <mat-icon mwlCalendarPreviousView \n      [(viewDate)]=\"viewDate\" \n      [view]=\"view\" \n      (viewDateChange)=\"onViewDateChange('Previous')\" \n      (viewChange)=\"onViewChange()\" \n      [daysInWeek]=\"daysInWeek\" \n      [excludeDays]=\"excludeDays\">arrow_left</mat-icon>\n      <h3 class=\"date-view\">{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>\n      <mat-icon mwlCalendarNextView \n      [view]=\"view\" \n      [(viewDate)]=\"viewDate\" \n      (viewDateChange)=\"onViewDateChange('Next')\" \n      (viewChange)=\"onViewChange()\" \n      [daysInWeek]=\"daysInWeek\" \n      [excludeDays]=\"excludeDays\">arrow_right</mat-icon>\n    </div>\n    <div>\n      <mat-button-toggle-group class=\"day-toggle-view\" id=\"toggle-group\" name=\"fontStyle\" aria-label=\"Font Style\" #group=\"matButtonToggleGroup\">\n        <mat-button-toggle class=\"day-view\" id=\"toggle-button\" *ngIf=\"showDayBtn\" (click)=\"onSetView('day')\" [checked]=\"view === 'day'\">Day</mat-button-toggle>\n        <mat-button-toggle id=\"toggle-button\" *ngIf=\"showWeekBtn\" (click)=\"onSetView('week')\" [checked]=\"view === 'week'\">Week</mat-button-toggle>\n        <mat-button-toggle id=\"toggle-button\" *ngIf=\"showMonthBtn\" (click)=\"onSetView('month')\" [checked]=\"view === 'month'\">Month</mat-button-toggle>\n      </mat-button-toggle-group>\n    </div>\n</div>\n</div>\n  ",
+            styles: [".header-container{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center;padding:20px!important}.header-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.header-view>div{margin-right:3%}.event-button{background:#404041;color:#fff;width:136px;height:42px;border-radius:4px;display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.add-icon-view{font-size:22px!important}#today-toggle-group{max-width:210px;width:auto;border-radius:4px;background-color:#fff}#toggle-button{padding-top:4px;padding-bottom:4px}.calendar-header-text{font-size:32px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.02px;padding-left:16px;color:#404041;font-family:sans-serif}#toggle-group{max-width:188px!important;width:auto;height:42px;border-radius:4px;background-color:#fff}#toggle-button-button{width:92px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important;height:32px}#toggle-button-button>div{width:75px;height:25px;font-size:18px;font-weight:400;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}#today-toggle-group .mat-button-toggle{height:34px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.previous-button{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.date-view{height:20px;font-size:14px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:normal;text-align:left;color:#4d585e;margin:0!important;display:-webkit-box;display:flex;-webkit-box-pack:center;justify-content:center}.date-view-container{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center;cursor:pointer}.day-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.mat-button-toggle-checked{color:#fff;background-color:#404041;border-radius:3px}.mat-button-toggle{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.cal-month-view .cal-cell-top{border:1px solid #dadbdd!important}"]
         })
     ], CalendarCommonHeaderComponent);
     return CalendarCommonHeaderComponent;
 }());
 
+var ɵ0 = {}, ɵ1 = {};
 var CalendarCommonModalModule = /** @class */ (function () {
     function CalendarCommonModalModule() {
     }
@@ -3264,7 +3308,6 @@ var CalendarCommonModalModule = /** @class */ (function () {
                 MatIconModule$1,
                 MatFormFieldModule,
                 MatInputModule,
-                // FormsModule,     
                 MatNativeDateModule,
                 MatDatepickerModule,
                 ReactiveFormsModule,
@@ -3272,11 +3315,12 @@ var CalendarCommonModalModule = /** @class */ (function () {
                 MatSelectModule,
                 MatToolbarModule,
                 BrowserModule,
-                BrowserAnimationsModule
+                BrowserAnimationsModule,
+                NgxMaterialTimepickerModule
             ],
-            providers: [{
-                    provide: MatDialogRef,
-                }
+            providers: [
+                { provide: MAT_DIALOG_DATA, useValue: ɵ0 },
+                { provide: MatDialogRef, useValue: ɵ1 }
             ],
             declarations: [CalendarModalComponent],
             exports: [CalendarModalComponent],
@@ -3290,15 +3334,23 @@ var CalendarCommonHeaderModule = /** @class */ (function () {
     }
     CalendarCommonHeaderModule = __decorate([
         NgModule({
-            imports: [CommonModule, CalendarCommonModule,
-                CalendarWeekModule, CalendarCommonModalModule],
+            imports: [
+                CommonModule,
+                CalendarCommonModule,
+                CalendarWeekModule,
+                CalendarCommonModalModule,
+                MatButtonModule,
+                MatIconModule,
+                MatButtonToggleModule
+            ],
             declarations: [CalendarCommonHeaderComponent,
             ],
             providers: [
                 EventEmitterService
             ],
             entryComponents: [CalendarModalComponent],
-            exports: [CalendarCommonHeaderComponent]
+            exports: [CalendarCommonHeaderComponent],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
         })
     ], CalendarCommonHeaderModule);
     return CalendarCommonHeaderModule;
@@ -3318,7 +3370,7 @@ function adapterFactory() {
         getYear: getYear });
 }
 
-var ɵ0 = adapterFactory;
+var ɵ0$1 = adapterFactory;
 /**
  * The main module of this library. Example usage:
  *
@@ -3349,7 +3401,7 @@ var CalendarModule = /** @class */ (function () {
                 MatIconModule,
                 CalendarCommonModule.forRoot({
                     provide: DateAdapter,
-                    useFactory: ɵ0
+                    useFactory: ɵ0$1
                 })
             ],
             exports: [
@@ -3374,5 +3426,5 @@ var CalendarModule = /** @class */ (function () {
  * Generated bundle index. Do not edit.
  */
 
-export { CalendarA11y, CalendarAngularDateFormatter, CalendarCommonHeaderComponent, CalendarCommonHeaderModule, CalendarCommonModule, CalendarDateFormatter, CalendarDayModule, CalendarDayViewComponent, CalendarEventTimesChangedEventType, CalendarEventTitleFormatter, CalendarModule, CalendarMomentDateFormatter, CalendarMonthModule, CalendarMonthViewComponent, CalendarNativeDateFormatter, CalendarUtils, CalendarView, CalendarWeekModule, CalendarWeekViewComponent, DateAdapter, MOMENT, collapseAnimation, getWeekViewPeriod, ɵ0, CalendarOpenDayEventsComponent as ɵa, CalendarEventActionsComponent as ɵb, EventEmitterService as ɵc, CalendarEventTitleComponent as ɵd, CalendarTooltipWindowComponent as ɵe, CalendarTooltipDirective as ɵf, CalendarPreviousViewDirective as ɵg, CalendarNextViewDirective as ɵh, CalendarTodayDirective as ɵi, CalendarDatePipe as ɵj, CalendarEventTitlePipe as ɵk, CalendarA11yPipe as ɵl, ClickDirective as ɵm, KeydownEnterDirective as ɵn, CalendarMonthCellComponent as ɵo, CalendarMonthViewHeaderComponent as ɵp, CalendarWeekViewHeaderComponent as ɵq, CalendarWeekViewEventComponent as ɵr, CalendarWeekViewHourSegmentComponent as ɵs, CalendarWeekViewCurrentTimeMarkerComponent as ɵt, CalendarCommonModalModule as ɵu, CalendarModalComponent as ɵv, adapterFactory as ɵw };
+export { CalendarA11y, CalendarAngularDateFormatter, CalendarCommonHeaderComponent, CalendarCommonHeaderModule, CalendarCommonModule, CalendarDateFormatter, CalendarDayModule, CalendarDayViewComponent, CalendarEventTimesChangedEventType, CalendarEventTitleFormatter, CalendarModule, CalendarMomentDateFormatter, CalendarMonthModule, CalendarMonthViewComponent, CalendarNativeDateFormatter, CalendarUtils, CalendarView, CalendarWeekModule, CalendarWeekViewComponent, DateAdapter, MOMENT, collapseAnimation, getWeekViewPeriod, ɵ0$1 as ɵ0, CalendarOpenDayEventsComponent as ɵa, CalendarEventActionsComponent as ɵb, EventEmitterService as ɵc, CalendarEventTitleComponent as ɵd, CalendarTooltipWindowComponent as ɵe, CalendarTooltipDirective as ɵf, CalendarPreviousViewDirective as ɵg, CalendarNextViewDirective as ɵh, CalendarTodayDirective as ɵi, CalendarDatePipe as ɵj, CalendarEventTitlePipe as ɵk, CalendarA11yPipe as ɵl, ClickDirective as ɵm, KeydownEnterDirective as ɵn, CalendarMonthCellComponent as ɵo, CalendarMonthViewHeaderComponent as ɵp, CalendarWeekViewHeaderComponent as ɵq, CalendarWeekViewEventComponent as ɵr, CalendarWeekViewHourSegmentComponent as ɵs, CalendarWeekViewCurrentTimeMarkerComponent as ɵt, CalendarCommonModalModule as ɵu, CalendarModalComponent as ɵv, adapterFactory as ɵw };
 //# sourceMappingURL=neo-calendar.js.map

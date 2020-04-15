@@ -8,12 +8,14 @@ export declare class CalendarModalComponent implements OnInit {
     data: any;
     constructor(dialogRef: MatDialogRef<CalendarModalComponent>, eventEmitterService: EventEmitterService, data: any);
     screenType: string;
+    title: string;
     titlePlaceholder: string;
     locationPlaceholder: string;
     descriptionPlaceholder: string;
+    addEvents: FormGroup;
     ngOnInit(): void;
     assignEventDetails(): void;
-    addEvents: FormGroup;
     addOrUpdateEvent(): void;
     onNoClick(): void;
+    onDelete(): void;
 }

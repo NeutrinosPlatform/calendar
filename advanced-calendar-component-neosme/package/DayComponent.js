@@ -23,16 +23,6 @@ module.exports = class DayComponent extends AdvancedComponent {
       templateUrl
     });
     super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
-
-    super.addAttribute(
-      new Attribute({
-        key: 'Day',
-        value: 'Day',
-        type: 'a',
-        useAsLabel: true,
-        isVisibleForParent: true
-      })
-    );
     super.addAttribute(new Attribute({
       key: 'viewDate',
       value: '',
@@ -203,55 +193,106 @@ module.exports = class DayComponent extends AdvancedComponent {
     let viewDate = componentAttribute.viewDate['_value'];
     let events = componentAttribute.events['_value'];
     let refresh = componentAttribute.refresh['_value'];
+    let eventTimesChanged = componentAttribute.eventTimesChanged['_value'];
+    let allDayEventsLabelTemplate = componentAttribute.allDayEventsLabelTemplate['_value'];
+    let currentTimeMarkerTemplate = componentAttribute.currentTimeMarkerTemplate['_value'];
     let dayEndHour = componentAttribute.dayEndHour['_value'];
     let dayEndMinute = componentAttribute.dayEndMinute['_value'];
     let dayStartHour = componentAttribute.dayStartHour['_value'];
     let dayStartMinute = componentAttribute.dayStartMinute['_value'];
+    let eventActionsTemplate = componentAttribute.eventActionsTemplate['_value'];
     let eventSnapSize = componentAttribute.eventSnapSize['_value'];
+    let eventTemplate = componentAttribute.eventTemplate['_value'];
+    let eventTitleTemplate = componentAttribute.eventTitleTemplate['_value'];
     let hourSegmentHeight = componentAttribute.hourSegmentHeight['_value'];
     let hourSegments = componentAttribute.hourSegments['_value'];
-    let tooltipAppendToBody = componentAttribute.tooltipAppendToBody['_value'];
-    let tooltipDelay = componentAttribute.tooltipDelay['_value'];
-    let tooltipPlacement = componentAttribute.tooltipPlacement['_value'];
-    let eventTimesChanged = componentAttribute.eventTimesChanged['_value'];
-    let eventClicked = componentAttribute.eventClicked['_value'];
-    let beforeViewRender = componentAttribute.beforeViewRender['_value'];
-    let hourSegmentClicked = componentAttribute.hourSegmentClicked['_value'];
-    let eventActionsTemplate = componentAttribute.eventActionsTemplate['_value'];
-    let eventTemplate = componentAttribute.eventTemplate['_value'];
     let hourSegmentTemplate = componentAttribute.hourSegmentTemplate['_value'];
     let locale = componentAttribute.locale['_value'];
     let snapDraggedEvents = componentAttribute.snapDraggedEvents['_value'];
-    let eventTitleTemplate = componentAttribute.eventTitleTemplate['_value'];
+    let tooltipAppendToBody = componentAttribute.tooltipAppendToBody['_value'];
+    let tooltipDelay = componentAttribute.tooltipDelay['_value'];
+    let tooltipPlacement = componentAttribute.tooltipPlacement['_value'];
+    let tooltipTemplate = componentAttribute.tooltipTemplate['_value'];
+    let beforeViewRender = componentAttribute.beforeViewRender['_value'];
+    let eventClicked = componentAttribute.eventClicked['_value'];
+    let hourSegmentClicked = componentAttribute.hourSegmentClicked['_value'];
 
     let template = '';
-    template = `<div %style% > <mwl-calendar-day-view
+    template = `<div %style%> <mwl-calendar-day-view
     *ngIf="view=='day'"
-    [(viewDate)]= "${viewDate}"
-    [events]="${events}"
-    [refresh]="${refresh}"
-    [dayEndHour] = "${dayEndHour}"
-    [dayEndMinute] = "${dayEndMinute}"
-    [dayStartHour] = "${dayStartHour}"
-    [dayStartMinute] = "${dayStartMinute}"
-    [hourSegmentHeight] = "${hourSegmentHeight}"
-    [hourSegments] = "${hourSegments}"
-    [eventSnapSize] = "${eventSnapSize}"
-    [tooltipDelay] = "${tooltipDelay}"
-    [tooltipAppendToBody] = "${tooltipAppendToBody}"
-    [tooltipPlacement] = "${tooltipPlacement}"
-    [eventActionsTemplate] = "${eventActionsTemplate}"
-    [eventTemplate] = "${eventTemplate}"
-    [eventTitleTemplate] = "${eventTitleTemplate}"
-    [hourSegmentTemplate] = "${hourSegmentTemplate}"
-    [locale] = "${locale}"
-    [snapDraggedEvents] = "${snapDraggedEvents}"
     `;
-    if(classValue!==null){
+    if (classValue !== null && classValue !== '') {
       classValue = classValue.toString();
       classValue = classValue.replace(",", " ");
       template = template + `class = "${classValue}"`
     }
+
+    if (viewDate !== "")
+      template = template + `[viewDate]= "${viewDate}"`;
+
+    if (events !== "")
+      template = template + `[events]="${events}"`;
+
+    if (refresh !== "")
+      template = template + `[refresh]="${refresh}"`;
+
+    if (dayEndHour !== "")
+      template = template + `[dayEndHour] = "${dayEndHour}"`;
+
+    if (dayEndMinute !== "")
+      template = template + `[dayEndMinute] = "${dayEndMinute}"`;
+
+    if (dayStartHour !== "")
+      template = template + `[dayStartHour] = "${dayStartHour}"`;
+
+    if (dayStartMinute !== "")
+      template = template + `[dayStartMinute] = "${dayStartMinute}"`;
+
+    if (hourSegmentHeight !== "")
+      template = template + `[hourSegmentHeight] = "${hourSegmentHeight}"`;
+
+    if (hourSegments !== "")
+      template = template + `[hourSegments] = "${hourSegments}"`;
+
+    if (eventSnapSize !== "")
+      template = template + `[eventSnapSize] = "${eventSnapSize}"`;
+
+    if (tooltipDelay !== "")
+      template = template + `[tooltipDelay] = "${tooltipDelay}"`;
+
+    if (tooltipAppendToBody !== "")
+      template = template + `[tooltipAppendToBody] = "${tooltipAppendToBody}"`;
+
+    if (tooltipPlacement !== "")
+      template = template + `[tooltipPlacement] = "${tooltipPlacement}"`;
+
+    if (eventActionsTemplate !== "")
+      template = template + `[eventActionsTemplate] = "${eventActionsTemplate}"`;
+
+    if (eventTemplate !== "")
+      template = template + `[eventTemplate] = "${eventTemplate}"`;
+
+    if (eventTitleTemplate !== "")
+      template = template + `[eventTitleTemplate] = "${eventTitleTemplate}"`;
+
+    if (hourSegmentTemplate !== "")
+      template = template + `[hourSegmentTemplate] = "${hourSegmentTemplate}"`;
+
+    if (locale !== "")
+      template = template + `[locale] = "${locale}"`;
+
+    if (snapDraggedEvents !== "")
+      template = template + `[snapDraggedEvents] = "${snapDraggedEvents}"`;
+
+    if (allDayEventsLabelTemplate !== "")
+      template = template + `[allDayEventsLabelTemplate] = "${allDayEventsLabelTemplate}"`;
+
+    if (currentTimeMarkerTemplate !== "")
+      template = template + `[currentTimeMarkerTemplate] = "${currentTimeMarkerTemplate}"`;
+      
+    if (tooltipTemplate !== "")
+      template = template + `[tooltipTemplate] = "${tooltipTemplate}"`;
+
     if (eventClicked !== "")
       template = template + `(eventClicked)="${eventClicked}"`;
 
@@ -268,5 +309,5 @@ module.exports = class DayComponent extends AdvancedComponent {
 
     return template;
   }
-  set template(templateString) { }
+  set template(templateString) {}
 };

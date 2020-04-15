@@ -5,12 +5,12 @@ import { CalendarCommonModule } from '../common/calendar-common.module';
 import { CalendarWeekModule } from '../week/calendar-week.module';
 import { MatIconModule, MatFormFieldModule, MatInputModule,
    MatDatepickerModule, MatNativeDateModule, MatToolbarModule } from '@angular/material';
-// import { FormsModule, ReactiveFormsModule  } from '@angular/forms';
 import {MatSelectModule} from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatDialogModule, MatDialogRef} from '@angular/material/dialog';
+import {MatDialogModule, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 export {
     CalendarModalComponent
@@ -23,8 +23,7 @@ export {
     CalendarWeekModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule,
-    // FormsModule,     
+    MatInputModule,   
     MatNativeDateModule ,  
     MatDatepickerModule,
     ReactiveFormsModule, 
@@ -32,11 +31,13 @@ export {
     MatSelectModule,
     MatToolbarModule,
     BrowserModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxMaterialTimepickerModule
   ],
-  providers: [{
-      provide: MatDialogRef,
-    }
+  providers: [
+    { provide: MAT_DIALOG_DATA, useValue: {} },
+    { provide: MatDialogRef, useValue: {} }
+    
  ],
   declarations: [CalendarModalComponent],
   exports: [CalendarModalComponent],

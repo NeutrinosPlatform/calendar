@@ -498,7 +498,7 @@ export class CalendarWeekViewComponent implements OnChanges, OnInit, OnDestroy {
   /**
    * The height in pixels of each hour segment
    */
-  @Input() hourSegmentHeight: number = 30;
+  @Input() hourSegmentHeight: number = 60;
 
   /**
    * The day start hours in 24 hour time. Must be 0-23
@@ -715,6 +715,8 @@ export class CalendarWeekViewComponent implements OnChanges, OnInit, OnDestroy {
         this.cdr.markForCheck();
       });
     }
+
+    console.log("eventActionsTemplate", this.eventActionsTemplate)
   }
 
   page:'other';
@@ -1329,3 +1331,5 @@ export class CalendarWeekViewComponent implements OnChanges, OnInit, OnDestroy {
     return newEventDates;
   }
 }
+
+// [eventActionsTemplate]="eventActionsTemplate"

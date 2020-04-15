@@ -207,18 +207,21 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let showMonthBtn = componentAttribute.showMonthBtn['_value'];
     let showWeekBtn = componentAttribute.showWeekBtn['_value'];
     let showDayBtn = componentAttribute.showDayBtn['_value'];
-    let excludeDays = componentAttribute.excludeDaysInAWeek['_value'];
     let daysInAWeek = componentAttribute.daysInAWeek['_value'] !== '' ? componentAttribute.daysInAWeek['_value'].toString() : '';
+    let excludeDays = componentAttribute.excludeDaysInAWeek['_value'];
     let showAddEvent = componentAttribute.showAddEvent['_value'];
     let onAddEventClick = componentAttribute.onAddEventClick['_value'];
     let showCaptureEventDialog = componentAttribute.showCaptureEventDialog['_value'];
     let showEventDetailsDialog = componentAttribute.showEventDetailsDialog['_value'];
-    let setView = componentAttribute.setView['_value'];
-    let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
+    let customCaptureEventDialog = componentAttribute.customCaptureEventDialog['_value'];
+    let customEventDialog = componentAttribute.customEventDialog['_value'];
+    let onEditEventClick = componentAttribute.onEditEventClick['_value'];
     let onDeleteEventClick = componentAttribute.onDeleteEventClick['_value'];
 
+    let setView = componentAttribute.setView['_value'];
+    let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
 
-    let template = `<div %style% > <mwl-calendar-header 
+    let template = `<div %style%> <mwl-calendar-header 
     [view]= "${view}"
     [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"
@@ -227,35 +230,60 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     [showMonthBtn] = "${showMonthBtn}"
     [showWeekBtn] = "${showWeekBtn}"
     [showDayBtn] = "${showDayBtn}"
-    [excludeDays]=  "${excludeDays}"
-    [daysInWeek] = "${daysInAWeek}"
     [showCaptureEventDialog] = "${showCaptureEventDialog}"
     [showEventDetailsDialog] = "${showEventDetailsDialog}"
     [showAddEvent] = "${showAddEvent}"
     `;
-    if(classValue!==null){
+    if(classValue !== null &&  classValue !== ''){
       classValue = classValue.toString();
       classValue = classValue.replace(",", " ");
       template = template + `class = "${classValue}"`
     }
+
+    if(daysInAWeek !== '' && daysInAWeek !== null){
+      template = template + `[daysInWeek]="${daysInAWeek}"`
+    }
+
+    if(excludeDays !== '' && excludeDays !== null){
+      template = template + `[excludeDays]="${excludeDays}"`
+    }
+
+    if(customCaptureEventDialog!== "") {
+      template = template + `[customCaptureEventDialog] = "${customCaptureEventDialog}"`;
+    }
+
+    if(customEventDialog!== ""){
+      template = template + `[customEventDialog] = "${customEventDialog}"`;
+    }
+
     if (viewChange !== "") {
       template = template + `(viewChange) = "${viewChange}"`
     }
+
     if (viewDateChange !== "") {
       template = template + `(viewDateChange) = "${viewDateChange}"`
     }
-    if (setView !== "") {
-      template = template + `(setView) = "${setView}"  `
-    }
+
     if (onAddEventClick !== "") {
       template = template + `(onAddEventClick) = "${onAddEventClick}"`
     }
-    if(onAddEventSaveClick !== ""){
-      template = template + `(onAddEventSaveClick) = "${onAddEventSaveClick}"`
+
+    if (onEditEventClick !== "") {
+      template = template + `(onEditEventClick)="${onEditEventClick}"`;
     }
+
     if(onDeleteEventClick !==""){
       template = template + `(onDeleteEventClick) = "${onDeleteEventClick}"`
     }
+
+    if (setView !== "") {
+      template = template + `(setView) = "${setView}"  `
+    }
+
+    if(onAddEventSaveClick !== ""){
+      template = template + `(onAddEventSaveClick) = "${onAddEventSaveClick}"`
+    }
+
     template = template + `></mwl-calendar-header> </div>`;
     return template;
   }

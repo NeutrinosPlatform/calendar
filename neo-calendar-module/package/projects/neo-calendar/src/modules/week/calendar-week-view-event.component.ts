@@ -3,7 +3,8 @@ import {
   Input,
   Output,
   EventEmitter,
-  TemplateRef
+  TemplateRef,
+  OnInit
 } from '@angular/core';
 import {
   WeekViewAllDayEvent,
@@ -11,6 +12,7 @@ import {
   WeekViewHourColumn
 } from 'calendar-utils';
 import { PlacementArray } from 'positioning';
+import { EventEmitterService } from '../common/calendar-event-emitter.service';
 
 @Component({
   selector: 'mwl-calendar-week-view-event',
@@ -30,8 +32,8 @@ import { PlacementArray } from 'positioning';
       <div
         class="cal-event"
         [ngStyle]="{
-          backgroundColor: weekEvent.event.color?.secondary,
-          borderColor: weekEvent.event.color?.primary
+          backgroundColor: weekEvent.event.color?.secondary,'border-left': '5px solid',
+          'borderColor': '#867ff2'
         }"
         [mwlCalendarTooltip]="
           !tooltipDisabled
@@ -50,23 +52,15 @@ import { PlacementArray } from 'positioning';
         (mwlKeydownEnter)="eventClicked.emit({ sourceEvent: $event })"
         tabindex="0"
         role="application"
-        [attr.aria-label]="
-          { event: weekEvent.event, locale: locale }
-            | calendarA11y: 'eventDescription'
-        "
+        (click) = "onEventClick(weekEvent.event)"
       >
+      <p class="week-event-title">{{weekEvent.event.start | date:'shortTime'}}</p>
+      <p class="week-event-title">{{weekEvent.event.title}}</p>
         <mwl-calendar-event-actions
           [event]="weekEvent.event"
           [customTemplate]="eventActionsTemplate"
         >
         </mwl-calendar-event-actions>
-        &ngsp;
-        <mwl-calendar-event-title
-          [event]="weekEvent.event"
-          [customTemplate]="eventTitleTemplate"
-          [view]="daysInWeek === 1 ? 'day' : 'week'"
-        >
-        </mwl-calendar-event-title>
       </div>
     </ng-template>
     <ng-template
@@ -86,7 +80,7 @@ import { PlacementArray } from 'positioning';
     </ng-template>
   `
 })
-export class CalendarWeekViewEventComponent {
+export class CalendarWeekViewEventComponent implements OnInit {
   @Input() locale: string;
 
   @Input() weekEvent: WeekViewAllDayEvent | WeekViewTimeEvent;
@@ -114,4 +108,20 @@ export class CalendarWeekViewEventComponent {
   @Output() eventClicked = new EventEmitter<{
     sourceEvent: MouseEvent | KeyboardEvent;
   }>();
+
+  constructor(public eventEmitterService: EventEmitterService) {
+
+  }
+
+  ngOnInit() {
+  }
+
+  onEventClick(event) {
+    this.eventEmitterService.emitNavChangeEvent('EDIT_EVENT_CLICKED', event);
+  }
 }
+
+// [attr.aria-label]="
+// { event: weekEvent.event, locale: locale }
+//   | calendarA11y: 'eventDescription'
+// "

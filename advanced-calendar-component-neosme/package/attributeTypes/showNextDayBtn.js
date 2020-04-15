@@ -6,8 +6,8 @@ module.exports = class showNextDay {
             showNextDayBtnInstance = this;
             //set all other default values
 
-            this.displayAs = 'showNextDay';
-            this.value = '[showNextDay]'
+            this.displayAs = 'showNextDayBtn';
+            this.value = '[showNextDayBtn]'
             this.type = 'TOGGLE';
             this.values = {'true-value':'true', 'false-value': 'false'}
         }

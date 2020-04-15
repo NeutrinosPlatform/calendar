@@ -42,11 +42,12 @@ import { trackByWeekDayHeaderDate } from '../common/util';
           tabindex="0"
           role="columnheader"
         >
-          <b>{{ day.date | calendarDate: 'weekViewColumnHeader':locale }}</b
-          ><br />
-          <span>{{
-            day.date | calendarDate: 'weekViewColumnSubHeader':locale
-          }}</span>
+          <div class="week-header-day">
+            {{ day.date | calendarDate: 'weekViewColumnHeader':locale }}
+          </div>
+          <div class="week-header-date">
+            {{day.date | calendarDate: 'weekViewColumnSubHeader':locale}}
+          </div>
         </div>
       </div>
     </ng-template>

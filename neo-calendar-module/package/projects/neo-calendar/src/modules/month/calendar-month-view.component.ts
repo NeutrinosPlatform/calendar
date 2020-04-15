@@ -27,7 +27,6 @@ import { CalendarUtils } from '../common/calendar-utils.provider';
 import { validateEvents } from '../common/util';
 import { DateAdapter } from '../../date-adapters/date-adapter';
 import { PlacementArray } from 'positioning';
-import "../../../src/common-calendar.css"
 
 export interface CalendarMonthViewBeforeRenderEvent {
   header: WeekDay[];
@@ -55,7 +54,6 @@ export interface CalendarMonthViewEventTimesChangedEvent<
 @Component({
   selector: 'mwl-calendar-month-view',
   styleUrls: [
-    './../../../src/common-calendar.css',
     './calendar-month-view.scss'
   ],
   template: `
@@ -117,6 +115,31 @@ export interface CalendarMonthViewEventTimesChangedEvent<
             >
             </mwl-calendar-month-cell>
           </div>
+          <mwl-calendar-open-day-events
+            [locale]="locale"
+            [isOpen]="openRowIndex === rowIndex"
+            [events]="openDay?.events"
+            [date]="openDay?.date"
+            [customTemplate]="openDayEventsTemplate"
+            [eventTitleTemplate]="eventTitleTemplate"
+            [eventActionsTemplate]="eventActionsTemplate"
+            (eventClicked)="
+              eventClicked.emit({
+                event: $event.event,
+                sourceEvent: $event.sourceEvent
+              })
+            "
+            mwlDroppable
+            dragOverClass="cal-drag-over"
+            (drop)="
+              eventDropped(
+                openDay,
+                $event.dropData.event,
+                $event.dropData.draggedFrom
+              )
+            "
+          >
+          </mwl-calendar-open-day-events>
         </div>
       </div>
     </div>

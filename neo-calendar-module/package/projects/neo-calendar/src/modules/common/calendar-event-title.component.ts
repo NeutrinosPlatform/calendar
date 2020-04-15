@@ -6,7 +6,7 @@ import { CalendarEvent } from 'calendar-utils';
   template: `
     <ng-template #defaultTemplate let-event="event" let-view="view">
       <span
-        class="cal-event-title"
+        class="event-title"
         [innerHTML]="event.title | calendarEventTitle: view:event"
         [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
       >

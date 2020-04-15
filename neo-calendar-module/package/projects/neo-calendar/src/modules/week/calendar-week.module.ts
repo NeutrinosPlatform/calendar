@@ -8,8 +8,8 @@ import { CalendarWeekViewEventComponent } from './calendar-week-view-event.compo
 import { CalendarCommonModule } from '../common/calendar-common.module';
 import { CalendarWeekViewHourSegmentComponent } from './calendar-week-view-hour-segment.component';
 import { CalendarWeekViewCurrentTimeMarkerComponent } from './calendar-week-view-current-time-marker.component';
-
-export {    
+import { MatDialogRef } from '@angular/material/dialog';
+export {
   CalendarWeekViewComponent,
   CalendarWeekViewBeforeRenderEvent
 } from './calendar-week-view.component';
@@ -25,7 +25,7 @@ export { getWeekViewPeriod } from '../common/util';
     CommonModule,
     ResizableModule,
     DragAndDropModule,
-    CalendarCommonModule
+    CalendarCommonModule,
   ],
   declarations: [
     CalendarWeekViewComponent,
@@ -42,6 +42,10 @@ export { getWeekViewPeriod } from '../common/util';
     CalendarWeekViewEventComponent,
     CalendarWeekViewHourSegmentComponent,
     CalendarWeekViewCurrentTimeMarkerComponent
-  ]
+  ],
+  providers: [{
+    provide: MatDialogRef,
+  }
+],
 })
-export class CalendarWeekModule {}
+export class CalendarWeekModule { }

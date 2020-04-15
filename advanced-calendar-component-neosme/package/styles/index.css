@@ -142,6 +142,7 @@ table.cal-table tr td {
     padding-right: 5%;
     width: auto;
     white-space: nowrap;
+    min-width:90px;
 }
 .month-event-container{
     /* width: 114px; */

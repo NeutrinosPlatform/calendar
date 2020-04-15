@@ -24,8 +24,11 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
 @Component({
   selector: 'mwl-calendar-header',
   styleUrls: ['./calendar-header.component.scss'],
-  template: `   
+  template: `  
+  <div>
+  <h1 class="calendar-header-text">Calendar </h1> 
   <div class="header-container">
+     
     <div class="header-view">
       <div>
         <mat-button-toggle-group id="today-toggle-group" name="fontStyle" aria-label="Font Style"
@@ -88,6 +91,7 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
         <mat-button-toggle id="toggle-button" *ngIf="showMonthBtn" (click)="onSetView('month')" [checked]="view === 'month'">Month</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+</div>
 </div>
   `
 })

@@ -40,7 +40,7 @@ export class CalendarAngularDateFormatter
    * The week view header week day labels
    */
   public weekViewColumnHeader({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'EEEE', locale);
+    return formatDate(date, 'EEE', locale);
   }
 
   /**
