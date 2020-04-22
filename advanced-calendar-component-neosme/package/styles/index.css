@@ -25,6 +25,10 @@
     justify-content: space-between;
     align-items: center;
     margin: 5px;
+    margin-top: 15px !important;
+    /* margin-left: 0px !important; */
+    /* margin-right: 0px !important; */
+    width: 96%;
 }
 .card-view{
     box-shadow: 2px 2px 2px 2px lightgrey;
@@ -113,6 +117,7 @@ table.cal-table tr td {
     padding: 5px;
     width: 100%;
     justify-content: center;
+    margin-left: 1px;
 }
 .Add-event-view{
     /* width: 90px !important; */
@@ -154,7 +159,7 @@ table.cal-table tr td {
     margin-right: 5px;
     display: flex;
     justify-content: center;
-    width: 50px;
+    width: 40px;
     padding-left: 5%;
     padding-right: 5%;
 }
@@ -181,6 +186,9 @@ table.cal-table tr td {
 .third-container-view{
     display: flex;
     height: 40px;
+    /* width:fit-content; */
+    width: auto;
+    position: inherit;
 }
 .january{
     /* width: 122px; */
@@ -233,9 +241,12 @@ table.cal-table tr td {
   @media(max-width:1169px){
     .three-label{
         position: relative !important;
-        right: 12px !important;
+        right: 14px !important;
     }
     .ad-element{
         width: 93% !important;
+    }
+    .january-container{
+        width: 65px;
     }
   }

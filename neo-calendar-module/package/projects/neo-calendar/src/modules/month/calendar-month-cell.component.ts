@@ -4,7 +4,8 @@ import {
   Output,
   EventEmitter,
   TemplateRef,
-  OnInit
+  OnInit,
+  OnChanges
 } from '@angular/core';
 import { MonthViewDay, CalendarEvent } from 'calendar-utils';
 import { isWithinThreshold, trackByEventId } from '../common/util';
@@ -41,15 +42,16 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service'
           <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
             day.badgeTotal
           }}</span>
+          <span class="calendar-count"*ngIf="count !== 0">+{{count}}</span>
           <span class="cal-day-number" id="day-number-view">{{
             day.date | calendarDate: 'monthViewDayNumber':locale
           }}</span>
         </span>
       </div>
-      <div class="cal-events" *ngIf="day.events.length > 0">
+      <div class="cal-events" *ngIf="events.length > 0">
         <div
           class="cal-event"
-          *ngFor="let event of day.events; trackBy: trackByEventId"
+          *ngFor="let event of events; trackBy: trackByEventId"
           [ngStyle]="{'width': 100 + '%','height': 61 + 'px', 'border-radius': 0 + 'px','background-color': '#dcf8e9','display': 'flex', 'flex-direction': 'column','justify-content': 'center', 'border-left': '5px solid #58d395','margin-left': '0px','margin-right': '0px','margin-bottom': '0px' }"
           [ngClass]="event?.cssClass"
           (mouseenter)="highlightDay.emit({ event: event })"
@@ -73,7 +75,11 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service'
           (click) = "onEventClick(event)"
         >
         <p class="event-title">{{event.start | date:'shortTime'}}</p>
+        <div class="calendar-title-container">
         <p class="event-title">{{event.title}}</p>
+        
+        </div>
+
         </div>
       </div>
     </ng-template>
@@ -104,12 +110,13 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service'
     '[class.cal-weekend]': 'day.isWeekend',
     '[class.cal-in-month]': 'day.inMonth',
     '[class.cal-out-month]': '!day.inMonth',
-    '[class.cal-has-events]': 'day.events.length > 0',
+    '[class.cal-has-events]': 'events.length > 0',
     '[class.cal-open]': 'day === openDay',
     '[class.cal-event-highlight]': '!!day.backgroundColor'
   }
 })
-export class CalendarMonthCellComponent {
+export class CalendarMonthCellComponent implements OnInit, OnChanges {
+
   @Input() day: MonthViewDay;
 
   @Input() openDay: MonthViewDay;
@@ -142,8 +149,29 @@ export class CalendarMonthCellComponent {
 
   validateDrag = isWithinThreshold;
 
+  events: Array<Object> = [];
+
+  count: number = 0;
   constructor(public eventEmitterService: EventEmitterService){
 
+  }
+
+  ngOnInit(){
+    this.initialCall();
+  }
+
+  ngOnChanges(changes: any) {
+    this.initialCall()
+  }
+
+  initialCall() {
+    if(this.day.events.length >= 1){
+      this.events = this.day.events.slice(0,1);
+      this.count = this.day.events.length - this.events.length;
+    }else{
+      this.events = this.day.events;
+      this.count = 0
+    }
   }
 
   onEventClick(event){

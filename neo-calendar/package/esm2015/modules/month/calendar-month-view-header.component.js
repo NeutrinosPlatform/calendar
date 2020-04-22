@@ -62,7 +62,7 @@ CalendarMonthViewHeaderComponent = tslib_1.__decorate([
     >
     </ng-template>
   `,
-        styles: [""]
+        styles: [".calendar-count{background:#000;color:#fff;padding:6px;border-radius:50%;width:15px;height:15px;font-size:12px;font-weight:700;margin-right:2px!important}.calendar-title-container{display:-webkit-box;display:flex}@media (max-width:767px){.calendar-title-container{display:-webkit-box;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;flex-direction:column;-webkit-box-align:center;align-items:center}.cal-event{height:100%!important}}"]
     })
 ], CalendarMonthViewHeaderComponent);
 export { CalendarMonthViewHeaderComponent };

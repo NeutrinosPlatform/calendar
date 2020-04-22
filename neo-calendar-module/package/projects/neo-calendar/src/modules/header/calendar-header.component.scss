@@ -183,3 +183,32 @@ max-width: 210px;
  .cal-month-view .cal-cell-top{
     border: 1px solid #dadbdd !important;
  }
+ @media(max-width:767px){
+     .header-container{
+         width: 100% !important;
+         display: flex !important;
+         flex-direction: column !important;
+         justify-content: center !important;
+         align-items: center !important;
+         padding: 0px !important;
+
+     }
+     .date-view-container{
+         margin-bottom: 12px;
+     }
+     .header-view{
+         margin-bottom: 12px;
+     }
+     .day-toggle-view{
+        margin-bottom: 12px;
+     }
+ }
+ @media(max-width:350px){
+     #today-toggle-group{
+        margin-bottom: 12px;
+     }
+     .header-view{
+         display: flex;
+         flex-direction: column;
+     }
+ }

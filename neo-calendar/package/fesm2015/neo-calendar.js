@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators, ReactiveFormsModule } from '@angular/forms';
+import format from 'date-fns/format';
+import { round } from '@qc/date-round';
 import { MatIconModule as MatIconModule$1, MatFormFieldModule, MatInputModule, MatNativeDateModule, MatDatepickerModule, MatToolbarModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserModule } from '@angular/platform-browser';
@@ -1750,7 +1752,7 @@ CalendarMonthViewComponent = __decorate([
       </div>
     </div>
   `,
-        styles: [""]
+        styles: [".calendar-count{background:#000;color:#fff;padding:6px;border-radius:50%;width:15px;height:15px;font-size:12px;font-weight:700;margin-right:2px!important}.calendar-title-container{display:-webkit-box;display:flex}@media (max-width:767px){.calendar-title-container{display:-webkit-box;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;flex-direction:column;-webkit-box-align:center;align-items:center}.cal-event{height:100%!important}}"]
     }),
     __param(2, Inject(LOCALE_ID))
 ], CalendarMonthViewComponent);
@@ -1816,7 +1818,7 @@ CalendarMonthViewHeaderComponent = __decorate([
     >
     </ng-template>
   `,
-        styles: [""]
+        styles: [".calendar-count{background:#000;color:#fff;padding:6px;border-radius:50%;width:15px;height:15px;font-size:12px;font-weight:700;margin-right:2px!important}.calendar-title-container{display:-webkit-box;display:flex}@media (max-width:767px){.calendar-title-container{display:-webkit-box;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;flex-direction:column;-webkit-box-align:center;align-items:center}.cal-event{height:100%!important}}"]
     })
 ], CalendarMonthViewHeaderComponent);
 
@@ -1828,6 +1830,24 @@ let CalendarMonthCellComponent = class CalendarMonthCellComponent {
         this.eventClicked = new EventEmitter();
         this.trackByEventId = trackByEventId;
         this.validateDrag = isWithinThreshold;
+        this.events = [];
+        this.count = 0;
+    }
+    ngOnInit() {
+        this.initialCall();
+    }
+    ngOnChanges(changes) {
+        this.initialCall();
+    }
+    initialCall() {
+        if (this.day.events.length >= 1) {
+            this.events = this.day.events.slice(0, 1);
+            this.count = this.day.events.length - this.events.length;
+        }
+        else {
+            this.events = this.day.events;
+            this.count = 0;
+        }
     }
     onEventClick(event) {
         this.eventEmitterService.emitNavChangeEvent('EDIT_EVENT_CLICKED', event);
@@ -1902,15 +1922,16 @@ CalendarMonthCellComponent = __decorate([
           <span class="cal-day-badge" *ngIf="day.badgeTotal > 0">{{
             day.badgeTotal
           }}</span>
+          <span class="calendar-count"*ngIf="count !== 0">+{{count}}</span>
           <span class="cal-day-number" id="day-number-view">{{
             day.date | calendarDate: 'monthViewDayNumber':locale
           }}</span>
         </span>
       </div>
-      <div class="cal-events" *ngIf="day.events.length > 0">
+      <div class="cal-events" *ngIf="events.length > 0">
         <div
           class="cal-event"
-          *ngFor="let event of day.events; trackBy: trackByEventId"
+          *ngFor="let event of events; trackBy: trackByEventId"
           [ngStyle]="{'width': 100 + '%','height': 61 + 'px', 'border-radius': 0 + 'px','background-color': '#dcf8e9','display': 'flex', 'flex-direction': 'column','justify-content': 'center', 'border-left': '5px solid #58d395','margin-left': '0px','margin-right': '0px','margin-bottom': '0px' }"
           [ngClass]="event?.cssClass"
           (mouseenter)="highlightDay.emit({ event: event })"
@@ -1934,7 +1955,11 @@ CalendarMonthCellComponent = __decorate([
           (click) = "onEventClick(event)"
         >
         <p class="event-title">{{event.start | date:'shortTime'}}</p>
+        <div class="calendar-title-container">
         <p class="event-title">{{event.title}}</p>
+        
+        </div>
+
         </div>
       </div>
     </ng-template>
@@ -1965,11 +1990,11 @@ CalendarMonthCellComponent = __decorate([
             '[class.cal-weekend]': 'day.isWeekend',
             '[class.cal-in-month]': 'day.inMonth',
             '[class.cal-out-month]': '!day.inMonth',
-            '[class.cal-has-events]': 'day.events.length > 0',
+            '[class.cal-has-events]': 'events.length > 0',
             '[class.cal-open]': 'day === openDay',
             '[class.cal-event-highlight]': '!!day.backgroundColor'
         },
-        styles: [""]
+        styles: [".calendar-count{background:#000;color:#fff;padding:6px;border-radius:50%;width:15px;height:15px;font-size:12px;font-weight:700;margin-right:2px!important}.calendar-title-container{display:-webkit-box;display:flex}@media (max-width:767px){.calendar-title-container{display:-webkit-box;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;flex-direction:column;-webkit-box-align:center;align-items:center}.cal-event{height:100%!important}}"]
     })
 ], CalendarMonthCellComponent);
 
@@ -3770,7 +3795,6 @@ CalendarDayModule = __decorate([
     })
 ], CalendarDayModule);
 
-// import {moment} from 'moment';
 let CalendarModalComponent = class CalendarModalComponent {
     constructor(dialogRef, eventEmitterService, data) {
         this.dialogRef = dialogRef;
@@ -3781,20 +3805,28 @@ let CalendarModalComponent = class CalendarModalComponent {
         this.titlePlaceholder = this.data ? "Edit Title" : "Add Title";
         this.locationPlaceholder = this.data ? "Edit Location" : "Add Location";
         this.descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
+    }
+    ngOnInit() {
+        const dateIn = new Date(); // The date to be rounded
+        const interval = 30 * 60 * 1000; // 30 minutes (aka quarter hour)
+        const dateOut = round(dateIn, interval);
+        const fromTime = format(dateOut, 'HH:mm');
         this.addEvents = new FormGroup({
             title: new FormControl('', Validators.required),
             location: new FormControl(),
             description: new FormControl(),
-            fromDate: new FormControl('', Validators.required),
+            fromDate: new FormControl(new Date(), Validators.required),
             toDate: new FormControl('', Validators.required),
-            fromTime: new FormControl('', Validators.required),
-            toTime: new FormControl(),
+            fromTime: new FormControl(fromTime, Validators.required),
+            toTime: new FormControl('', Validators.required),
         });
-    }
-    ngOnInit() {
         if (this.data) {
+            this.addEvents.disable();
             this.assignEventDetails();
         }
+    }
+    addMinutesToDate(date, minutes) {
+        return new Date(date.getTime() + minutes * 60000);
     }
     assignEventDetails() {
         this.screenType = "edit";
@@ -3805,7 +3837,6 @@ let CalendarModalComponent = class CalendarModalComponent {
         this.addEvents.controls['toDate'].setValue(this.data.end);
         this.addEvents.controls['fromTime'].setValue(this.data.fromTime);
         this.addEvents.controls['toTime'].setValue(this.data.toTime);
-        console.log("this.addEvents", this.addEvents);
     }
     addOrUpdateEvent() {
         let tempObject = {
@@ -3817,6 +3848,9 @@ let CalendarModalComponent = class CalendarModalComponent {
             fromTime: this.addEvents.controls['fromTime'].value,
             toTime: this.addEvents.controls['toTime'].value
         };
+        let startDatetime = tempObject.start + ' ' + tempObject.fromTime;
+        let endDatetime = tempObject.end + ' ' + tempObject.toTime;
+        console.log("startDatetime, endDatetime", startDatetime, endDatetime);
         if (this.data === null) {
             this.eventEmitterService.emitNavChangeEvent('ADD_SAVE_CLICKED', tempObject);
         }
@@ -3832,6 +3866,9 @@ let CalendarModalComponent = class CalendarModalComponent {
         this.eventEmitterService.emitNavChangeEvent('DELETE_EVENT_CLICKED', this.data);
         this.dialogRef.close();
     }
+    onEdit() {
+        this.addEvents.enable();
+    }
 };
 CalendarModalComponent.ctorParameters = () => [
     { type: MatDialogRef },
@@ -3841,8 +3878,8 @@ CalendarModalComponent.ctorParameters = () => [
 CalendarModalComponent = __decorate([
     Component({
         selector: 'app-calendar-modal',
-        template: "<div class=\"header\">\n  <div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{title}}</h1>\n  </div>\n  <div>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onDelete()\">delete\n    </mat-icon>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n  </div>\n</div>\n<div mat-dialog-content id=\"dialog-container\">\n\n  <form class=\"example-form\" [formGroup]=\"addEvents\" (ngSubmit)=\"addOrUpdateEvent()\">\n\n    <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n      style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n      <input class=\"add-title-input\" matInput placeholder=\"{{titlePlaceholder}}\" formControlName=\"title\">\n    </mat-form-field>\n\n    <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n      <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n      <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;\">\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;\">\n          <mat-label>Start date</mat-label>\n          <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"picker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field>\n          <input matInput [ngxTimepicker]=\"fromTime\" [format]=\"24\" formControlName=\"fromTime\"  readonly >\n          <ngx-material-timepicker #fromTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field>\n          <input matInput [ngxTimepicker]=\"toTime\" [format]=\"24\" formControlName=\"toTime\" readonly\n            [disabled]=\"addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value\">\n          <ngx-material-timepicker #toTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n          <mat-label>End date</mat-label>\n          <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n            [matDatepicker]=\"datepicker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #datepicker></mat-datepicker>\n        </mat-form-field>\n      </div>\n\n    </div>\n\n    <div class=\"header\">\n      <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n      <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n        <input matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n          style=\" width: 95% !important;\" />\n      </mat-form-field>\n    </div>\n\n    <div class=\"text-area-container\">\n      <mat-icon aria-hidden=\"false\" class=\"menu-icon-view\">menu</mat-icon>\n      <textarea class=\"text-area-view\" placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"></textarea>\n    </div>\n    <div class=\"save-button-view\">\n      <button type=\"submit\" mat-button class=\"event-button\" [disabled]=\"!addEvents.valid\" [ngStyle]=\"{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }\">Save</button>\n    </div>\n  </form>\n</div>\n\n",
-        styles: [".cdk-overlay-container{z-index:1127}.form-field{font-family:Poppins;width:95%!important}.event-button{background:#404041;color:#fff;width:141px;height:42px;border-radius:4px;border:1px solid #404041}.titleStyle{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between}.header{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center}.save-button-view{display:-webkit-box;display:flex;-webkit-box-pack:end;justify-content:flex-end;-webkit-box-align:center;align-items:center;margin-bottom:0!important}.save-button-view button{width:110px;height:47px;border-radius:6px;background-color:#404041}.text-area-view{width:100%!important;height:75px;resize:unset;overflow:auto;padding-top:5px;padding-left:5px;margin-left:2%;border-radius:5px}.text-area-container{display:-webkit-box;display:flex;-webkit-box-align:start;align-items:flex-start;padding-top:28px;padding-bottom:2%}.menu-icon-view{position:relative;bottom:3px}.titleStyle h1{margin-bottom:0!important;font-family:Poppins;font-size:28px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}.add-title-input{font-size:20px!important;font-weight:500!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.01px!important;text-align:left!important;color:#7b7f8b!important}input{font-size:20px;font-weight:500;font-stretch:normal;font-style:normal;letter-spacing:.01px;text-align:left;color:#7b7f8b}#dialog-container{max-height:70vh!important}"]
+        template: "<div class=\"header\" id=\"header-view\">\n  <div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{title}}</h1>\n  </div>\n  <div>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onEdit()\">edit\n    </mat-icon>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onDelete()\">delete\n    </mat-icon>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n  </div>\n</div>\n<div mat-dialog-content id=\"dialog-container\">\n\n  <form class=\"example-form\" [formGroup]=\"addEvents\" (ngSubmit)=\"addOrUpdateEvent()\">\n\n    <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n      style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n      <input class=\"add-title-input\" matInput placeholder=\"{{titlePlaceholder}}\" formControlName=\"title\">\n    </mat-form-field>\n\n    <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n      <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n      <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;width: calc(100% - 5%);\">\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;\">\n          <mat-label>Start date</mat-label>\n          <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"picker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"start-time-view\">\n          <input matInput [ngxTimepicker]=\"fromTime\" [format]=\"24\" formControlName=\"fromTime\"  readonly >\n          <ngx-material-timepicker #fromTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"end-time-view\">\n          <input matInput [ngxTimepicker]=\"toTime\" [format]=\"24\" formControlName=\"toTime\" readonly\n            [disabled]=\"addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value\">\n          <ngx-material-timepicker #toTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field id=\"end-date-view\"class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n          <mat-label>End date</mat-label>\n          <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n            [matDatepicker]=\"datepicker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #datepicker></mat-datepicker>\n        </mat-form-field>\n      </div>\n\n    </div>\n\n    <div class=\"header\" id=\"location-view\">\n      <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n      <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n        <input  class=\"location-input-view\" matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n          style=\" width: 95% !important;\" />\n      </mat-form-field>\n    </div>\n\n    <div class=\"text-area-container\">\n      <mat-icon aria-hidden=\"false\" class=\"menu-icon-view\">menu</mat-icon>\n      <textarea id=\"text-input-view\"class=\"text-area-view\" placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"></textarea>\n    </div>\n    <div class=\"save-button-view\">\n      <button type=\"submit\" mat-button class=\"event-button\" [disabled]=\"!addEvents.valid\" [ngStyle]=\"{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }\">Save</button>\n    </div>\n  </form>\n</div>\n\n",
+        styles: [".cdk-overlay-container{z-index:1127}.form-field{font-family:Poppins;width:95%!important}.event-button{background:#404041;color:#fff;width:141px;height:42px;border-radius:4px;border:1px solid #404041}.titleStyle{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between}.header{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center}.save-button-view{display:-webkit-box;display:flex;-webkit-box-pack:end;justify-content:flex-end;-webkit-box-align:center;align-items:center;margin-bottom:0!important}.save-button-view button{width:110px;height:47px;border-radius:6px;background-color:#404041}.text-area-view{width:100%!important;height:75px;resize:unset;overflow:auto;padding-top:5px;padding-left:5px;margin-left:2%;border-radius:5px;font-family:poppins}.text-area-container{display:-webkit-box;display:flex;-webkit-box-align:start;align-items:flex-start;padding-top:28px;padding-bottom:2%}.menu-icon-view{position:relative;bottom:3px}.titleStyle h1{margin-bottom:0!important;font-family:Poppins;font-size:28px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}.add-title-input{font-size:20px!important;font-weight:500!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.01px!important;text-align:left!important;color:#7b7f8b!important}input{font-size:20px;font-weight:500;font-stretch:normal;font-style:normal;letter-spacing:.01px;text-align:left;color:#7b7f8b}#dialog-container{max-height:70vh!important}@media (max-width:991px){.end-time-view,.start-time-view{width:15%!important}}.example-full-width input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px!important}.start-time-view input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}.end-time-view input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px!important}.location-input-view{font-size:14px}#text-input-view{font-size:14px;color:#7b7f8b}#start-end-time{padding-top:18px}.mat-input-placeholder{color:#fff;font-size:2em}.mat-form-field-label,mat-label{font-size:14px!important}#location-view{margin-top:6px}#header-view{margin-bottom:12px}"]
     }),
     __param(2, Inject(MAT_DIALOG_DATA))
 ], CalendarModalComponent);
@@ -4079,7 +4116,7 @@ CalendarCommonHeaderComponent = __decorate([
           [excludeDays]="excludeDays">
           Previous
         </mat-button-toggle>
-        <mat-button-toggle id="toggle-button" 
+        <mat-button-toggle class="today-button" id="toggle-button" 
         *ngIf="showTodayBtn"
                 mwlCalendarToday 
                 [(viewDate)]="viewDate" 
@@ -4122,14 +4159,14 @@ CalendarCommonHeaderComponent = __decorate([
     <div>
       <mat-button-toggle-group class="day-toggle-view" id="toggle-group" name="fontStyle" aria-label="Font Style" #group="matButtonToggleGroup">
         <mat-button-toggle class="day-view" id="toggle-button" *ngIf="showDayBtn" (click)="onSetView('day')" [checked]="view === 'day'">Day</mat-button-toggle>
-        <mat-button-toggle id="toggle-button" *ngIf="showWeekBtn" (click)="onSetView('week')" [checked]="view === 'week'">Week</mat-button-toggle>
+        <mat-button-toggle class="week-view"id="toggle-button" *ngIf="showWeekBtn" (click)="onSetView('week')" [checked]="view === 'week'">Week</mat-button-toggle>
         <mat-button-toggle id="toggle-button" *ngIf="showMonthBtn" (click)="onSetView('month')" [checked]="view === 'month'">Month</mat-button-toggle>
       </mat-button-toggle-group>
     </div>
 </div>
 </div>
   `,
-        styles: [".header-container{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center;padding:20px!important}.header-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.header-view>div{margin-right:3%}.event-button{background:#404041;color:#fff;width:136px;height:42px;border-radius:4px;display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.add-icon-view{font-size:22px!important}#today-toggle-group{max-width:210px;width:auto;border-radius:4px;background-color:#fff}#toggle-button{padding-top:4px;padding-bottom:4px}.calendar-header-text{font-size:32px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.02px;padding-left:16px;color:#404041;font-family:sans-serif}#toggle-group{max-width:188px!important;width:auto;height:42px;border-radius:4px;background-color:#fff}#toggle-button-button{width:92px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important;height:32px}#toggle-button-button>div{width:75px;height:25px;font-size:18px;font-weight:400;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}#today-toggle-group .mat-button-toggle{height:34px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.previous-button{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.date-view{height:20px;font-size:14px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:normal;text-align:left;color:#4d585e;margin:0!important;display:-webkit-box;display:flex;-webkit-box-pack:center;justify-content:center}.date-view-container{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center;cursor:pointer}.day-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.mat-button-toggle-checked{color:#fff;background-color:#404041;border-radius:3px}.mat-button-toggle{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.cal-month-view .cal-cell-top{border:1px solid #dadbdd!important}"]
+        styles: [".header-container{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center;padding:20px!important}.header-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.header-view>div{margin-right:3%}.event-button{background:#404041;color:#fff;width:136px;height:42px;border-radius:4px;display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.add-icon-view{font-size:22px!important}#today-toggle-group{max-width:210px;width:auto;border-radius:4px;background-color:#fff}#toggle-button{padding-top:4px;padding-bottom:4px;border-left:none}.day-view,.previous-button,.today-button{position:relative}.day-view::after{content:\" \";position:absolute;border-right:1px solid #d3d3d3!important;top:22%;right:0;height:50%;margin-top:auto;margin-bottom:auto}.week-view{position:relative}.previous-button::after,.today-button::after,.week-view::after{content:\" \";position:absolute;border-right:1px solid #d3d3d3!important;top:22%;right:0;height:50%;margin-top:auto;margin-bottom:auto}.calendar-header-text{font-size:32px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.02px;padding-left:16px;color:#404041;font-family:poppins}#toggle-group{max-width:188px!important;width:auto;height:42px;border-radius:4px;background-color:#fff}#toggle-button-button{width:92px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important;height:32px}#toggle-button-button>div{width:75px;height:25px;font-size:18px;font-weight:400;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}#today-toggle-group .mat-button-toggle{height:34px;display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.previous-button{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.date-view{height:20px;font-size:14px!important;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:normal;text-align:left;color:#4d585e;margin:0!important;display:-webkit-box;display:flex;-webkit-box-pack:center;justify-content:center}.date-view-container{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center;cursor:pointer}.day-view{display:-webkit-box;display:flex;-webkit-box-align:center;align-items:center}.mat-button-toggle-checked{color:#fff;background-color:#404041;border-radius:3px}.mat-button-toggle{display:-webkit-box!important;display:flex!important;-webkit-box-align:center!important;align-items:center!important}.cal-month-view .cal-cell-top{border:1px solid #dadbdd!important}@media (max-width:767px){.header-container{width:100%!important;display:-webkit-box!important;display:flex!important;-webkit-box-orient:vertical!important;-webkit-box-direction:normal!important;flex-direction:column!important;-webkit-box-pack:center!important;justify-content:center!important;-webkit-box-align:center!important;align-items:center!important;padding:0!important}.date-view-container,.day-toggle-view,.header-view{margin-bottom:12px}}@media (max-width:350px){#today-toggle-group{margin-bottom:12px}.header-view{display:-webkit-box;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;flex-direction:column}}"]
     })
 ], CalendarCommonHeaderComponent);
 

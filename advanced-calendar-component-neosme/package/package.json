@@ -12,13 +12,16 @@
     "name": "neo-calendar",
     "version": "0.0.1",
     "packageType": "angular-package",
-    "importStatement": "import { CalendarModule } from 'neo-calendar';",
+    "importStatement": "import { CalendarModule } from 'neo-calendar';import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';",
     "imports": [
-      "CalendarModule"
+      "CalendarModule",
+      "NgxMaterialTimepickerModule"
     ]
   },
   "dependencies": {
     "@jatahworx/bhive-toolkits": "^6.2.1",
-    "neo-calendar": "0.0.1"
+    "neo-calendar": "0.0.1",
+    "ngx-material-timepicker": "4.0.0",
+    "@qc/date-round": "0.0.0"
   }
 }

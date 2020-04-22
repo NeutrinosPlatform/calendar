@@ -5,9 +5,8 @@ let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
 module.exports = class MonthComponent extends AdvancedComponent {
   constructor() {
     const name = 'month-component';
-    const designerTemplate = `<month-component slot="month-component" block-copy class="display-block">
-        <span class="component-placeholder title-align">Month</span>
-      </month-component>`;
+    const designerTemplate = `<month-component slot="month-component" class="drop display-block" component-label="Month" block-copy>
+    </month-component>`;
     const paletteTemplate = 'Month';
     const componentLabel = 'Month';
 
@@ -198,7 +197,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
     let eventClicked = componentAttribute.eventClicked['_value'];
 
     let template = '';
-    template = `<div %style%> <mwl-calendar-month-view
+    template = `<div %style% %bCustomProps%> <mwl-calendar-month-view
     *ngIf="view=='month'"
     [activeDayIsOpen]="${activeDayIsOpen}"
     [tooltipAppendToBody] = "${tooltipAppendToBody}"

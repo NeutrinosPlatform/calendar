@@ -2,7 +2,8 @@ import { Component, OnInit, Inject, OnChanges } from '@angular/core';
 import { FormGroup, FormControl,Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EventEmitterService } from '../common/calendar-event-emitter.service';
-// import {moment} from 'moment';
+import format from 'date-fns/format';
+import { round } from '@qc/date-round';
 
 @Component({
   selector: 'app-calendar-modal',
@@ -11,34 +12,43 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
 })
 export class CalendarModalComponent implements OnInit {
 
+  screenType = "add";
+  title = this.data ? "Edit Event" : "Add Event";
+  titlePlaceholder = this.data ? "Edit Title" : "Add Title";
+  locationPlaceholder = this.data ? "Edit Location" : "Add Location";
+  descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
+  addEvents: FormGroup;
+
   constructor(public dialogRef: MatDialogRef<CalendarModalComponent>,
     public eventEmitterService: EventEmitterService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) { 
     
   }
-  screenType = "add";
-  title = this.data ? "Edit Event" : "Add Event";
-  titlePlaceholder = this.data ? "Edit Title" : "Add Title";
-  locationPlaceholder = this.data ? "Edit Location" : "Add Location";
-  descriptionPlaceholder = this.data ? "Edit Description" : "Add Description";
-
-  addEvents = new FormGroup({
-    title: new FormControl('', Validators.required),
-    location: new FormControl(),
-    description: new FormControl(),
-    fromDate: new FormControl('', Validators.required),
-    toDate: new FormControl('', Validators.required),
-    fromTime: new FormControl('', Validators.required),
-    toTime: new FormControl(),
-  });
 
   ngOnInit() {
-    
+    const dateIn = new Date() // The date to be rounded
+    const interval = 30 * 60 * 1000; // 30 minutes (aka quarter hour)
+    const dateOut = round(dateIn, interval);
+    const fromTime = format(dateOut, 'HH:mm');
+    this.addEvents = new FormGroup({
+      title: new FormControl('', Validators.required),
+      location: new FormControl(),
+      description: new FormControl(),
+      fromDate: new FormControl(new Date(), Validators.required),
+      toDate: new FormControl('', Validators.required),
+      fromTime: new FormControl(fromTime, Validators.required),
+      toTime: new FormControl('', Validators.required),
+    });
+
     if(this.data){
+      this.addEvents.disable();
       this.assignEventDetails();
     }
+  }
 
+  addMinutesToDate(date, minutes) {
+      return new Date(date.getTime() + minutes*60000);
   }
 
   assignEventDetails(){
@@ -50,8 +60,6 @@ export class CalendarModalComponent implements OnInit {
     this.addEvents.controls['toDate'].setValue(this.data.end);
     this.addEvents.controls['fromTime'].setValue(this.data.fromTime);
     this.addEvents.controls['toTime'].setValue(this.data.toTime);
-
-    console.log("this.addEvents", this.addEvents)
   }
 
   addOrUpdateEvent() {
@@ -64,6 +72,9 @@ export class CalendarModalComponent implements OnInit {
       fromTime: this.addEvents.controls['fromTime'].value,
       toTime: this.addEvents.controls['toTime'].value
     };
+    let startDatetime = tempObject.start+' '+tempObject.fromTime
+    let endDatetime = tempObject.end+' '+tempObject.toTime
+    console.log("startDatetime, endDatetime", startDatetime, endDatetime)
     if(this.data === null){
       this.eventEmitterService.emitNavChangeEvent('ADD_SAVE_CLICKED', tempObject);
     }else {
@@ -79,6 +90,10 @@ export class CalendarModalComponent implements OnInit {
   onDelete() {
     this.eventEmitterService.emitNavChangeEvent('DELETE_EVENT_CLICKED', this.data);
     this.dialogRef.close();
+  }
+
+  onEdit() {
+    this.addEvents.enable()
   }
 
 

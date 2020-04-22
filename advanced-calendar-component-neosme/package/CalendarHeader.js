@@ -6,7 +6,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
   constructor() {
     const name = 'calendar-header';
     const designerTemplate = `
-    <calendar-header slot="calendar-header-slot" block-copy  component-label="Header"  class="display-block">
+    <calendar-header slot="calendar-header-slot" component-label="Header" class="display-block" block-copy>
       <div class="three-label">
           <div class="first-container-view">
             <div class="">
@@ -20,18 +20,18 @@ module.exports = class CalendarHeader extends AdvancedComponent {
                 <span class="Add-event-view">Add Event</span>
             </div>
           </div>
-          <div>
-            <span class="january"> January 20</span>
+          <div class="january-container">
+            <span class="january">January 20</span>
           </div>
           <div class="third-container-view">
             <div class="month-event-container">
-                <span class="day-event-view">Month</span>
+                <span class="day-event-view">Day</span>
             </div>
             <div class="month-event-container">
                 <span class="day-event-view">Week</span>
             </div>
             <div class="month-event-container">
-                <span class="day-event-view">Day</span>
+                <span class="day-event-view">Month</span>
             </div>
           </div>
       </div>
@@ -54,7 +54,6 @@ module.exports = class CalendarHeader extends AdvancedComponent {
 
     super.addAttribute(new Attribute({
       key: 'view',
-      value: 'month',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
@@ -221,7 +220,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let setView = componentAttribute.setView['_value'];
     let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
 
-    let template = `<div %style%> <mwl-calendar-header 
+    let template = `<div %style% %bCustomProps%> <mwl-calendar-header 
     [view]= "${view}"
     [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"

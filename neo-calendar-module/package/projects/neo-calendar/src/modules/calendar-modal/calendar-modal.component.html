@@ -1,8 +1,10 @@
-<div class="header">
+<div class="header" id="header-view">
   <div class="titleStyle">
     <h1 mat-dialog-title style="font-family: Poppins;">{{title}}</h1>
   </div>
   <div>
+    <mat-icon *ngIf="title === 'Edit Event'" aria-hidden="false" style="cursor: pointer;" (click)="onEdit()">edit
+    </mat-icon>
     <mat-icon *ngIf="title === 'Edit Event'" aria-hidden="false" style="cursor: pointer;" (click)="onDelete()">delete
     </mat-icon>
     <mat-icon aria-hidden="false" style="cursor: pointer;" (click)="onNoClick()">close</mat-icon>
@@ -21,7 +23,7 @@
 
       <mat-icon aria-hidden="false">access_time</mat-icon>
       <div style="display: flex !important;
-justify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;">
+justify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;width: calc(100% - 5%);">
         <mat-form-field class="example-full-width" style="width: 22%;">
           <mat-label>Start date</mat-label>
           <input matInput formControlName="fromDate" [matDatepicker]="picker" >
@@ -31,18 +33,18 @@ justify-content: space-between !important;align-items: center;margin-left: 2%;pa
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="start-time-view">
           <input matInput [ngxTimepicker]="fromTime" [format]="24" formControlName="fromTime"  readonly >
           <ngx-material-timepicker #fromTime></ngx-material-timepicker>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field class="end-time-view">
           <input matInput [ngxTimepicker]="toTime" [format]="24" formControlName="toTime" readonly
             [disabled]="addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value">
           <ngx-material-timepicker #toTime></ngx-material-timepicker>
         </mat-form-field>
 
-        <mat-form-field class="example-full-width" style="width: 22%;font-family: Poppins;">
+        <mat-form-field id="end-date-view"class="example-full-width" style="width: 22%;font-family: Poppins;">
           <mat-label>End date</mat-label>
           <input [min]="addEvents.controls['fromDate'].value" matInput formControlName="toDate"
             [matDatepicker]="datepicker" >
@@ -55,17 +57,17 @@ justify-content: space-between !important;align-items: center;margin-left: 2%;pa
 
     </div>
 
-    <div class="header">
+    <div class="header" id="location-view">
       <mat-icon aria-hidden="false">location_on</mat-icon>
       <mat-form-field class="form-field" style="margin-left: 2%;">
-        <input matInput placeholder="{{locationPlaceholder}}" formControlName="location"
+        <input  class="location-input-view" matInput placeholder="{{locationPlaceholder}}" formControlName="location"
           style=" width: 95% !important;" />
       </mat-form-field>
     </div>
 
     <div class="text-area-container">
       <mat-icon aria-hidden="false" class="menu-icon-view">menu</mat-icon>
-      <textarea class="text-area-view" placeholder="{{descriptionPlaceholder}}" formControlName="description"></textarea>
+      <textarea id="text-input-view"class="text-area-view" placeholder="{{descriptionPlaceholder}}" formControlName="description"></textarea>
     </div>
     <div class="save-button-view">
       <button type="submit" mat-button class="event-button" [disabled]="!addEvents.valid" [ngStyle]="{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }">Save</button>

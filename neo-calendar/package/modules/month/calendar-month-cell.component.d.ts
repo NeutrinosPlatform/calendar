@@ -1,9 +1,9 @@
-import { EventEmitter, TemplateRef } from '@angular/core';
+import { EventEmitter, TemplateRef, OnInit, OnChanges } from '@angular/core';
 import { MonthViewDay, CalendarEvent } from 'calendar-utils';
 import { isWithinThreshold } from '../common/util';
 import { PlacementArray } from 'positioning';
 import { EventEmitterService } from '../common/calendar-event-emitter.service';
-export declare class CalendarMonthCellComponent {
+export declare class CalendarMonthCellComponent implements OnInit, OnChanges {
     eventEmitterService: EventEmitterService;
     day: MonthViewDay;
     openDay: MonthViewDay;
@@ -22,6 +22,11 @@ export declare class CalendarMonthCellComponent {
     }>;
     trackByEventId: (index: number, event: CalendarEvent<any>) => string | number | CalendarEvent<any>;
     validateDrag: typeof isWithinThreshold;
+    events: Array<Object>;
+    count: number;
     constructor(eventEmitterService: EventEmitterService);
+    ngOnInit(): void;
+    ngOnChanges(changes: any): void;
+    initialCall(): void;
     onEventClick(event: any): void;
 }

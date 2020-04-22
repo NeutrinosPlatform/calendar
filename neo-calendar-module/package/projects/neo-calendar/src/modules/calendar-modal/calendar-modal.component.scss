@@ -95,3 +95,59 @@
  #dialog-container{
    max-height: 70vh !important;
  }
+ @media(max-width:991px){
+   .start-time-view{
+     width: 15% !important;
+   }
+   .end-time-view{
+    width: 15% !important;
+  }
+ }
+ .example-full-width input{
+   width: 100%;
+   overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   font-size: 14px !important;
+ }
+ .start-time-view input{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+}
+.end-time-view input{
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px !important;
+}
+.location-input-view{
+  font-size: 14px;
+}
+#text-input-view{
+  font-size: 14px;
+  color: #7b7f8b;
+}
+#start-end-time{
+  padding-top: 18px;
+}
+.mat-input-placeholder {
+  color: #fff;
+  font-size: 2em;
+}
+mat-label{
+  font-size: 14px !important;
+  // color:red;
+}
+.mat-form-field-label{
+  font-size: 14px !important;
+}
+#location-view{
+  margin-top: 6px;
+}
+#header-view{
+  margin-bottom: 12px;
+}
