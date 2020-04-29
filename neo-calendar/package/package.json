@@ -8,7 +8,12 @@
   "dependencies": {
     "angular-calendar": "^0.28.5",
     "date-fns": "^2.10.0",
-    "tslib": "^1.9.0"
+    "tslib": "^1.9.0",
+    "@qc/date-round": "0.0.0",
+    "angular-draggable-droppable": "4.4.4",
+    "angular-resizable-element": "3.3.0",
+    "ngx-material-timepicker": "4.0.0",
+    "rxjs": "~6.4.0"
   },
   "main": "bundles/neo-calendar.umd.js",
   "module": "fesm5/neo-calendar.js",

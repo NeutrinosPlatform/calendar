@@ -5,7 +5,7 @@ let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
 module.exports = class DayComponent extends AdvancedComponent {
   constructor() {
     const name = 'day-component';
-    const designerTemplate = `<day-component slot="day-component" class="drop display-block" component-label="Day" block-copy>
+    const designerTemplate = `<day-component slot="add-component" class="display-block" component-label="Day" block-copy>
     </day-component>`;
     const paletteTemplate = 'Day';
     const componentLabel = 'Day';

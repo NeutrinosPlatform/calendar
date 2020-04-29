@@ -6,7 +6,7 @@ module.exports = class CalendarHeader extends AdvancedComponent {
   constructor() {
     const name = 'calendar-header';
     const designerTemplate = `
-    <calendar-header slot="calendar-header-slot" component-label="Header" class="display-block" block-copy>
+    <calendar-header slot="add-component" component-label="Header" class="display-block" block-copy>
       <div class="three-label">
           <div class="first-container-view">
             <div class="">
@@ -25,13 +25,13 @@ module.exports = class CalendarHeader extends AdvancedComponent {
           </div>
           <div class="third-container-view">
             <div class="month-event-container">
-                <span class="day-event-view">Day</span>
+                <span class="day-event-view">Month</span>
             </div>
             <div class="month-event-container">
                 <span class="day-event-view">Week</span>
             </div>
             <div class="month-event-container">
-                <span class="day-event-view">Month</span>
+                <span class="day-event-view">Day</span>
             </div>
           </div>
       </div>
@@ -54,11 +54,12 @@ module.exports = class CalendarHeader extends AdvancedComponent {
 
     super.addAttribute(new Attribute({
       key: 'view',
+      value: '',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'viewDate',
-      value: 'viewDate',
+      value: '',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
@@ -221,8 +222,6 @@ module.exports = class CalendarHeader extends AdvancedComponent {
     let onAddEventSaveClick = componentAttribute.onAddEventSaveClick['_value'];
 
     let template = `<div %style% %bCustomProps%> <mwl-calendar-header 
-    [view]= "${view}"
-    [(viewDate)]= "${viewDate}" 
     [showPreviousDayBtn] = "${showPreviousDayBtn}"
     [showTodayBtn] = "${showTodayBtn}"
     [showNextDayBtn] =  "${showNextDayBtn}"
@@ -238,6 +237,12 @@ module.exports = class CalendarHeader extends AdvancedComponent {
       classValue = classValue.replace(",", " ");
       template = template + `class = "${classValue}"`
     }
+
+    if (viewDate !== "")
+      template = template + `[view]= "${view}"`;
+
+    if (viewDate !== "")
+      template = template + `[(viewDate)]= "${viewDate}"`;
 
     if(daysInAWeek !== '' && daysInAWeek !== null){
       template = template + `[daysInWeek]="${daysInAWeek}"`

@@ -19,7 +19,7 @@
     ]
   },
   "dependencies": {
-    "@jatahworx/bhive-toolkits": "^6.2.1",
+    "@jatahworx/bhive-toolkits": "7.0.2",
     "neo-calendar": "0.0.1",
     "ngx-material-timepicker": "4.0.0",
     "@qc/date-round": "0.0.0"

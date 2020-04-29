@@ -5,7 +5,7 @@ let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
 module.exports = class MonthComponent extends AdvancedComponent {
   constructor() {
     const name = 'month-component';
-    const designerTemplate = `<month-component slot="month-component" class="drop display-block" component-label="Month" block-copy>
+    const designerTemplate = `<month-component slot="add-component" class="display-block" component-label="Month" block-copy>
     </month-component>`;
     const paletteTemplate = 'Month';
     const componentLabel = 'Month';
@@ -25,17 +25,17 @@ module.exports = class MonthComponent extends AdvancedComponent {
     super.setType(AdvancedComponent.COMPONENT_TYPE_TITLES.LAYOUT.val);
     super.addAttribute(new Attribute({
       key: 'viewDate',
-      value: 'viewDate',
+      value: '',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'events',
-      value: 'events',
+      value: '',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
       key: 'activeDayIsOpen',
-      value: 'activeDayIsOpen',
+      value: '',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
