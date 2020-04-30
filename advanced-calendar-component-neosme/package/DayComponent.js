@@ -188,7 +188,6 @@ module.exports = class DayComponent extends AdvancedComponent {
   get template() {
 
     let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
-    let classValue = componentAttribute.class['_value'];
     let viewDate = componentAttribute.viewDate['_value'];
     let events = componentAttribute.events['_value'];
     let refresh = componentAttribute.refresh['_value'];
@@ -217,14 +216,9 @@ module.exports = class DayComponent extends AdvancedComponent {
     let hourSegmentClicked = componentAttribute.hourSegmentClicked['_value'];
 
     let template = '';
-    template = `<div %style% %bCustomProps%> <mwl-calendar-day-view
+    template = `<div %style% %class% %bCustomProps%> <mwl-calendar-day-view
     *ngIf="view=='day'"
     `;
-    if (classValue !== null && classValue !== '') {
-      classValue = classValue.toString();
-      classValue = classValue.replace(",", " ");
-      template = template + `class = "${classValue}"`
-    }
 
     if (viewDate !== "")
       template = template + `[viewDate]= "${viewDate}"`;

@@ -78,17 +78,8 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
   }
 
   get template() {
-    let componentAttribute = this.getHtmlAttributes(this.htmlAttributes);
-    let classValue = componentAttribute.class['_value'];
-    if (classValue !== null || classValue !== '') {
-      classValue = classValue.toString();
-      classValue = classValue.replace(",", " ");
-      let template = `<div %bCustomProps% %style% class = "${classValue}"></div>`;
-      return template;
-    } else {
       let template = `<div %bCustomProps% %style% %class%></div>`;
       return template;
-    }
   }
   set template(templateString) { }
 };
