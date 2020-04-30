@@ -5,6 +5,7 @@
     "@angular/common": "^8.2.14",
     "@angular/core": "^8.2.14"
   },
+  "studioVersion": "7.0.2",
   "dependencies": {
     "angular-calendar": "^0.28.5",
     "date-fns": "^2.10.0",
