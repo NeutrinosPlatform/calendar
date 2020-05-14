@@ -6,8 +6,8 @@ module.exports = class AdvancedCalendar extends AdvancedComponent {
   constructor() {
     const name = "advanced-calendar-neosme";
     const designerTemplate = `
-    <advanced-calendar-neosme id="advanced-calendar-neosme" onclick="click(event)" component-label="Calendar" class="drop ad-element flex-shrink-0 flex-grow-1" block-copy>
-      <div slot="add" class="ad-card-buttons" style="width:100% !important;padding:0px">
+    <advanced-calendar-neosme id="advanced-calendar-neosme" onclick="click(event)" component-label="Calendar" class="ad-element flex-shrink-0 flex-grow-1 drop">
+      <div slot="add"  class="ad-card-buttons" style="width:100% !important;padding:0px">
         <div class="calendar-image"> </div>  
         <div style="display:flex;padding-left:15px">
           <button id="calendar-header" class="add-child-button flex-column" no-select>Header</button>

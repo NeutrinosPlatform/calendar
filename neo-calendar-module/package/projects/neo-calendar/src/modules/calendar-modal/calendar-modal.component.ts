@@ -64,6 +64,7 @@ export class CalendarModalComponent implements OnInit {
 
   addOrUpdateEvent() {
     let tempObject = {
+      id: this.data === null ? Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10) : this.data.id,
       title: this.addEvents.controls['title'].value,
       description: this.addEvents.controls['description'].value,
       location: this.addEvents.controls['location'].value,
@@ -72,9 +73,12 @@ export class CalendarModalComponent implements OnInit {
       fromTime: this.addEvents.controls['fromTime'].value,
       toTime: this.addEvents.controls['toTime'].value
     };
-    let startDatetime = tempObject.start+' '+tempObject.fromTime
-    let endDatetime = tempObject.end+' '+tempObject.toTime
-    console.log("startDatetime, endDatetime", startDatetime, endDatetime)
+    let startDatetime = this.CombineDateAndTime(tempObject.start,tempObject.fromTime)
+    let endDatetime = this.CombineDateAndTime(tempObject.end,tempObject.toTime)
+    tempObject.start = startDatetime;
+    tempObject.end = endDatetime;
+    console.log("startDatetime, endDatetime tempObject", tempObject)
+    
     if(this.data === null){
       this.eventEmitterService.emitNavChangeEvent('ADD_SAVE_CLICKED', tempObject);
     }else {
@@ -82,6 +86,21 @@ export class CalendarModalComponent implements OnInit {
     }
     this.dialogRef.close();
   }
+
+  CombineDateAndTime(dateObject, timeString) {
+    // var timeString = time.getHours() + ':' + time.getMinutes() + ':00';
+    // var ampm = time.getHours() >= 12 ? 'PM' : 'AM';
+    var date = new Date(dateObject);
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1; // Jan is 0, dec is 11
+    var day = date.getDate();
+
+    var dateString = '' + year + '-' + month + '-' + day;
+    // var datec = dateString + 'T' + timeString;
+    var combined = new Date(dateString + ' ' + timeString);
+
+    return combined;
+};
 
   onNoClick(): void {
     this.dialogRef.close();

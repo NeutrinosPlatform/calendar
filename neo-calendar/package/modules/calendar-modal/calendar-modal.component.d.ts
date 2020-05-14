@@ -17,6 +17,7 @@ export declare class CalendarModalComponent implements OnInit {
     addMinutesToDate(date: any, minutes: any): Date;
     assignEventDetails(): void;
     addOrUpdateEvent(): void;
+    CombineDateAndTime(dateObject: any, timeString: any): Date;
     onNoClick(): void;
     onDelete(): void;
     onEdit(): void;

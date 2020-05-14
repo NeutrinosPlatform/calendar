@@ -434,12 +434,13 @@
 .cal-week-view .cal-time-events .cal-event-container {
   position: absolute;
   z-index: 1;
-  height: auto !important;
+  /* height: auto !important;     */
 }
 
 .cal-week-view .cal-time-events .cal-event {
-  width: calc(100% - 0px);
-  height: calc(100% - 0px);
+  width: calc(100% - 2px);
+  /* height: calc(100% - 0px); */
+  height: calc(100% - 2px);
   margin: 0px;
   padding: 0 0px;
   line-height: 25px;
@@ -798,8 +799,9 @@
   margin-bottom: 5px !important;
 }
 
-.cal-open-day-events .event-title {
-  color: #fff;
+.cal-open-day-events .event-title,
+.cal-open-day-events .week-event-title {
+  color: #fff !important;
 }
 
 .week-event-title {

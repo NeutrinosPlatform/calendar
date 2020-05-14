@@ -197,12 +197,16 @@ module.exports = class MonthComponent extends AdvancedComponent {
     let template = '';
     template = `<div %style% %class% %bCustomProps%> <mwl-calendar-month-view
     *ngIf="view=='month'"
-    [activeDayIsOpen]="${activeDayIsOpen}"
-    [tooltipAppendToBody] = "${tooltipAppendToBody}"
     `;
 
     if (viewDate !== "")
       template = template + `[(viewDate)]= "${viewDate}"`;
+
+    if (activeDayIsOpen !== "")
+      template = template + `[activeDayIsOpen]= "${activeDayIsOpen}"`;
+
+    if (tooltipAppendToBody !== "")
+      template = template + `[tooltipAppendToBody]= "${tooltipAppendToBody}"`;
 
     if (events !== "")
       template = template + `[events]="${events}"`;

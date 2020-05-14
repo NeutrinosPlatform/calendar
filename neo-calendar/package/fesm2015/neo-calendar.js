@@ -121,12 +121,13 @@ CalendarEventTitleComponent = __decorate([
         selector: 'mwl-calendar-event-title',
         template: `
     <ng-template #defaultTemplate let-event="event" let-view="view">
-      <span
-        class="event-title"
+      <p class="week-event-title">{{event.start | date:'shortTime'}}</p>
+      <p
+        class="week-event-title"
         [innerHTML]="event.title | calendarEventTitle: view:event"
         [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
-      >
-      </span>
+      >   
+      </p>  
     </ng-template>
     <ng-template
       [ngTemplateOutlet]="customTemplate || defaultTemplate"
@@ -3243,7 +3244,7 @@ CalendarWeekViewHeaderComponent = __decorate([
           <div class="week-header-date">
             {{day.date | calendarDate: 'weekViewColumnSubHeader':locale}}
           </div>
-        </div>
+        </div>     
       </div>
     </ng-template>
     <ng-template
@@ -3356,13 +3357,17 @@ CalendarWeekViewEventComponent = __decorate([
         role="application"
         (click) = "onEventClick(weekEvent.event)"
       >
-      <p class="week-event-title">{{weekEvent.event.start | date:'shortTime'}}</p>
-      <p class="week-event-title">{{weekEvent.event.title}}</p>
         <mwl-calendar-event-actions
+            [event]="weekEvent.event"
+            [customTemplate]="eventActionsTemplate"
+          >
+        </mwl-calendar-event-actions> 
+        <mwl-calendar-event-title
           [event]="weekEvent.event"
-          [customTemplate]="eventActionsTemplate"
+          [customTemplate]="eventTitleTemplate"
+          [view]="daysInWeek === 1 ? 'day' : 'week'"
         >
-        </mwl-calendar-event-actions>
+        </mwl-calendar-event-title>
       </div>
     </ng-template>
     <ng-template
@@ -3840,6 +3845,7 @@ let CalendarModalComponent = class CalendarModalComponent {
     }
     addOrUpdateEvent() {
         let tempObject = {
+            id: this.data === null ? Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10) : this.data.id,
             title: this.addEvents.controls['title'].value,
             description: this.addEvents.controls['description'].value,
             location: this.addEvents.controls['location'].value,
@@ -3848,9 +3854,11 @@ let CalendarModalComponent = class CalendarModalComponent {
             fromTime: this.addEvents.controls['fromTime'].value,
             toTime: this.addEvents.controls['toTime'].value
         };
-        let startDatetime = tempObject.start + ' ' + tempObject.fromTime;
-        let endDatetime = tempObject.end + ' ' + tempObject.toTime;
-        console.log("startDatetime, endDatetime", startDatetime, endDatetime);
+        let startDatetime = this.CombineDateAndTime(tempObject.start, tempObject.fromTime);
+        let endDatetime = this.CombineDateAndTime(tempObject.end, tempObject.toTime);
+        tempObject.start = startDatetime;
+        tempObject.end = endDatetime;
+        console.log("startDatetime, endDatetime tempObject", tempObject);
         if (this.data === null) {
             this.eventEmitterService.emitNavChangeEvent('ADD_SAVE_CLICKED', tempObject);
         }
@@ -3859,6 +3867,19 @@ let CalendarModalComponent = class CalendarModalComponent {
         }
         this.dialogRef.close();
     }
+    CombineDateAndTime(dateObject, timeString) {
+        // var timeString = time.getHours() + ':' + time.getMinutes() + ':00';
+        // var ampm = time.getHours() >= 12 ? 'PM' : 'AM';
+        var date = new Date(dateObject);
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1; // Jan is 0, dec is 11
+        var day = date.getDate();
+        var dateString = '' + year + '-' + month + '-' + day;
+        // var datec = dateString + 'T' + timeString;
+        var combined = new Date(dateString + ' ' + timeString);
+        return combined;
+    }
+    ;
     onNoClick() {
         this.dialogRef.close();
     }
@@ -3878,7 +3899,7 @@ CalendarModalComponent.ctorParameters = () => [
 CalendarModalComponent = __decorate([
     Component({
         selector: 'app-calendar-modal',
-        template: "<div class=\"header\" id=\"header-view\">\n  <div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{title}}</h1>\n  </div>\n  <div>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onEdit()\">edit\n    </mat-icon>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onDelete()\">delete\n    </mat-icon>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n  </div>\n</div>\n<div mat-dialog-content id=\"dialog-container\">\n\n  <form class=\"example-form\" [formGroup]=\"addEvents\" (ngSubmit)=\"addOrUpdateEvent()\">\n\n    <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n      style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n      <input class=\"add-title-input\" matInput placeholder=\"{{titlePlaceholder}}\" formControlName=\"title\">\n    </mat-form-field>\n\n    <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n      <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n      <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;width: calc(100% - 5%);\">\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;\">\n          <mat-label>Start date</mat-label>\n          <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"picker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"start-time-view\">\n          <input matInput [ngxTimepicker]=\"fromTime\" [format]=\"24\" formControlName=\"fromTime\"  readonly >\n          <ngx-material-timepicker #fromTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"end-time-view\">\n          <input matInput [ngxTimepicker]=\"toTime\" [format]=\"24\" formControlName=\"toTime\" readonly\n            [disabled]=\"addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value\">\n          <ngx-material-timepicker #toTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field id=\"end-date-view\"class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n          <mat-label>End date</mat-label>\n          <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n            [matDatepicker]=\"datepicker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #datepicker></mat-datepicker>\n        </mat-form-field>\n      </div>\n\n    </div>\n\n    <div class=\"header\" id=\"location-view\">\n      <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n      <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n        <input  class=\"location-input-view\" matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n          style=\" width: 95% !important;\" />\n      </mat-form-field>\n    </div>\n\n    <div class=\"text-area-container\">\n      <mat-icon aria-hidden=\"false\" class=\"menu-icon-view\">menu</mat-icon>\n      <textarea id=\"text-input-view\"class=\"text-area-view\" placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"></textarea>\n    </div>\n    <div class=\"save-button-view\">\n      <button type=\"submit\" mat-button class=\"event-button\" [disabled]=\"!addEvents.valid\" [ngStyle]=\"{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }\">Save</button>\n    </div>\n  </form>\n</div>\n\n",
+        template: "<div class=\"header\" id=\"header-view\">\n  <div class=\"titleStyle\">\n    <h1 mat-dialog-title style=\"font-family: Poppins;\">{{title}}</h1>\n  </div>\n  <div>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onEdit()\">edit\n    </mat-icon>\n    <mat-icon *ngIf=\"title === 'Edit Event'\" aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onDelete()\">delete\n    </mat-icon>\n    <mat-icon aria-hidden=\"false\" style=\"cursor: pointer;\" (click)=\"onNoClick()\">close</mat-icon>\n  </div>\n</div>\n<div mat-dialog-content id=\"dialog-container\">\n\n  <form class=\"example-form\" [formGroup]=\"addEvents\" (ngSubmit)=\"addOrUpdateEvent()\">\n\n    <mat-form-field class=\"example-full-width\" id=\"Add-title-view\"\n      style=\"font-family: Poppins;width: 95% !important;margin-left: 5%;\">\n      <input class=\"add-title-input\" matInput placeholder=\"{{titlePlaceholder}}\" formControlName=\"title\">\n    </mat-form-field>\n\n    <div class=\"timeinterval\" id=\"start-end-time\" style=\"display: flex !important;align-items: center;\">\n\n      <mat-icon aria-hidden=\"false\">access_time</mat-icon>\n      <div style=\"display: flex !important;\njustify-content: space-between !important;align-items: center;margin-left: 2%;padding-right: 2%;width: calc(100% - 5%);\">\n        <mat-form-field class=\"example-full-width\" style=\"width: 22%;\">\n          <mat-label>Start date</mat-label>\n          <input matInput formControlName=\"fromDate\" [matDatepicker]=\"picker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"picker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #picker></mat-datepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"start-time-view\">\n          <mat-label>From time</mat-label>\n          <input matInput [ngxTimepicker]=\"fromTime\" [format]=\"24\" formControlName=\"fromTime\"  readonly >\n          <ngx-material-timepicker #fromTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field class=\"end-time-view\">\n          <mat-label>To time</mat-label>\n          <input matInput [ngxTimepicker]=\"toTime\" [format]=\"24\" formControlName=\"toTime\" readonly\n            [disabled]=\"addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value\">\n          <ngx-material-timepicker #toTime></ngx-material-timepicker>\n        </mat-form-field>\n\n        <mat-form-field id=\"end-date-view\"class=\"example-full-width\" style=\"width: 22%;font-family: Poppins;\">\n          <mat-label>End date</mat-label>\n          <input [min]=\"addEvents.controls['fromDate'].value\" matInput formControlName=\"toDate\"\n            [matDatepicker]=\"datepicker\" >\n          <mat-datepicker-toggle matSuffix [for]=\"datepicker\">\n            <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>\n          </mat-datepicker-toggle>\n          <mat-datepicker #datepicker></mat-datepicker>\n        </mat-form-field>\n      </div>\n\n    </div>\n\n    <div class=\"header\" id=\"location-view\">\n      <mat-icon aria-hidden=\"false\">location_on</mat-icon>\n      <mat-form-field class=\"form-field\" style=\"margin-left: 2%;\">\n        <input  class=\"location-input-view\" matInput placeholder=\"{{locationPlaceholder}}\" formControlName=\"location\"\n          style=\" width: 95% !important;\" />\n      </mat-form-field>\n    </div>\n\n    <div class=\"text-area-container\">\n      <mat-icon aria-hidden=\"false\" class=\"menu-icon-view\">menu</mat-icon>\n      <textarea id=\"text-input-view\"class=\"text-area-view\" placeholder=\"{{descriptionPlaceholder}}\" formControlName=\"description\"></textarea>\n    </div>\n    <div class=\"save-button-view\">\n      <button type=\"submit\" mat-button class=\"event-button\" [disabled]=\"!addEvents.valid\" [ngStyle]=\"{ 'opacity' : !addEvents.valid ? '0.5' : '1.5' }\">Save</button>\n    </div>\n  </form>\n</div>\n\n",
         styles: [".cdk-overlay-container{z-index:1127}.form-field{font-family:Poppins;width:95%!important}.event-button{background:#404041;color:#fff;width:141px;height:42px;border-radius:4px;border:1px solid #404041}.titleStyle{display:-webkit-box;display:flex;-webkit-box-pack:justify;justify-content:space-between}.header{display:-webkit-box;display:flex;-webkit-box-orient:horizontal;-webkit-box-direction:normal;flex-direction:row;-webkit-box-pack:justify;justify-content:space-between;-webkit-box-align:center;align-items:center}.save-button-view{display:-webkit-box;display:flex;-webkit-box-pack:end;justify-content:flex-end;-webkit-box-align:center;align-items:center;margin-bottom:0!important}.save-button-view button{width:110px;height:47px;border-radius:6px;background-color:#404041}.text-area-view{width:100%!important;height:75px;resize:unset;overflow:auto;padding-top:5px;padding-left:5px;margin-left:2%;border-radius:5px;font-family:poppins}.text-area-container{display:-webkit-box;display:flex;-webkit-box-align:start;align-items:flex-start;padding-top:28px;padding-bottom:2%}.menu-icon-view{position:relative;bottom:3px}.titleStyle h1{margin-bottom:0!important;font-family:Poppins;font-size:28px;font-weight:500;font-stretch:normal;font-style:normal;line-height:1.5;letter-spacing:.01px;text-align:left;color:#404041}.add-title-input{font-size:20px!important;font-weight:500!important;font-stretch:normal!important;font-style:normal!important;letter-spacing:.01px!important;text-align:left!important;color:#7b7f8b!important}input{font-size:20px;font-weight:500;font-stretch:normal;font-style:normal;letter-spacing:.01px;text-align:left;color:#7b7f8b}#dialog-container{max-height:70vh!important}@media (max-width:991px){.end-time-view,.start-time-view{width:15%!important}}.example-full-width input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px!important}.start-time-view input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}.end-time-view input{width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px!important}.location-input-view{font-size:14px}#text-input-view{font-size:14px;color:#7b7f8b}#start-end-time{padding-top:18px}.mat-input-placeholder{color:#fff;font-size:2em}.mat-form-field-label,mat-label{font-size:14px!important}#location-view{margin-top:6px}#header-view{margin-bottom:12px}"]
     }),
     __param(2, Inject(MAT_DIALOG_DATA))

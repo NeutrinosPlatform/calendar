@@ -5,9 +5,9 @@ let Attribute = require("@jatahworx/bhive-toolkits").Attribute;
 module.exports = class DayComponent extends AdvancedComponent {
   constructor() {
     const name = 'week-component';
-    const designerTemplate = `<week-component slot="add-component" class="display-block" component-label="Week" block-copy>
-    </week-component>`;
-      
+    const designerTemplate = `<week-component slot="week-component" block-copy class="ad-element flex-shrink-0 flex-grow-1 display-block">
+        <span class="component-placeholder title-align">Week</span>
+      </week-component>`;
     const paletteTemplate = 'Week';
     const componentLabel = 'Week';
 
@@ -366,8 +366,8 @@ module.exports = class DayComponent extends AdvancedComponent {
       template = template + `(hourSegmentClicked)="${hourSegmentClicked}"`;
 
     if (dayHeaderClicked !== "")
-      template = template + `(hourSegmentClicked)="${dayHeaderClicked}"`;
-
+      template = template + `(dayHeaderClicked)="${dayHeaderClicked}"`;
+    
 
     template = template + `> </mwl-calendar-week-view> </div>`;
 

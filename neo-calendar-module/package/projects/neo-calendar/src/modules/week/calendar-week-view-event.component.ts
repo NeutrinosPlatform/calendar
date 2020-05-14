@@ -54,13 +54,17 @@ import { EventEmitterService } from '../common/calendar-event-emitter.service';
         role="application"
         (click) = "onEventClick(weekEvent.event)"
       >
-      <p class="week-event-title">{{weekEvent.event.start | date:'shortTime'}}</p>
-      <p class="week-event-title">{{weekEvent.event.title}}</p>
         <mwl-calendar-event-actions
+            [event]="weekEvent.event"
+            [customTemplate]="eventActionsTemplate"
+          >
+        </mwl-calendar-event-actions> 
+        <mwl-calendar-event-title
           [event]="weekEvent.event"
-          [customTemplate]="eventActionsTemplate"
+          [customTemplate]="eventTitleTemplate"
+          [view]="daysInWeek === 1 ? 'day' : 'week'"
         >
-        </mwl-calendar-event-actions>
+        </mwl-calendar-event-title>
       </div>
     </ng-template>
     <ng-template

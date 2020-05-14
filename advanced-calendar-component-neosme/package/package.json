@@ -18,7 +18,6 @@
       "NgxMaterialTimepickerModule"
     ]
   },
-  "studioVersion": "7.0.2",
   "dependencies": {
     "@jatahworx/bhive-toolkits": "7.0.2",
     "neo-calendar": "0.0.1",

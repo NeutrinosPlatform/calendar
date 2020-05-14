@@ -34,11 +34,13 @@ justify-content: space-between !important;align-items: center;margin-left: 2%;pa
         </mat-form-field>
 
         <mat-form-field class="start-time-view">
+          <mat-label>From time</mat-label>
           <input matInput [ngxTimepicker]="fromTime" [format]="24" formControlName="fromTime"  readonly >
           <ngx-material-timepicker #fromTime></ngx-material-timepicker>
         </mat-form-field>
 
         <mat-form-field class="end-time-view">
+          <mat-label>To time</mat-label>
           <input matInput [ngxTimepicker]="toTime" [format]="24" formControlName="toTime" readonly
             [disabled]="addEvents.controls['fromTime'].value > addEvents.controls['toTime'].value">
           <ngx-material-timepicker #toTime></ngx-material-timepicker>

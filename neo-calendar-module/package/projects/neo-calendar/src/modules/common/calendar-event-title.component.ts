@@ -5,12 +5,13 @@ import { CalendarEvent } from 'calendar-utils';
   selector: 'mwl-calendar-event-title',
   template: `
     <ng-template #defaultTemplate let-event="event" let-view="view">
-      <span
-        class="event-title"
+      <p class="week-event-title">{{event.start | date:'shortTime'}}</p>
+      <p
+        class="week-event-title"
         [innerHTML]="event.title | calendarEventTitle: view:event"
         [attr.aria-hidden]="{} | calendarA11y: 'hideEventTitle'"
-      >
-      </span>
+      >   
+      </p>  
     </ng-template>
     <ng-template
       [ngTemplateOutlet]="customTemplate || defaultTemplate"
