@@ -46,17 +46,17 @@
 }
 .calendar-image{
     background: url("../assets/images/Group-1635@2x.png") no-repeat center;
-    width: 96%;
+    width: 100%;
     height: 270px !important;
     background-size: 95%;
     /* padding-left: 20px; */
     /* background: rebeccapurple; */
 
 }
-.parent_card{
+/* .parent_card{
     display: flex;
     justify-content: center;
-}
+} */
 table.cal-table tr td {
     border: 1px solid black;
     border-collapse: collapse;
@@ -185,7 +185,7 @@ table.cal-table tr td {
 }
 .first-container-view{
     display: flex;
-    width: 48% !important;
+    width: auto;
     /* align-items: center; */
 }
 .third-container-view{
@@ -246,10 +246,9 @@ table.cal-table tr td {
   @media(max-width:1169px){
     .three-label{
         position: relative !important;
-        right: 14px !important;
+        /* right: 14px !important; */
     }
     calendar-header{
-        /* right: 20px; */
         padding-right: 0px !important;
         padding-left: 0px !important;
         margin-left: 0px !important;
@@ -257,13 +256,12 @@ table.cal-table tr td {
     }
     #previous-pick-content , #today-pick-content , #next-pick-content , .Add-event-view, .january, .day-event-view{
         font-size: 12px !important;
-    }
+    } 
     .ad-element{
         width: 93% !important;
     }
   }
-  calendar-header{
-    right: 20px;
+  /* calendar-header{
     padding-right: 0px !important;
     padding-left: 0px !important;
     margin-left: 0px !important;
@@ -271,4 +269,4 @@ table.cal-table tr td {
 }
 #previous-pick-content , #today-pick-content , #next-pick-content , .Add-event-view, .january, .day-event-view{
     font-size: 12px !important;
-}
+} */

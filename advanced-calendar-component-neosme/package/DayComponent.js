@@ -174,7 +174,6 @@ module.exports = class DayComponent extends AdvancedComponent {
       type: 'kv',
       complexity: "advanced"
     }));
-
     super.composeTemplate({
       styles: `:host {
               padding: 1.3em;
@@ -214,38 +213,10 @@ module.exports = class DayComponent extends AdvancedComponent {
     let beforeViewRender = componentAttribute.beforeViewRender['_value'];
     let eventClicked = componentAttribute.eventClicked['_value'];
     let hourSegmentClicked = componentAttribute.hourSegmentClicked['_value'];
-    let eventActionsTemplate = componentAttribute.eventActionsTemplate['_value'];
-    let eventTemplate = componentAttribute.eventTemplate['_value'];
-    let hourSegmentTemplate = componentAttribute.hourSegmentTemplate['_value'];
-    let locale = componentAttribute.locale['_value'];
-    let snapDraggedEvents = componentAttribute.snapDraggedEvents['_value'];
-    let eventTitleTemplate = componentAttribute.eventTitleTemplate['_value'];
-    let allDayEventsLabelTemplate = componentAttribute.allDayEventsLabelTemplate['_value'];
-
 
     let template = '';
     template = `<div %style% %class% %bCustomProps%> <mwl-calendar-day-view
     *ngIf="view=='day'"
-    [(viewDate)]= "${viewDate}"
-    [events]="${events}"
-    [refresh]="${refresh}"
-    [dayEndHour] = "${dayEndHour}"
-    [dayEndMinute] = "${dayEndMinute}"
-    [dayStartHour] = "${dayStartHour}"
-    [dayStartMinute] = "${dayStartMinute}"
-    [hourSegmentHeight] = "${hourSegmentHeight}"
-    [hourSegments] = "${hourSegments}"
-    [eventSnapSize] = "${eventSnapSize}"
-    [tooltipDelay] = "${tooltipDelay}"
-    [tooltipAppendToBody] = "${tooltipAppendToBody}"
-    [tooltipPlacement] = "${tooltipPlacement}"
-    [eventActionsTemplate] = "${eventActionsTemplate}"
-    [eventTemplate] = "${eventTemplate}"
-    [eventTitleTemplate] = "${eventTitleTemplate}"
-    [hourSegmentTemplate] = "${hourSegmentTemplate}"
-    [locale] = "${locale}"
-    [snapDraggedEvents] = "${snapDraggedEvents}"
-    [allDayEventsLabelTemplate]="${allDayEventsLabelTemplate}"
     `;
 
     if (viewDate !== "")
@@ -301,7 +272,7 @@ module.exports = class DayComponent extends AdvancedComponent {
 
     if (locale !== "")
       template = template + `[locale] = "${locale}"`;
-
+      
     if (snapDraggedEvents !== "")
       template = template + `[snapDraggedEvents] = "${snapDraggedEvents}"`;
 
@@ -310,7 +281,7 @@ module.exports = class DayComponent extends AdvancedComponent {
 
     if (currentTimeMarkerTemplate !== "")
       template = template + `[currentTimeMarkerTemplate] = "${currentTimeMarkerTemplate}"`;
-      
+
     if (tooltipTemplate !== "")
       template = template + `[tooltipTemplate] = "${tooltipTemplate}"`;
 
