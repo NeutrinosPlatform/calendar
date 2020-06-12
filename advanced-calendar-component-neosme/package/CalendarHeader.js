@@ -36,8 +36,9 @@ module.exports = class CalendarHeader extends AdvancedComponent {
           </div>
       </div>
     </calendar-header>`;
-    const paletteTemplate = '';
-    const componentLabel = '';
+   
+    const paletteTemplate = "Header";
+    const componentLabel = 'Header';
 
     const templateUrl = 'https://mattlewis92.github.io/angular-calendar/';
 

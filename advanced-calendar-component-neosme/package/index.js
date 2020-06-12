@@ -38,7 +38,7 @@ module.exports = {
         'snapDraggedEvents' : new snapDraggedEventsConfig(),
         'tooltipAppendToBody' : new tooltipAppendToBodyConfig(),
         'showCaptureEventDialog' : new showCaptureEventDialogConfig(),
-        'showEventDetailsDialog': new showEventDetailsDialogConfig()
-        // 'activeDayIsOpen' : new activeDayIsOpenConfig(),
+        'showEventDetailsDialog': new showEventDetailsDialogConfig(),
+        'activeDayIsOpen' : new activeDayIsOpenConfig(),
     }
 };

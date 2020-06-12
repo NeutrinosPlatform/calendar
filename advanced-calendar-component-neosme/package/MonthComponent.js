@@ -35,7 +35,7 @@ module.exports = class MonthComponent extends AdvancedComponent {
     }));
     super.addAttribute(new Attribute({
       key: 'activeDayIsOpen',
-      value: '',
+      value: 'true',
       type: 'kv',
     }));
     super.addAttribute(new Attribute({
